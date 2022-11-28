@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
-public class Destructable : MonoBehaviour, IDamageable
+public class Destructable : NetworkBehaviour, IDamageable
 {
     [SerializeField] private int health;
 
@@ -9,7 +10,17 @@ public class Destructable : MonoBehaviour, IDamageable
         health -= amount;
         if (health <= 0)
         {
-            Destroy(gameObject);
+            if (!IsServer)
+            {
+                DestroyServerRpc();
+            }
+            else
+            {
+                GetComponent<NetworkObject>().Despawn();
+            }
         }
     }
+
+    [ServerRpc]
+    private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
 }

@@ -1,11 +1,12 @@
 ﻿using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour //, IDamageable
 {
     //Animations
     [SerializeField] private float explodeDelay;
-    [SerializeField] private int damage;
+    [SerializeField] private NetworkVariable<int> damage;
     [SerializeField] private int distance;
     [SerializeField] private Collider trigger;
 
@@ -13,23 +14,36 @@ public class Bomb : NetworkBehaviour //, IDamageable
 
     private void Explode()
     {
-        Raycast(Vector3.forward);
-        Raycast(Vector3.back);
-        Raycast(Vector3.right);
-        Raycast(Vector3.left);
+        var position = transform.position;
+        Raycast(position, Vector3.forward, distance);
+        Raycast(position, Vector3.back, distance);
+        Raycast(position, Vector3.right, distance);
+        Raycast(position, Vector3.left, distance);
         Destroy(gameObject);
     }
-
-    private void Raycast(Vector3 dir)
+    
+    private void Raycast(Vector3 pos, Vector3 dir, int dist)
     {
-        if (Physics.Raycast(transform.position, dir, out var hit, distance))
+        if (Physics.Raycast(pos, dir, out var hit, dist))
         {
-            if (hit.transform.TryGetComponent(out IDamageable damageable))
-            {
-                damageable.TakeDamage(damage);
-            }
+            DoDamage(damage.Value, hit.transform.GetComponent<NetworkObject>());
         }
     }
+
+    private void DoDamage(int damage, NetworkObjectReference hit)
+    {
+        if (hit.TryGet(out NetworkObject obj))
+        {
+            DoDamageServerRpc(damage, obj.NetworkObjectId);
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DoDamageServerRpc(int damage, ulong ID)
+    {
+        GetNetworkObject(ID).GetComponent<IDamageable>().TakeDamage(damage);
+    }
+
 
     //public void TakeDamage(int amount) => Explode();
 

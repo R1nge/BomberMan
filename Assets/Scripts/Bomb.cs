@@ -27,7 +27,10 @@ public class Bomb : NetworkBehaviour //, IDamageable
     {
         if (Physics.Raycast(pos, dir, out var hit, dist))
         {
-            DoDamage(damage.Value, hit.transform.GetComponent<NetworkObject>());
+            if (hit.transform.TryGetComponent(out NetworkObject obj))
+            {
+                DoDamage(damage.Value, obj);
+            }
         }
     }
 

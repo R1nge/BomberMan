@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3069896162464506265}
   - component: {fileID: 2904688738318645953}
   - component: {fileID: 2904688738318645958}
+  - component: {fileID: 3996234663505647304}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -99,6 +100,32 @@ MonoBehaviour:
   bombPrefab: {fileID: 2120785552994975179, guid: 233e323126c454b499fda97414d1fcc0,
     type: 3}
   countdown: 1
+--- !u!114 &3996234663505647304
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2904688738318645957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5735e8958769024386caef105014900, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 0
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 0
+  SyncScaleY: 0
+  SyncScaleZ: 0
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1
 --- !u!1 &2904688739777147426
 GameObject:
   m_ObjectHideFlags: 0

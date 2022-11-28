@@ -110,7 +110,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 6
-  canMove: 1
 --- !u!114 &2904688738318645958
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -123,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1ec60a437b042d29593700b58d1fbe0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bombPrefab: {fileID: 2120785552994975179, guid: 233e323126c454b499fda97414d1fcc0,
+  bombPrefab: {fileID: 5818765566873767174, guid: 346d0d54d684cf740bbac273f0dccd7c,
     type: 3}
 --- !u!1 &2904688739777147426
 GameObject:

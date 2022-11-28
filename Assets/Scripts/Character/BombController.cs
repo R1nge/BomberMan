@@ -6,7 +6,6 @@ namespace Character
     public class BombController : NetworkBehaviour
     {
         [SerializeField] private GameObject bombPrefab;
-        [SerializeField] private float countdown;
         private bool _canSpawn = true;
 
         private void Update()
@@ -25,6 +24,7 @@ namespace Character
                 _canSpawn = false;
                 var bomb = Instantiate(bombPrefab, position, Quaternion.identity);
                 bomb.GetComponent<NetworkObject>().Spawn();
+                var countdown = bomb.GetComponent<Bomb>().ExplodeDelay;
                 Invoke(nameof(ResetSpawn), countdown);
             }
             else

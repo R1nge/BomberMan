@@ -1,5 +1,4 @@
 ﻿using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour //, IDamageable
@@ -9,6 +8,8 @@ public class Bomb : NetworkBehaviour //, IDamageable
     [SerializeField] private NetworkVariable<int> damage;
     [SerializeField] private int distance;
     [SerializeField] private Collider trigger;
+
+    public float ExplodeDelay => explodeDelay;
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
 
@@ -57,10 +58,7 @@ public class Bomb : NetworkBehaviour //, IDamageable
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void DestroyServerRpc()
-    {
-        GetComponent<NetworkObject>().Despawn();
-    }
+    private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
 
 
     //public void TakeDamage(int amount) => Explode();

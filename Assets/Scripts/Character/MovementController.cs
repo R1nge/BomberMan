@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace Character
 {
-    public class MovementController : MonoBehaviour
+    public class MovementController : NetworkBehaviour
     {
         [SerializeField] private float speed;
         [SerializeField] private bool canMove = true;
@@ -13,6 +14,7 @@ namespace Character
 
         private void Update()
         {
+            if (!IsOwner) return;
             Vector3 forward = transform.TransformDirection(Vector3.forward);
             Vector3 right = transform.TransformDirection(Vector3.right);
             float curSpeedX = canMove ? speed * Input.GetAxis("Vertical") : 0;

@@ -6,7 +6,7 @@ public class Bomb : MonoBehaviour //, IDamageable
     [SerializeField] private float explodeDelay;
     [SerializeField] private int damage;
     [SerializeField] private int distance;
-    [SerializeField] private Collider collider;
+    [SerializeField] private Collider trigger;
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
 
@@ -32,5 +32,5 @@ public class Bomb : MonoBehaviour //, IDamageable
 
     //public void TakeDamage(int amount) => Explode();
 
-    private void OnTriggerExit(Collider other) => collider.isTrigger = false;
+    private void OnTriggerExit(Collider other) => trigger.isTrigger = false;
 }

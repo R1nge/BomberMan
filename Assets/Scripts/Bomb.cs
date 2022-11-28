@@ -19,9 +19,9 @@ public class Bomb : NetworkBehaviour //, IDamageable
         Raycast(position, Vector3.back, distance);
         Raycast(position, Vector3.right, distance);
         Raycast(position, Vector3.left, distance);
-        Destroy(gameObject);
+        Destroy();
     }
-    
+
     private void Raycast(Vector3 pos, Vector3 dir, int dist)
     {
         if (Physics.Raycast(pos, dir, out var hit, dist))
@@ -42,6 +42,24 @@ public class Bomb : NetworkBehaviour //, IDamageable
     private void DoDamageServerRpc(int damage, ulong ID)
     {
         GetNetworkObject(ID).GetComponent<IDamageable>().TakeDamage(damage);
+    }
+
+    private void Destroy()
+    {
+        if (!IsServer)
+        {
+            DestroyServerRpc();
+        }
+        else
+        {
+            GetComponent<NetworkObject>().Despawn();
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void DestroyServerRpc()
+    {
+        GetComponent<NetworkObject>().Despawn();
     }
 
 

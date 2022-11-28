@@ -1,8 +1,9 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
 namespace Character
 {
-    public class BombController : MonoBehaviour
+    public class BombController : NetworkBehaviour
     {
         [SerializeField] private GameObject bombPrefab;
         [SerializeField] private float countdown;
@@ -10,6 +11,7 @@ namespace Character
 
         private void Update()
         {
+            if (!IsOwner) return;
             if (Input.GetKeyDown(KeyCode.Space) && _canSpawn)
             {
                 Spawn(transform.position);
@@ -18,10 +20,21 @@ namespace Character
 
         private void Spawn(Vector3 position)
         {
-            _canSpawn = false;
-            Instantiate(bombPrefab, position, Quaternion.identity);
-            Invoke(nameof(ResetSpawn), countdown);
+            if (IsServer)
+            {
+                _canSpawn = false;
+                var bomb = Instantiate(bombPrefab, position, Quaternion.identity);
+                bomb.GetComponent<NetworkObject>().Spawn();
+                Invoke(nameof(ResetSpawn), countdown);
+            }
+            else
+            {
+                SpawnServerRpc(position);
+            }
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SpawnServerRpc(Vector3 position) => Spawn(position);
 
         private void ResetSpawn() => _canSpawn = true;
     }

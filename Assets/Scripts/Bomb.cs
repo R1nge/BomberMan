@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Netcode;
+using UnityEngine;
 
-public class Bomb : MonoBehaviour //, IDamageable
+public class Bomb : NetworkBehaviour //, IDamageable
 {
     //Animations
     [SerializeField] private float explodeDelay;

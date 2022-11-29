@@ -8,7 +8,7 @@ public class SpawnPositions : NetworkBehaviour
 
     private void Awake() => _networkPositions = new NetworkList<Vector3>();
 
-    public void SetSpawnPositions(int width, int height)
+    public void SetSpawnPositions(float width, float height)
     {
         if (IsServer)
         {

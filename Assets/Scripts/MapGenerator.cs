@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -18,7 +17,7 @@ public class MapGenerator : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
-        _spawnPositions.SetSpawnPositions(width,height);
+        _spawnPositions.SetSpawnPositions((width - 1) * tileSize, (height - 1) * tileSize);
         SpawnGrid();
         SpawnDestructables();
     }
@@ -43,6 +42,7 @@ public class MapGenerator : NetworkBehaviour
             {
                 _spawnObstacle = Mathf.FloorToInt(Random.Range(0, 2)) == 0;
                 if (!_spawnObstacle) continue;
+                
                 if (x == 0 && z == 0) continue;
                 if (x == 1 && z == 0) continue;
                 if (x == 0 && z == 1) continue;

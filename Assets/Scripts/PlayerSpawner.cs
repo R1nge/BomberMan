@@ -72,18 +72,27 @@ public class PlayerSpawner : NetworkBehaviour
         {
             NetworkManager.Singleton.SpawnManager.SpawnedObjects[ID].Despawn();
             players.Value--;
+
+            if (players.Value <= 1)
+            {
+                //TODO: fix nicknames
+                var controllers = FindObjectsOfType<MovementController>();
+                for (int i = 0; i < controllers.Length; i++)
+                {
+                    if (controllers[i].GetComponent<NetworkObject>().IsSpawned)
+                    {
+                        var winPlayer =
+                            NetworkManager.Singleton.SpawnManager.SpawnedObjects[controllers[i].NetworkObjectId];
+                        var winName = winPlayer.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+                        _gameState.GameoverServerRpc(winName);
+                        break;
+                    }
+                }
+            }
         }
         else
         {
             DespawnServerRpc(ID);
-        }
-
-        if (players.Value <= 1)
-        {
-            //TODO: fix nicknames
-            var name = FindObjectOfType<MovementController>().transform.GetChild(1).GetChild(0)
-                .GetComponent<TextMeshProUGUI>().text;
-            _gameState.GameoverServerRpc(name);
         }
     }
 

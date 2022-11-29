@@ -21,6 +21,7 @@ public class MapGenerator : NetworkBehaviour
         _spawnPositions.SetSpawnPositions((width - 1) * tileSize, (height - 1) * tileSize);
         SpawnGrid();
         SpawnDestructables();
+        SpawnWalls();
     }
 
     private void SpawnGrid()
@@ -65,6 +66,17 @@ public class MapGenerator : NetworkBehaviour
                     quaternion.identity);
                 inst.GetComponent<NetworkObject>().Spawn(true);
                 inst.transform.parent = parent;
+            }
+        }
+    }
+
+    private void SpawnWalls()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                
             }
         }
     }

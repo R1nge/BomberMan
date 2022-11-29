@@ -9,6 +9,7 @@ public class ConnectMenu : MonoBehaviour
 
     public void SaveNick()
     {
+        //The problem is in Player prefs or TMP save text
         PlayerPrefs.SetString("Nickname", nick.text);
         PlayerPrefs.Save();
     }

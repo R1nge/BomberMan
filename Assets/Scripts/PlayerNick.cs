@@ -12,20 +12,22 @@ public class PlayerNick : NetworkBehaviour
     private void Awake()
     {
         _camera = Camera.main;
-        _nickStr = PlayerPrefs.GetString("Nickname");
+        _nick = new NetworkVariable<NetworkString>();
+        _nickStr = Random.Range(0, 11).ToString();
+        //The problem is in Player prefs or TMP save text
     }
 
-    public override void OnNetworkSpawn() => SetNickServerRpc();
+    public override void OnNetworkSpawn() => SetNickServerRpc(_nickStr);
 
     [ServerRpc(RequireOwnership = false)]
-    private void SetNickServerRpc()
+    private void SetNickServerRpc(NetworkString str)
     {
-        _nick.Value = _nickStr;
-        SetNickClientRpc();
+        _nick.Value = str;
+        SetNickClientRpc(str);
     }
 
     [ClientRpc]
-    private void SetNickClientRpc() => nick.text = _nick.Value;
+    private void SetNickClientRpc(string str) => nick.text = str;
 
     private void Update()
     {

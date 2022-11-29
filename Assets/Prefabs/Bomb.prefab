@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1ca8246cce64890a48ed7b7c7efd750, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gridSize: 3
   explodeDelay: 5
   damage:
     m_InternalValue: 5

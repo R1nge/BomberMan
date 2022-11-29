@@ -4,6 +4,7 @@ using UnityEngine;
 public class Bomb : NetworkBehaviour //, IDamageable
 {
     //Animations
+    [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
     [SerializeField] private NetworkVariable<int> damage;
     [SerializeField] private int distance;
@@ -12,6 +13,29 @@ public class Bomb : NetworkBehaviour //, IDamageable
     public float ExplodeDelay => explodeDelay;
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
+
+    public override void OnNetworkSpawn()
+    {
+        var position = transform.position;
+        position = new Vector3(
+            RoundToNearestGrid(position.x),
+            position.y,
+            RoundToNearestGrid(position.z));
+        transform.position = position;
+    }
+
+    //TODO: take grid length into a count 
+    float RoundToNearestGrid(float pos)
+    {
+        float xDiff = pos % gridSize;
+        pos -= xDiff;
+        if (xDiff > gridSize / 2)
+        {
+            pos += gridSize;
+        }
+
+        return pos;
+    }
 
     private void Explode()
     {

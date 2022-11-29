@@ -2549,8 +2549,8 @@ MonoBehaviour:
   tile: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec, type: 3}
   destructable: {fileID: 8375072482178510364, guid: c944c564ac471414dadf6d836d0fbb70,
     type: 3}
-  height: 5
-  width: 10
+  height: 8
+  width: 8
   tileOffset: {x: 0, y: 0, z: 0}
   destructableOffset: {x: 0, y: 0.65, z: 0}
   tileSize: 3

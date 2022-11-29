@@ -8,7 +8,7 @@ public class Bomb : NetworkBehaviour //, IDamageable
     [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
     [SerializeField] private NetworkVariable<int> damage;
-    [SerializeField] private int distance;
+    [SerializeField] private int distance, radius;
     [SerializeField] private Collider trigger;
     [SerializeField] private float yOffset;
     [SerializeField] private GameObject explosionVFX, explosionSound;
@@ -43,10 +43,10 @@ public class Bomb : NetworkBehaviour //, IDamageable
     private void Explode()
     {
         var position = transform.position;
-        Raycast(position, Vector3.forward, distance);
-        Raycast(position, Vector3.back, distance);
-        Raycast(position, Vector3.right, distance);
-        Raycast(position, Vector3.left, distance);
+        Raycast(position, Vector3.forward, distance, radius);
+        Raycast(position, Vector3.back, distance, radius);
+        Raycast(position, Vector3.right, distance, radius);
+        Raycast(position, Vector3.left, distance, radius);
         SpawnSoundServerRpc();
         Destroy();
     }
@@ -57,9 +57,10 @@ public class Bomb : NetworkBehaviour //, IDamageable
     [ClientRpc]
     private void SpawnSoundClientRpc() => Instantiate(explosionSound, transform.position, quaternion.identity);
 
-    private void Raycast(Vector3 pos, Vector3 dir, int dist)
+    private void Raycast(Vector3 pos, Vector3 dir, int dist, int rad)
     {
-        if (Physics.Raycast(pos, dir, out var hit, dist * gridSize))
+        Ray ray = new Ray(pos, dir);
+        if (Physics.SphereCast(ray, rad, out var hit, dist * gridSize))
         {
             if (hit.transform.TryGetComponent(out NetworkObject obj))
             {

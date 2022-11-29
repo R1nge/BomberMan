@@ -30,7 +30,7 @@ public class MapGenerator : NetworkBehaviour
             for (int z = 0; z < height; z++)
             {
                 var inst = Instantiate(tile, (new Vector3(x, 0, z) + tileOffset) * tileSize, quaternion.identity);
-                inst.GetComponent<NetworkObject>().Spawn();
+                inst.GetComponent<NetworkObject>().Spawn(true);
                 inst.transform.parent = parent;
             }
         }
@@ -63,7 +63,7 @@ public class MapGenerator : NetworkBehaviour
 
                 var inst = Instantiate(destructable, (new Vector3(x, 0, z) + destructableOffset) * destructableSize,
                     quaternion.identity);
-                inst.GetComponent<NetworkObject>().Spawn();
+                inst.GetComponent<NetworkObject>().Spawn(true);
                 inst.transform.parent = parent;
             }
         }

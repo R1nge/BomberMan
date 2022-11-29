@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 6596569319993857980}
   - component: {fileID: 7792462441521502233}
   - component: {fileID: 5458525493314104531}
-  - component: {fileID: 6596569319993857920}
   - component: {fileID: 6596569319993857983}
+  - component: {fileID: 2394997258475879828}
   - component: {fileID: 6596569319993857921}
   - component: {fileID: 6596569319993857982}
   m_Layer: 0
@@ -88,19 +88,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6596569319993857920
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5818765566873767174}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.6574533
-  m_Center: {x: 0.000000029802322, y: 0.15745339, z: -0.00000016391277}
 --- !u!114 &6596569319993857983
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117,6 +104,19 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
+--- !u!65 &2394997258475879828
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5818765566873767174}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99999946, y: 1.3149066, z: 0.9999993}
+  m_Center: {x: 0.000000029802322, y: 0.15745339, z: -0.00000016391277}
 --- !u!114 &6596569319993857921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -160,7 +160,8 @@ MonoBehaviour:
   damage:
     m_InternalValue: 5
   distance: 5
-  trigger: {fileID: 6596569319993857920}
+  radius: 1
+  trigger: {fileID: 2394997258475879828}
   yOffset: 1.25
   explosionVFX: {fileID: 5334442725457680571, guid: 804f23dcc1297b244bd1107d17d3af30,
     type: 3}

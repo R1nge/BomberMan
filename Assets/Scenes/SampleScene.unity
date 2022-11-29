@@ -1628,7 +1628,7 @@ RectTransform:
   - {fileID: 1822199861}
   - {fileID: 1898522753}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1761,10 +1761,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61d78e36906416ab6ae429357518fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spawnPositions:
-  - {fileID: 1107141794}
-  - {fileID: 1631039422}
-  - {fileID: 1733883887}
   playerPrefab: {fileID: 2904688738318645957, guid: 7edb4bf329a836e489e80a8485bccac3,
     type: 3}
   players:
@@ -1782,7 +1778,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1545137332
 GameObject:
@@ -2509,14 +2505,15 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2062834560}
-  - component: {fileID: 2062834559}
   - component: {fileID: 2062834558}
+  - component: {fileID: 2062834559}
+  - component: {fileID: 2062834561}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 2147483647
   m_IsActive: 1
 --- !u!114 &2062834558
 MonoBehaviour:
@@ -2549,8 +2546,8 @@ MonoBehaviour:
   tile: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec, type: 3}
   destructable: {fileID: 8375072482178510364, guid: c944c564ac471414dadf6d836d0fbb70,
     type: 3}
-  height: 8
   width: 8
+  height: 8
   tileOffset: {x: 0, y: 0, z: 0}
   destructableOffset: {x: 0, y: 0.65, z: 0}
   tileSize: 3
@@ -2570,3 +2567,16 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2062834561
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2062834557}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68dda634f1014e5899e79f0b2d04bb26, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  y: 1.5

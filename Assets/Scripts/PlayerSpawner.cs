@@ -1,33 +1,31 @@
-﻿using Unity.Netcode;
+﻿using System.Collections;
+using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    [SerializeField] private Transform[] spawnPositions;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private NetworkVariable<int> players;
-    private NetworkList<Vector3> _positions;
+    private SpawnPositions _spawnPositions;
 
     private void Awake()
     {
         if (!NetworkManager.Singleton.IsHost)
         {
             players = new NetworkVariable<int>();
-            _positions = new NetworkList<Vector3>();
         }
+
+        _spawnPositions = FindObjectOfType<SpawnPositions>();
     }
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            for (int i = 0; i < spawnPositions.Length; i++)
-            {
-                print("Position " + i);
-                _positions.Add(spawnPositions[i].position);
-            }
-        }
-
+        StartCoroutine(Wait_C());
+    }
+    
+    private IEnumerator Wait_C()
+    {
+        yield return new WaitForSeconds(1f);
         SpawnPlayer();
     }
 
@@ -36,10 +34,9 @@ public class PlayerSpawner : NetworkBehaviour
         if (IsServer)
         {
             //Quick and dirty hack, but i'll leave it for now
-            var player = Instantiate(playerPrefab, spawnPositions[players.Value].position, Quaternion.identity);
+            var player = Instantiate(playerPrefab, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
             player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value);
-            player.GetComponent<NetworkObject>().transform.position = spawnPositions[players.Value].position;
-
+            player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
             players.Value++;
         }
         else

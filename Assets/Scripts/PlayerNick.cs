@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -9,16 +8,16 @@ public class PlayerNick : NetworkBehaviour
     private NetworkVariable<NetworkString> _nick = new NetworkVariable<NetworkString>();
     private Camera _camera;
 
-    private void Awake() => _camera = Camera.main;
+    private void Awake()
+    {
+        _camera = Camera.main;
+        _nick.Value = PlayerPrefs.GetString("Nickname");
+    }
 
     public override void OnNetworkSpawn() => SetNickServerRpc();
 
     [ServerRpc(RequireOwnership = false)]
-    private void SetNickServerRpc()
-    {
-        _nick.Value = PlayerPrefs.GetString("Nickname");
-        SetNickClientRpc();
-    }
+    private void SetNickServerRpc() => SetNickClientRpc();
 
     [ClientRpc]
     private void SetNickClientRpc() => nick.text = _nick.Value;

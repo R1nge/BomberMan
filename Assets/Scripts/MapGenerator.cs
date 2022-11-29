@@ -6,7 +6,7 @@ using Random = UnityEngine.Random;
 public class MapGenerator : NetworkBehaviour
 {
     [SerializeField] private Transform parent;
-    [SerializeField] private GameObject tile, destructable;
+    [SerializeField] private GameObject tile, destructable, wall;
     [SerializeField] private int width, height;
     [SerializeField] private Vector3 tileOffset, destructableOffset;
     [SerializeField] private float tileSize, destructableSize;
@@ -72,12 +72,34 @@ public class MapGenerator : NetworkBehaviour
 
     private void SpawnWalls()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = -1; x < width + 1; x++)
         {
-            for (int y = 0; y < height; y++)
+            for (int z = -1; z < height + 1; z++)
             {
-                
+                if (x < width + 1 && z == height)
+                {
+                    SpawnWall(x, z);
+                }
+                else if (x < width + 1 && z == -1)
+                {
+                    SpawnWall(x, z);
+                }
+                else if (x == -1 && z < height + 1)
+                {
+                    SpawnWall(x, z);
+                }
+                else if (x == width && z < height + 1)
+                {
+                    SpawnWall(x, z);
+                }
             }
         }
+    }
+
+    private void SpawnWall(int x, int z)
+    {
+        var inst = Instantiate(wall, (new Vector3(x, 0, z) + destructableOffset) * tileSize,
+            quaternion.identity);
+        inst.GetComponent<NetworkObject>().Spawn(true);
     }
 }

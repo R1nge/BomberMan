@@ -2,7 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Bomb : NetworkBehaviour //, IDamageable
+public class Bomb : NetworkBehaviour
 {
     //Animations
     [SerializeField] private float gridSize;
@@ -67,7 +67,7 @@ public class Bomb : NetworkBehaviour //, IDamageable
                 DoDamage(damage.Value, obj);
             }
 
-            var amount = (hit.distance / gridSize) + 1;
+            var amount = hit.distance / gridSize;
             for (int i = 1; i < amount; i++)
             {
                 SpawnExplosionVfxServerRpc(dir, i);
@@ -103,7 +103,10 @@ public class Bomb : NetworkBehaviour //, IDamageable
     [ServerRpc(RequireOwnership = false)]
     private void DoDamageServerRpc(int damage, ulong ID)
     {
-        GetNetworkObject(ID).GetComponent<IDamageable>().TakeDamage(damage);
+        if (GetNetworkObject(ID).TryGetComponent(out IDamageable damageable))
+        {
+            damageable.TakeDamage(damage);
+        }
     }
 
     private void Destroy()
@@ -120,9 +123,6 @@ public class Bomb : NetworkBehaviour //, IDamageable
 
     [ServerRpc(RequireOwnership = false)]
     private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
-
-
-    //public void TakeDamage(int amount) => Explode();
 
     private void OnTriggerExit(Collider other) => trigger.isTrigger = false;
 }

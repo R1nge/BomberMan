@@ -7,6 +7,7 @@ namespace Character
     public class MovementController : NetworkBehaviour
     {
         [SerializeField] private float speed;
+        [SerializeField] private float rotationSpeed;
         private bool _canMove;
         private Vector3 _moveDirection = Vector3.zero;
         private CharacterController _characterController;
@@ -26,11 +27,18 @@ namespace Character
         private void Update()
         {
             if (!IsOwner || !_canMove) return;
-            Vector3 forward = transform.TransformDirection(Vector3.forward);
-            Vector3 right = transform.TransformDirection(Vector3.right);
+            Vector3 forward = Vector3.forward;
+            Vector3 right = Vector3.right;
             float curSpeedX = _canMove ? speed * Input.GetAxis("Vertical") : 0;
             float curSpeedY = _canMove ? speed * Input.GetAxis("Horizontal") : 0;
             _moveDirection = forward * curSpeedX + right * curSpeedY;
+
+            if (_moveDirection != Vector3.zero)
+            {
+                var targetRot = Quaternion.LookRotation(_moveDirection, Vector3.up);
+                transform.rotation =
+                    Quaternion.RotateTowards(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
+            }
 
             _characterController.Move(_moveDirection * Time.deltaTime);
         }

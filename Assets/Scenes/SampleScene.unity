@@ -337,13 +337,25 @@ MonoBehaviour:
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 2904688738318645957, guid: 7edb4bf329a836e489e80a8485bccac3,
+      Prefab: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec,
+      Prefab: {fileID: 2671930508506096047, guid: eed06e776bf93ea43bd33efa6e49c071,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 673668852280279707, guid: 999d912ba9016f74089f06f872557690,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 560898999308649336, guid: c610cf80e6278f249b4d9896a36c27f6,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
@@ -684,7 +696,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330585543}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 12.5, y: 20, z: -6}
+  m_LocalPosition: {x: 12.5, y: 22.5, z: -2.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1761,8 +1773,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d61d78e36906416ab6ae429357518fad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 2904688738318645957, guid: 7edb4bf329a836e489e80a8485bccac3,
-    type: 3}
+  player1: {fileID: 2671930508506096047, guid: eed06e776bf93ea43bd33efa6e49c071, type: 3}
+  player2: {fileID: 673668852280279707, guid: 999d912ba9016f74089f06f872557690, type: 3}
+  player3: {fileID: 560898999308649336, guid: c610cf80e6278f249b4d9896a36c27f6, type: 3}
   players:
     m_InternalValue: 0
 --- !u!4 &1421415285
@@ -2546,8 +2559,8 @@ MonoBehaviour:
   tile: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec, type: 3}
   destructable: {fileID: 8375072482178510364, guid: c944c564ac471414dadf6d836d0fbb70,
     type: 3}
-  width: 8
-  height: 8
+  width: 16
+  height: 16
   tileOffset: {x: 0, y: 0, z: 0}
   destructableOffset: {x: 0, y: 0.65, z: 0}
   tileSize: 3
@@ -2579,4 +2592,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68dda634f1014e5899e79f0b2d04bb26, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  y: 1.5
+  y: 0.5

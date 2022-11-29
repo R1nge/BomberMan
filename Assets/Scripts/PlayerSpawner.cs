@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private GameObject player1, player2, player3;
     [SerializeField] private NetworkVariable<int> players;
     private SpawnPositions _spawnPositions;
 
@@ -22,7 +22,7 @@ public class PlayerSpawner : NetworkBehaviour
     {
         StartCoroutine(Wait_C());
     }
-    
+
     private IEnumerator Wait_C()
     {
         yield return new WaitForSeconds(1f);
@@ -34,9 +34,25 @@ public class PlayerSpawner : NetworkBehaviour
         if (IsServer)
         {
             //Quick and dirty hack, but i'll leave it for now
-            var player = Instantiate(playerPrefab, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-            player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value);
-            player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
+            if (players.Value == 0)
+            {
+                var player = Instantiate(player1, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
+                player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value);
+                player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
+            }
+            else if (players.Value == 1)
+            {
+                var player = Instantiate(player2, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
+                player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value);
+                player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
+            }
+            else if (players.Value == 2)
+            {
+                var player = Instantiate(player3, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
+                player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value);
+                player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
+            }
+
             players.Value++;
         }
         else

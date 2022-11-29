@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour //, IDamageable
@@ -9,6 +10,8 @@ public class Bomb : NetworkBehaviour //, IDamageable
     [SerializeField] private NetworkVariable<int> damage;
     [SerializeField] private int distance;
     [SerializeField] private Collider trigger;
+    [SerializeField] private float yOffset;
+    [SerializeField] private GameObject explosionVFX, explosionSound;
 
     public float ExplodeDelay => explodeDelay;
 
@@ -19,7 +22,7 @@ public class Bomb : NetworkBehaviour //, IDamageable
         var position = transform.position;
         position = new Vector3(
             RoundToNearestGrid(position.x),
-            position.y,
+            position.y + yOffset,
             RoundToNearestGrid(position.z));
         transform.position = position;
     }
@@ -44,18 +47,48 @@ public class Bomb : NetworkBehaviour //, IDamageable
         Raycast(position, Vector3.back, distance);
         Raycast(position, Vector3.right, distance);
         Raycast(position, Vector3.left, distance);
+        SpawnSoundServerRpc();
         Destroy();
     }
 
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnSoundServerRpc() => SpawnSoundClientRpc();
+
+    [ClientRpc]
+    private void SpawnSoundClientRpc() => Instantiate(explosionSound, transform.position, quaternion.identity);
+
     private void Raycast(Vector3 pos, Vector3 dir, int dist)
     {
-        if (Physics.Raycast(pos, dir, out var hit, dist))
+        if (Physics.Raycast(pos, dir, out var hit, dist * gridSize))
         {
             if (hit.transform.TryGetComponent(out NetworkObject obj))
             {
                 DoDamage(damage.Value, obj);
             }
+
+            var amount = (hit.distance / gridSize) + 1;
+            for (int i = 1; i < amount; i++)
+            {
+                SpawnExplosionVfxServerRpc(dir, i);
+            }
         }
+        else
+        {
+            var amount = distance + 1;
+            for (int i = 1; i < amount; i++)
+            {
+                SpawnExplosionVfxServerRpc(dir, i);
+            }
+        }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnExplosionVfxServerRpc(Vector3 dir, int i) => SpawnExplosionVfxClientRpc(dir, i);
+
+    [ClientRpc]
+    private void SpawnExplosionVfxClientRpc(Vector3 dir, int i)
+    {
+        Instantiate(explosionVFX, transform.position + dir * i * gridSize, Quaternion.identity);
     }
 
     private void DoDamage(int damage, NetworkObjectReference hit)

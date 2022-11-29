@@ -5,6 +5,7 @@ using Random = UnityEngine.Random;
 
 public class MapGenerator : NetworkBehaviour
 {
+    [SerializeField] private Transform parent;
     [SerializeField] private GameObject tile, destructable;
     [SerializeField] private int width, height;
     [SerializeField] private Vector3 tileOffset, destructableOffset;
@@ -30,6 +31,7 @@ public class MapGenerator : NetworkBehaviour
             {
                 var inst = Instantiate(tile, (new Vector3(x, 0, z) + tileOffset) * tileSize, quaternion.identity);
                 inst.GetComponent<NetworkObject>().Spawn();
+                inst.transform.parent = parent;
             }
         }
     }
@@ -42,7 +44,7 @@ public class MapGenerator : NetworkBehaviour
             {
                 _spawnObstacle = Mathf.FloorToInt(Random.Range(0, 2)) == 0;
                 if (!_spawnObstacle) continue;
-                
+
                 if (x == 0 && z == 0) continue;
                 if (x == 1 && z == 0) continue;
                 if (x == 0 && z == 1) continue;
@@ -62,6 +64,7 @@ public class MapGenerator : NetworkBehaviour
                 var inst = Instantiate(destructable, (new Vector3(x, 0, z) + destructableOffset) * destructableSize,
                     quaternion.identity);
                 inst.GetComponent<NetworkObject>().Spawn();
+                inst.transform.parent = parent;
             }
         }
     }

@@ -31,6 +31,7 @@ public class PlayerNick : NetworkBehaviour
 
     private void Update()
     {
+        if (!IsOwner) return;
         nick.transform.rotation = _camera.transform.rotation;
     }
 }

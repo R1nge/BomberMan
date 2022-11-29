@@ -101,5 +101,6 @@ public class MapGenerator : NetworkBehaviour
         var inst = Instantiate(wall, (new Vector3(x, 0, z) + destructableOffset) * tileSize,
             quaternion.identity);
         inst.GetComponent<NetworkObject>().Spawn(true);
+        inst.transform.parent = parent;
     }
 }

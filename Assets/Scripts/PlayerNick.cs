@@ -7,23 +7,28 @@ public class PlayerNick : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI nick;
     private NetworkVariable<NetworkString> _nick = new NetworkVariable<NetworkString>();
     private Camera _camera;
+    private string _nickStr;
 
     private void Awake()
     {
         _camera = Camera.main;
-        _nick.Value = PlayerPrefs.GetString("Nickname");
+        _nickStr = PlayerPrefs.GetString("Nickname");
     }
 
     public override void OnNetworkSpawn() => SetNickServerRpc();
 
     [ServerRpc(RequireOwnership = false)]
-    private void SetNickServerRpc() => SetNickClientRpc();
+    private void SetNickServerRpc()
+    {
+        _nick.Value = _nickStr;
+        SetNickClientRpc();
+    }
 
     [ClientRpc]
     private void SetNickClientRpc() => nick.text = _nick.Value;
 
     private void Update()
     {
-        nick.transform.LookAt(-_camera.transform.position);
+        nick.transform.rotation = _camera.transform.rotation;
     }
 }

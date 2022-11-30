@@ -187,8 +187,8 @@ MonoBehaviour:
     y: 0
     width: 223
     height: 1038
-  m_MinSize: {x: 201, y: 221}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 200, y: 200}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 6}
   m_Panes:
   - {fileID: 6}
@@ -226,9 +226,9 @@ MonoBehaviour:
   m_SceneHierarchy:
     m_TreeViewState:
       scrollPos: {x: 0, y: 0}
-      m_SelectedIDs: d8940000
-      m_LastClickedID: 38104
-      m_ExpandedIDs: 362bfeff562bfeff6c2bfeffbc2bfeff7a59feff606dfeff966dfeff9230ffff6a31ffff6033ffff6c93ffff4494ffff3a96ffff2efbffff5a94000060940000bc940000e09400000a95000014950000
+      m_SelectedIDs: 
+      m_LastClickedID: 0
+      m_ExpandedIDs: 2efbffff
       m_RenameOverlay:
         m_UserAcceptedRename: 0
         m_Name: 
@@ -538,9 +538,9 @@ MonoBehaviour:
   m_PlayAudio: 0
   m_AudioPlay: 0
   m_Position:
-    m_Target: {x: 13.290346, y: 8.468901, z: 16.758656}
+    m_Target: {x: 9, y: 2.3723602, z: 8.999999}
     speed: 2
-    m_Value: {x: 13.290346, y: 8.468901, z: 16.758656}
+    m_Value: {x: 9, y: 2.3723602, z: 8.999999}
   m_RenderMode: 0
   m_CameraMode:
     drawMode: 0
@@ -587,13 +587,13 @@ MonoBehaviour:
     m_GridAxis: 1
     m_gridOpacity: 0.5
   m_Rotation:
-    m_Target: {x: -0.34465072, y: -0.013226622, z: 0.0048615807, w: -0.9386376}
+    m_Target: {x: -0.5917222, y: -0.03551236, z: 0.026110994, w: -0.8049514}
     speed: 2
-    m_Value: {x: -0.34464672, y: -0.013226469, z: 0.0048615243, w: -0.93862677}
+    m_Value: {x: -0.59171486, y: -0.035511922, z: 0.02611067, w: -0.8049415}
   m_Size:
-    m_Target: 16.722736
+    m_Target: 2.8965838
     speed: 2
-    m_Value: 16.722736
+    m_Value: 2.8965838
   m_Ortho:
     m_Target: 0
     speed: 2
@@ -687,22 +687,22 @@ MonoBehaviour:
     m_SkipHidden: 0
     m_SearchArea: 1
     m_Folders:
-    - Assets/Materials
+    - Assets/Prefabs
     m_Globs: []
     m_OriginalText: 
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Materials
+  - Assets/Prefabs
   m_LastFoldersGridSize: -1
   m_LastProjectPath: F:\UnityProjects\BomberMan
   m_LockTracker:
     m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 79}
-    m_SelectedIDs: beac0000
-    m_LastClickedID: 44222
-    m_ExpandedIDs: 00000000786f000000ca9a3bffffff7f
+    m_SelectedIDs: 8c6f0000
+    m_LastClickedID: 28556
+    m_ExpandedIDs: 000000007e6f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -730,7 +730,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 00000000786f000000ca9a3bffffff7f
+    m_ExpandedIDs: 000000007e6f000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -755,9 +755,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: d8940000
-    m_LastClickedInstanceID: 38104
-    m_HadKeyboardFocusLastEvent: 1
+    m_SelectedInstanceIDs: 
+    m_LastClickedInstanceID: 0
+    m_HadKeyboardFocusLastEvent: 0
     m_ExpandedInstanceIDs: c62300007abe00000cfb0000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -782,7 +782,7 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
     m_NewAssetIndexInList: -1
-    m_ScrollPosition: {x: 0, y: 0}
+    m_ScrollPosition: {x: 0, y: 5}
     m_GridSize: 64
   m_SkipHiddenPackages: 0
   m_DirectoriesAreaWidth: 207
@@ -834,8 +834,8 @@ MonoBehaviour:
     y: 0
     width: 350
     height: 1308
-  m_MinSize: {x: 276, y: 71}
-  m_MaxSize: {x: 4001, y: 4021}
+  m_MinSize: {x: 275, y: 50}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 13}
   m_Panes:
   - {fileID: 13}

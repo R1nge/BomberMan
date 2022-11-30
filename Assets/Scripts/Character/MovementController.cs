@@ -6,7 +6,7 @@ namespace Character
 {
     public class MovementController : NetworkBehaviour
     {
-        [SerializeField] private float speed;
+        [SerializeField] private NetworkVariable<float> speed;
         [SerializeField] private float rotationSpeed;
         private bool _canMove;
         private Vector3 _moveDirection = Vector3.zero;
@@ -29,8 +29,8 @@ namespace Character
             if (!IsOwner || !_canMove) return;
             Vector3 forward = Vector3.forward;
             Vector3 right = Vector3.right;
-            float curSpeedX = _canMove ? speed * Input.GetAxis("Vertical") : 0;
-            float curSpeedY = _canMove ? speed * Input.GetAxis("Horizontal") : 0;
+            float curSpeedX = _canMove ? speed.Value * Input.GetAxis("Vertical") : 0;
+            float curSpeedY = _canMove ? speed.Value * Input.GetAxis("Horizontal") : 0;
             _moveDirection = forward * curSpeedX + right * curSpeedY;
 
             if (_moveDirection != Vector3.zero)
@@ -42,5 +42,8 @@ namespace Character
 
             _characterController.Move(_moveDirection * Time.deltaTime);
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void SetSpeedServerRpc(float value) => speed.Value = value;
     }
 }

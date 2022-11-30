@@ -1,9 +1,13 @@
-﻿using Unity.Netcode;
+﻿using Powerups;
+using Unity.Netcode;
 using UnityEngine;
 
 public class Destructable : NetworkBehaviour, IDamageable
 {
     [SerializeField] private int health;
+    [SerializeField] private NetworkVariable<int> dropChance;
+    [SerializeField] private Powerup[] drops;
+    private NetworkVariable<int> _index = new NetworkVariable<int>();
 
     public void TakeDamage(int amount)
     {
@@ -12,15 +16,27 @@ public class Destructable : NetworkBehaviour, IDamageable
         {
             if (!IsServer)
             {
+                SpawnDropServerRpc();
                 DestroyServerRpc();
             }
             else
             {
-                GetComponent<NetworkObject>().Despawn();
+                SpawnDropServerRpc();
+                DestroyServerRpc();
             }
         }
     }
 
     [ServerRpc]
     private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
+
+    [ServerRpc(RequireOwnership = false)]
+    private void SpawnDropServerRpc()
+    {
+        //TODO: fix drop chance
+        if (Mathf.Abs(dropChance.Value - 100) < Mathf.RoundToInt(Random.Range(0, 101))) return;
+        _index.Value = Random.Range(0, drops.Length);
+        var drop = Instantiate(drops[_index.Value], transform.position, Quaternion.identity);
+        drop.GetComponent<NetworkObject>().Spawn(true);
+    }
 }

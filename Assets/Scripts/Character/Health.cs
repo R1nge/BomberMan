@@ -6,9 +6,16 @@ namespace Character
     public class Health : NetworkBehaviour, IDamageable
     {
         [SerializeField] private NetworkVariable<int> health;
+        [SerializeField] private PlayerUI playerUI;
         private PlayerSpawner _playerSpawner;
 
-        private void Awake() => _playerSpawner = FindObjectOfType<PlayerSpawner>();
+        private void Awake()
+        {
+            _playerSpawner = FindObjectOfType<PlayerSpawner>();
+            health.OnValueChanged += playerUI.UpdateHealth;
+        }
+
+        private void Start() => playerUI.UpdateHealth(health.Value, health.Value);
 
         public void TakeDamage(int amount)
         {
@@ -30,6 +37,12 @@ namespace Character
             }
 
             health.Value += amount;
+        }
+
+        public override void OnDestroy()
+        {
+            base.OnDestroy();
+            health.OnValueChanged += playerUI.UpdateHealth;
         }
     }
 }

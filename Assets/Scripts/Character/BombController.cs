@@ -7,7 +7,11 @@ namespace Character
     {
         [SerializeField] private GameObject bombPrefab;
         [SerializeField] private NetworkVariable<int> bombAmount, maxBombAmount;
-        private NetworkVariable<bool> _canSpawn = new NetworkVariable<bool>(true);
+        [SerializeField] private PlayerUI playerUI;
+
+        private void Awake() => bombAmount.OnValueChanged += playerUI.UpdateBombs;
+
+        private void Start() => playerUI.UpdateBombs(bombAmount.Value, bombAmount.Value);
 
         [ServerRpc(RequireOwnership = false)]
         public void IncreaseBombAmountServerRpc(int value)
@@ -29,7 +33,6 @@ namespace Character
         {
             if (IsServer)
             {
-                _canSpawn.Value = false;
                 bombAmount.Value--;
                 var bomb = Instantiate(bombPrefab, position, Quaternion.identity);
                 bomb.GetComponent<NetworkObject>().Spawn(true);
@@ -48,7 +51,7 @@ namespace Character
         [ServerRpc(RequireOwnership = false)]
         private void ResetSpawnServerRpc()
         {
-            _canSpawn.Value = true;
+            if(bombAmount.Value >= maxBombAmount.Value) return;
             bombAmount.Value++;
         }
     }

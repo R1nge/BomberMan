@@ -14,16 +14,8 @@ public class Destructable : NetworkBehaviour, IDamageable
         health -= amount;
         if (health <= 0)
         {
-            if (!IsServer)
-            {
-                SpawnDropServerRpc();
-                DestroyServerRpc();
-            }
-            else
-            {
-                SpawnDropServerRpc();
-                DestroyServerRpc();
-            }
+            SpawnDropServerRpc();
+            DestroyServerRpc();
         }
     }
 
@@ -33,7 +25,6 @@ public class Destructable : NetworkBehaviour, IDamageable
     [ServerRpc(RequireOwnership = false)]
     private void SpawnDropServerRpc()
     {
-        //TODO: fix drop chance
         if (Random.value < 1 - dropChance.Value) return;
         _index.Value = Random.Range(0, drops.Length);
         var drop = Instantiate(drops[_index.Value], transform.position, Quaternion.identity);

@@ -5,11 +5,13 @@ using Random = UnityEngine.Random;
 
 public class MapGenerator : NetworkBehaviour
 {
+    [SerializeField] private int minWidth, minHeight;
+    [SerializeField] private int maxWidth, maxHeight;
     [SerializeField] private Transform parent;
     [SerializeField] private GameObject tile, destructable, wall;
-    [SerializeField] private int width, height;
     [SerializeField] private Vector3 tileOffset, destructableOffset;
     [SerializeField] private float tileSize, destructableSize;
+    private int _width, _height;
     private bool _spawnObstacle;
     private SpawnPositions _spawnPositions;
 
@@ -18,7 +20,9 @@ public class MapGenerator : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
-        _spawnPositions.SetSpawnPositions((width - 1) * tileSize, (height - 1) * tileSize);
+        _width = Mathf.RoundToInt(Random.Range(minWidth, maxWidth));
+        _height = Mathf.RoundToInt(Random.Range(minHeight, maxHeight));
+        _spawnPositions.SetSpawnPositions((_width - 1) * tileSize, (_height - 1) * tileSize);
         SpawnGrid();
         SpawnDestructables();
         SpawnWalls();
@@ -26,9 +30,9 @@ public class MapGenerator : NetworkBehaviour
 
     private void SpawnGrid()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < _width; x++)
         {
-            for (int z = 0; z < height; z++)
+            for (int z = 0; z < _height; z++)
             {
                 var inst = Instantiate(tile, (new Vector3(x, 0, z) + tileOffset) * tileSize, quaternion.identity);
                 inst.GetComponent<NetworkObject>().Spawn(true);
@@ -39,9 +43,9 @@ public class MapGenerator : NetworkBehaviour
 
     private void SpawnDestructables()
     {
-        for (int x = 0; x < width; x++)
+        for (int x = 0; x < _width; x++)
         {
-            for (int z = 0; z < height; z++)
+            for (int z = 0; z < _height; z++)
             {
                 _spawnObstacle = Mathf.FloorToInt(Random.Range(0, 2)) == 0;
                 if (!_spawnObstacle) continue;
@@ -50,17 +54,17 @@ public class MapGenerator : NetworkBehaviour
                 if (x == 1 && z == 0) continue;
                 if (x == 0 && z == 1) continue;
 
-                if (x == width - 1 && z == 0) continue;
-                if (x == width - 2 && z == 0) continue;
-                if (x == width - 1 && z == 1) continue;
+                if (x == _width - 1 && z == 0) continue;
+                if (x == _width - 2 && z == 0) continue;
+                if (x == _width - 1 && z == 1) continue;
 
-                if (x == 0 && z == height - 1) continue;
-                if (x == 1 && z == height - 1) continue;
-                if (x == 0 && z == height - 2) continue;
+                if (x == 0 && z == _height - 1) continue;
+                if (x == 1 && z == _height - 1) continue;
+                if (x == 0 && z == _height - 2) continue;
 
-                if (x == width - 1 && z == height - 1) continue;
-                if (x == width - 2 && z == height - 1) continue;
-                if (x == width - 1 && z == height - 2) continue;
+                if (x == _width - 1 && z == _height - 1) continue;
+                if (x == _width - 2 && z == _height - 1) continue;
+                if (x == _width - 1 && z == _height - 2) continue;
 
                 var inst = Instantiate(destructable, (new Vector3(x, 0, z) + destructableOffset) * destructableSize,
                     quaternion.identity);
@@ -72,23 +76,23 @@ public class MapGenerator : NetworkBehaviour
 
     private void SpawnWalls()
     {
-        for (int x = -1; x < width + 1; x++)
+        for (int x = -1; x < _width + 1; x++)
         {
-            for (int z = -1; z < height + 1; z++)
+            for (int z = -1; z < _height + 1; z++)
             {
-                if (x < width + 1 && z == height)
+                if (x < _width + 1 && z == _height)
                 {
                     SpawnWall(x, z);
                 }
-                else if (x < width + 1 && z == -1)
+                else if (x < _width + 1 && z == -1)
                 {
                     SpawnWall(x, z);
                 }
-                else if (x == -1 && z < height + 1)
+                else if (x == -1 && z < _height + 1)
                 {
                     SpawnWall(x, z);
                 }
-                else if (x == width && z < height + 1)
+                else if (x == _width && z < _height + 1)
                 {
                     SpawnWall(x, z);
                 }

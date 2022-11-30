@@ -9,14 +9,21 @@ public class GameState : NetworkBehaviour
     [SerializeField] private TextMeshProUGUI winner;
 
     [ServerRpc]
-    public void GameoverServerRpc(string nickname)
+    public void WinServerRpc(string nickname)
     {
         GameoverClientRpc(nickname);
         StartCoroutine(Restart_c());
     }
 
+    [ServerRpc]
+    public void GameoverServerRpc()
+    {
+        GameoverClientRpc("TIE");
+        StartCoroutine(Restart_c());
+    }
+
     [ClientRpc]
-    private void GameoverClientRpc(string nickname) => winner.text = nickname;
+    private void GameoverClientRpc(string text) => winner.text = text;
 
     private IEnumerator Restart_c()
     {

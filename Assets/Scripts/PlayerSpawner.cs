@@ -82,7 +82,7 @@ public class PlayerSpawner : NetworkBehaviour
                         var winPlayer =
                             NetworkManager.Singleton.SpawnManager.SpawnedObjects[controllers[i].NetworkObjectId];
                         var winName = winPlayer.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
-                        _gameState.GameoverServerRpc(winName);
+                        _gameState.WinServerRpc(winName);
                         break;
                     }
                 }

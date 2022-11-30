@@ -156,7 +156,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gridSize: 3
-  explodeDelay: 5
+  explodeDelay: 1.25
   damage:
     m_InternalValue: 5
   distance: 5

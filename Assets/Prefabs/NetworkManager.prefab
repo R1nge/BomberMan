@@ -90,7 +90,7 @@ MonoBehaviour:
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 2074851286234975329, guid: c8cd3d18ba654e44b9d89f085c965d9b,
+      Prefab: {fileID: 2498491464355210913, guid: c8cd3d18ba654e44b9d89f085c965d9b,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
@@ -109,6 +109,12 @@ MonoBehaviour:
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
       Prefab: {fileID: 5997730005480801456, guid: e7ed084790843bc4a813896095d6b17a,
+        type: 3}
+      SourcePrefabToOverride: {fileID: 0}
+      SourceHashToOverride: 0
+      OverridingTargetPrefab: {fileID: 0}
+    - Override: 0
+      Prefab: {fileID: 3005893327741374632, guid: 63fde7e6a7b4a0a459b6a7e85efaab8e,
         type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
@@ -152,6 +158,6 @@ MonoBehaviour:
     Port: 7777
     ServerListenAddress: 
   DebugSimulator:
-    PacketDelayMS: 55
+    PacketDelayMS: 0
     PacketJitterMS: 0
     PacketDropRate: 0

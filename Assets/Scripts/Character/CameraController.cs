@@ -10,15 +10,6 @@ namespace Character
 
         private void Awake() => _camera = Camera.main;
 
-        private void Start()
-        {
-            if (IsOwner)
-            {
-                _camera.enabled = true;
-                _camera.GetComponent<AudioListener>().enabled = true;
-            }
-        }
-
         private void LateUpdate()
         {
             if (!IsOwner) return;

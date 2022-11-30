@@ -28,6 +28,6 @@ public class GameState : NetworkBehaviour
     [ServerRpc]
     private void RestartServerRpc()
     {
-        NetworkManager.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
     }
 }

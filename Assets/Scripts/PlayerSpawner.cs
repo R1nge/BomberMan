@@ -41,19 +41,19 @@ public class PlayerSpawner : NetworkBehaviour
             if (players.Value == 0)
             {
                 var player = Instantiate(player1, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-                player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value, true);
+                player.GetComponent<NetworkObject>().SpawnAsPlayerObject((ulong) players.Value, true);
                 player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
             }
             else if (players.Value == 1)
             {
                 var player = Instantiate(player2, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-                player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value, true);
+                player.GetComponent<NetworkObject>().SpawnAsPlayerObject((ulong) players.Value, true);
                 player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
             }
             else if (players.Value == 2)
             {
                 var player = Instantiate(player3, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-                player.GetComponent<NetworkObject>().SpawnWithOwnership((ulong) players.Value, true);
+                player.GetComponent<NetworkObject>().SpawnAsPlayerObject((ulong) players.Value, true);
                 player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
             }
 
@@ -64,8 +64,7 @@ public class PlayerSpawner : NetworkBehaviour
             SpawnPlayerServerRpc();
         }
     }
-
-    //TODO: FIX!!!!!!!!!!!!!!
+    
     public void Despawn(ulong ID)
     {
         if (IsServer)
@@ -75,7 +74,6 @@ public class PlayerSpawner : NetworkBehaviour
 
             if (players.Value <= 1)
             {
-                //TODO: fix nicknames
                 var controllers = FindObjectsOfType<MovementController>();
                 for (int i = 0; i < controllers.Length; i++)
                 {

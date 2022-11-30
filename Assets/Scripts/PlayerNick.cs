@@ -1,4 +1,5 @@
-﻿using BayatGames.SaveGameFree;
+﻿using System;
+using BayatGames.SaveGameFree;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -17,14 +18,14 @@ public class PlayerNick : NetworkBehaviour
 
     public override void OnNetworkSpawn()
     {
-        if (!IsOwner) return;
         if (!IsServer)
         {
+            if (!IsOwner) return;
             SetNickServerRpc(_nickStr);
         }
         else
         {
-            SetNickClientRpc(_nickStr);
+            SetNickServerRpc(_nickStr);
         }
     }
 

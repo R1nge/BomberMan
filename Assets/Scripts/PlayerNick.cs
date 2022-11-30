@@ -1,33 +1,45 @@
-﻿using TMPro;
+﻿using BayatGames.SaveGameFree;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
 public class PlayerNick : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nick;
-    private NetworkVariable<NetworkString> _nick = new NetworkVariable<NetworkString>();
     private Camera _camera;
     private string _nickStr;
 
     private void Awake()
     {
         _camera = Camera.main;
-        _nick = new NetworkVariable<NetworkString>();
-        _nickStr = Random.Range(0, 11).ToString();
-        //The problem is in Player prefs or TMP save text
+        _nickStr = SaveGame.Load<string>("Nickname");
     }
 
-    public override void OnNetworkSpawn() => SetNickServerRpc(_nickStr);
+    public override void OnNetworkSpawn()
+    {
+        if (!IsOwner) return;
+        if (!IsServer)
+        {
+            SetNickServerRpc(_nickStr);
+        }
+        else
+        {
+            SetNickClientRpc(_nickStr);
+        }
+    }
 
     [ServerRpc(RequireOwnership = false)]
     private void SetNickServerRpc(NetworkString str)
     {
-        _nick.Value = str;
+        nick.text = str;
         SetNickClientRpc(str);
     }
 
     [ClientRpc]
-    private void SetNickClientRpc(string str) => nick.text = str;
+    private void SetNickClientRpc(NetworkString str)
+    {
+        nick.text = str;
+    }
 
     private void Update()
     {

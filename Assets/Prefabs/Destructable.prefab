@@ -129,6 +129,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 5
   dropChance:
-    m_InternalValue: 5
+    m_InternalValue: 0.2
   drops:
   - {fileID: 7755224955039302605, guid: fc428269865ce6b43bba800545360301, type: 3}
+  - {fileID: 7213625600458566749, guid: c6de05a1bc8723e4f82cb03a075a2da1, type: 3}
+  - {fileID: 5997730005480801457, guid: e7ed084790843bc4a813896095d6b17a, type: 3}

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Destructable : NetworkBehaviour, IDamageable
 {
     [SerializeField] private int health;
-    [SerializeField] private NetworkVariable<int> dropChance;
+    [SerializeField] private NetworkVariable<float> dropChance;
     [SerializeField] private Powerup[] drops;
     private NetworkVariable<int> _index = new NetworkVariable<int>();
 
@@ -34,7 +34,7 @@ public class Destructable : NetworkBehaviour, IDamageable
     private void SpawnDropServerRpc()
     {
         //TODO: fix drop chance
-        if (Mathf.Abs(dropChance.Value - 100) < Mathf.RoundToInt(Random.Range(0, 101))) return;
+        if (Random.value < 1 - dropChance.Value) return;
         _index.Value = Random.Range(0, drops.Length);
         var drop = Instantiate(drops[_index.Value], transform.position, Quaternion.identity);
         drop.GetComponent<NetworkObject>().Spawn(true);

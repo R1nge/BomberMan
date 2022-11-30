@@ -64,6 +64,7 @@ public class Bomb : NetworkBehaviour
         {
             if (hit.transform.TryGetComponent(out NetworkObject obj))
             {
+                if (!obj.IsSpawned || obj == null) return;
                 DoDamage(damage.Value, obj);
             }
 

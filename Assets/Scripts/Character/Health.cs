@@ -19,5 +19,17 @@ namespace Character
                 Debug.LogWarning("Player died", this);
             }
         }
+
+        [ServerRpc(RequireOwnership = false)]
+        public void IncreaseHealthServerRpc(int amount)
+        {
+            if (amount <= 0)
+            {
+                Debug.LogError("Trying to add negative/zero value", this);
+                return;
+            }
+
+            health.Value += amount;
+        }
     }
 }

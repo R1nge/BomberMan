@@ -329,6 +329,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bombPrefab: {fileID: 5818765566873767174, guid: 346d0d54d684cf740bbac273f0dccd7c,
     type: 3}
+  bombAmount:
+    m_InternalValue: 1
+  maxBombAmount:
+    m_InternalValue: 1
 --- !u!114 &5442496396156970198
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,7 +439,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: New Text
+  m_text: Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

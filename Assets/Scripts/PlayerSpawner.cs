@@ -87,6 +87,10 @@ public class PlayerSpawner : NetworkBehaviour
                     }
                 }
             }
+            else
+            {
+                _gameState.GameoverServerRpc();
+            }
         }
         else
         {

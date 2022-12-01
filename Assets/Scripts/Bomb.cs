@@ -1,5 +1,6 @@
 ﻿using Unity.Mathematics;
 using Unity.Netcode;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour
@@ -65,31 +66,38 @@ public class Bomb : NetworkBehaviour
         {
             if (hit.transform.TryGetComponent(out NetworkObject obj))
             {
-                var amount = (hit.distance + (1 * gridSize)) / gridSize;
-                for (int i = 0; i < amount; i++)
+                if (hit.transform.TryGetComponent(out IDamageable _))
                 {
-                    SpawnExplosionVfxServerRpc(dir, i);
-                }
+                    var amount = Mathf.CeilToInt((hit.distance + gridSize) / gridSize);
+                    SpawnExplosionVfx(dir, amount);
 
-                if (!obj.IsSpawned || obj == null) return;
-                DoDamage(damage.Value, obj);
+                    if (!obj.IsSpawned || obj == null) return;
+                    DoDamage(damage.Value, obj);
+                }
+                else
+                {
+                    var amount = Mathf.RoundToInt((hit.distance + gridSize) / gridSize);
+                    SpawnExplosionVfx(dir, amount);
+                }
             }
             else
             {
-                var amount = hit.distance / gridSize;
-                for (int i = 0; i < amount; i++)
-                {
-                    SpawnExplosionVfxServerRpc(dir, i);
-                }
+                var amount = Mathf.RoundToInt((hit.distance + gridSize) / gridSize);
+                SpawnExplosionVfx(dir, amount);
             }
         }
         else
         {
             var amount = distance + 1;
-            for (int i = 0; i < amount; i++)
-            {
-                SpawnExplosionVfxServerRpc(dir, i);
-            }
+            SpawnExplosionVfx(dir, amount);
+        }
+    }
+
+    private void SpawnExplosionVfx(Vector3 dir, int amount)
+    {
+        for (int i = 0; i < amount; i++)
+        {
+            SpawnExplosionVfxServerRpc(dir, i);
         }
     }
 

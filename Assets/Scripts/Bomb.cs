@@ -57,6 +57,7 @@ public class Bomb : NetworkBehaviour
     [ClientRpc]
     private void SpawnSoundClientRpc() => Instantiate(explosionSound, transform.position, quaternion.identity);
 
+    //TODO: fix bug
     private void Raycast(Vector3 pos, Vector3 dir, int dist, int rad)
     {
         Ray ray = new Ray(pos, dir);
@@ -64,20 +65,28 @@ public class Bomb : NetworkBehaviour
         {
             if (hit.transform.TryGetComponent(out NetworkObject obj))
             {
+                var amount = (hit.distance + (1 * gridSize)) / gridSize;
+                for (int i = 0; i < amount; i++)
+                {
+                    SpawnExplosionVfxServerRpc(dir, i);
+                }
+
                 if (!obj.IsSpawned || obj == null) return;
                 DoDamage(damage.Value, obj);
             }
-
-            var amount = hit.distance / gridSize;
-            for (int i = 1; i < amount; i++)
+            else
             {
-                SpawnExplosionVfxServerRpc(dir, i);
+                var amount = hit.distance / gridSize;
+                for (int i = 0; i < amount; i++)
+                {
+                    SpawnExplosionVfxServerRpc(dir, i);
+                }
             }
         }
         else
         {
             var amount = distance + 1;
-            for (int i = 1; i < amount; i++)
+            for (int i = 0; i < amount; i++)
             {
                 SpawnExplosionVfxServerRpc(dir, i);
             }

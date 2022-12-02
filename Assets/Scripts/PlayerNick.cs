@@ -12,7 +12,7 @@ public class PlayerNick : NetworkBehaviour
 
     private void Awake()
     {
-        _camera = Camera.main;
+        _camera = FindObjectOfType<Camera>();
         _nickStr = SaveGame.Load<string>("Nickname");
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
     }
@@ -45,7 +45,6 @@ public class PlayerNick : NetworkBehaviour
 
     private void Update()
     {
-        if (!IsOwner) return;
         nick.transform.rotation = _camera.transform.rotation;
     }
 
@@ -53,6 +52,6 @@ public class PlayerNick : NetworkBehaviour
     {
         base.OnDestroy();
         if (NetworkManager.Singleton == null) return;
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
     }
 }

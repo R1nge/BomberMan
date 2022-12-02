@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using BayatGames.SaveGameFree;
 using Character;
 using TMPro;
 using Unity.Netcode;
@@ -6,11 +7,10 @@ using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    [SerializeField] private GameObject player1, player2, player3;
     [SerializeField] private NetworkVariable<int> players;
-
     private SpawnPositions _spawnPositions;
     private GameState _gameState;
+    private PlayerSkins _skins;
 
     private void Awake()
     {
@@ -19,6 +19,7 @@ public class PlayerSpawner : NetworkBehaviour
             players = new NetworkVariable<int>();
         }
 
+        _skins = FindObjectOfType<PlayerSkins>();
         _spawnPositions = FindObjectOfType<SpawnPositions>();
         _gameState = FindObjectOfType<GameState>();
     }
@@ -31,38 +32,25 @@ public class PlayerSpawner : NetworkBehaviour
     private IEnumerator Wait_C()
     {
         yield return new WaitForSeconds(1f);
-        SpawnPlayer();
+        SpawnPlayerServerRpc(SaveGame.Load("Skin", 0));
     }
 
-    private void SpawnPlayer()
+    private void SpawnPlayer(int skinIndex, ulong ID)
     {
         if (IsServer)
         {
+            //TODO: load skin that player has chosen
             //Quick and dirty hack, but i'll leave it for now
-            if (players.Value == 0)
-            {
-                var player = Instantiate(player1, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-                player.GetComponent<NetworkObject>().SpawnAsPlayerObject((ulong) players.Value, true);
-                player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
-            }
-            else if (players.Value == 1)
-            {
-                var player = Instantiate(player2, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-                player.GetComponent<NetworkObject>().SpawnAsPlayerObject((ulong) players.Value, true);
-                player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
-            }
-            else if (players.Value == 2)
-            {
-                var player = Instantiate(player3, _spawnPositions.GetPositions()[players.Value], Quaternion.identity);
-                player.GetComponent<NetworkObject>().SpawnAsPlayerObject((ulong) players.Value, true);
-                player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
-            }
+            var player = Instantiate(_skins.GetSkin(skinIndex), _spawnPositions.GetPositions()[players.Value],
+                Quaternion.identity);
+            player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
+            player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
 
             players.Value++;
         }
         else
         {
-            SpawnPlayerServerRpc();
+            SpawnPlayerServerRpc(skinIndex);
         }
     }
 
@@ -108,7 +96,10 @@ public class PlayerSpawner : NetworkBehaviour
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnPlayerServerRpc() => SpawnPlayer();
+    private void SpawnPlayerServerRpc(int skinIndex, ServerRpcParams rpcParams = default)
+    {
+        SpawnPlayer(skinIndex, rpcParams.Receive.SenderClientId);
+    }
 
     public override void OnDestroy()
     {

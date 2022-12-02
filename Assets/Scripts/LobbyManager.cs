@@ -1,45 +1,60 @@
-﻿using System;
+﻿using BayatGames.SaveGameFree;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LobbyManager : NetworkBehaviour
 {
-    [SerializeField] private NetworkObject player;
+    [SerializeField] private GameObject start;
     [SerializeField] private Transform[] positions;
     private NetworkVariable<int> _playersAmount = new NetworkVariable<int>();
+    private PlayerSkins _skins;
 
     private void Awake()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += Check;
+        _skins = FindObjectOfType<PlayerSkins>();
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        SpawnPreviewServerRpc(SaveGame.Load("Skin", 0));
+        if (!IsServer)
+        {
+            start.gameObject.SetActive(false);
+        }
     }
 
     private void Check(ulong ID)
     {
-        if (_playersAmount.Value >= 4)
+        if (IsServer)
         {
-            NetworkManager.Singleton.DisconnectClient(ID);
-            _playersAmount.Value = 4;
+            if (_playersAmount.Value >= 4)
+            {
+                NetworkManager.Singleton.DisconnectClient(ID);
+                _playersAmount.Value = 4;
+            }
         }
     }
 
-    public override void OnNetworkSpawn() => SpawnPreview();
-
-    private void SpawnPreview()
+    private void SpawnPreview(int skinIndex, ulong ID)
     {
-        if (IsServer)
-        {
-            var rot = Quaternion.Euler(new Vector3(0, 180, 0));
-            Instantiate(player, positions[_playersAmount.Value].position, rot).Spawn();
-            _playersAmount.Value++;
-        }
-        else
-        {
-            SpawnPreviewServerRpc();
-        }
+        var rot = Quaternion.Euler(new Vector3(0, 180, 0));
+        var player = Instantiate(_skins.GetSkin(skinIndex), positions[_playersAmount.Value].position, rot);
+        player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
+        _playersAmount.Value++;
     }
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnPreviewServerRpc() => SpawnPreview();
+    private void SpawnPreviewServerRpc(int skinIndex, ServerRpcParams rpcParams = default)
+    {
+        SpawnPreview(skinIndex, rpcParams.Receive.SenderClientId);
+    }
+
+    public void StartGame()
+    {
+        NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
+    }
 
     public override void OnDestroy()
     {

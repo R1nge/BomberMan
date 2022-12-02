@@ -1,5 +1,4 @@
-﻿using System;
-using BayatGames.SaveGameFree;
+﻿using BayatGames.SaveGameFree;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -7,6 +6,7 @@ using UnityEngine;
 public class PlayerNick : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nick;
+    private NetworkVariable<NetworkString> _str = new NetworkVariable<NetworkString>();
     private Camera _camera;
     private string _nickStr;
 
@@ -14,26 +14,27 @@ public class PlayerNick : NetworkBehaviour
     {
         _camera = Camera.main;
         _nickStr = SaveGame.Load<string>("Nickname");
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
     }
 
-    public override void OnNetworkSpawn()
+    private void OnClientConnected(ulong obj)
     {
-        if (!IsServer)
-        {
-            if (!IsOwner) return;
-            SetNickServerRpc(_nickStr);
-        }
-        else
-        {
-            SetNickServerRpc(_nickStr);
-        }
+        if (!IsOwner) return;
+        SetNickServerRpc(_nickStr);
+    }
+
+    private void Start()
+    {
+        if (!IsOwner) return;
+        SetNickServerRpc(_nickStr);
     }
 
     [ServerRpc(RequireOwnership = false)]
     private void SetNickServerRpc(NetworkString str)
     {
+        _str.Value = str;
         nick.text = str;
-        SetNickClientRpc(str);
+        SetNickClientRpc(_str.Value);
     }
 
     [ClientRpc]
@@ -46,5 +47,12 @@ public class PlayerNick : NetworkBehaviour
     {
         if (!IsOwner) return;
         nick.transform.rotation = _camera.transform.rotation;
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        if (NetworkManager.Singleton == null) return;
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
     }
 }

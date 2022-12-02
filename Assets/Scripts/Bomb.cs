@@ -1,6 +1,5 @@
 ﻿using Unity.Mathematics;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour
@@ -27,8 +26,7 @@ public class Bomb : NetworkBehaviour
             RoundToNearestGrid(position.z));
         transform.position = position;
     }
-
-    //TODO: take grid length into a count 
+    
     float RoundToNearestGrid(float pos)
     {
         float xDiff = pos % gridSize;
@@ -51,14 +49,16 @@ public class Bomb : NetworkBehaviour
         SpawnSoundServerRpc();
         Destroy();
     }
+    
+    //TODO: kill player if inside bomb
+    //TODO: Adjust ray radius
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnSoundServerRpc() => SpawnSoundClientRpc();
 
     [ClientRpc]
     private void SpawnSoundClientRpc() => Instantiate(explosionSound, transform.position, quaternion.identity);
-
-    //TODO: fix bug
+    
     private void Raycast(Vector3 pos, Vector3 dir, int dist, int rad)
     {
         Ray ray = new Ray(pos, dir);

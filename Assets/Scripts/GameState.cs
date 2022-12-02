@@ -7,10 +7,13 @@ using UnityEngine.SceneManagement;
 public class GameState : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI winner;
+    private NetworkVariable<bool> _gameEnded = new NetworkVariable<bool>();
 
     [ServerRpc]
     public void WinServerRpc(string nickname)
     {
+        if (_gameEnded.Value) return;
+        _gameEnded.Value = true;
         GameoverClientRpc(nickname);
         StartCoroutine(Restart_c());
     }
@@ -18,7 +21,8 @@ public class GameState : NetworkBehaviour
     [ServerRpc]
     public void GameoverServerRpc()
     {
-        GameoverClientRpc("TIE");
+        if (_gameEnded.Value) return;
+        GameoverClientRpc("GAMEOVER");
         StartCoroutine(Restart_c());
     }
 
@@ -35,6 +39,6 @@ public class GameState : NetworkBehaviour
     [ServerRpc]
     private void RestartServerRpc()
     {
-        NetworkManager.Singleton.SceneManager.LoadScene("SampleScene", LoadSceneMode.Single);
+        NetworkManager.Singleton.SceneManager.LoadScene("Game", LoadSceneMode.Single);
     }
 }

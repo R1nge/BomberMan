@@ -1,9 +1,9 @@
 ﻿using Unity.Collections;
 using Unity.Netcode;
 
-public struct NetworkString : INetworkSerializable
+public struct NetworkString :  INetworkSerializeByMemcpy 
 {
-    private FixedString32Bytes _info;
+    private ForceNetworkSerializeByMemcpy<FixedString32Bytes> _info;
 
     public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
     {
@@ -12,11 +12,9 @@ public struct NetworkString : INetworkSerializable
 
     public override string ToString()
     {
-        return _info.ToString();
+        return _info.Value.ToString();
     }
 
     public static implicit operator string(NetworkString s) => s.ToString();
-
-    public static implicit operator NetworkString(string s) =>
-        new NetworkString {_info = new FixedString32Bytes(s)};
+    public static implicit operator NetworkString(string s) => new NetworkString { _info = new FixedString32Bytes(s) };
 }

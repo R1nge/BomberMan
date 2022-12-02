@@ -8,6 +8,7 @@ public class PlayerSpawner : NetworkBehaviour
 {
     [SerializeField] private GameObject player1, player2, player3;
     [SerializeField] private NetworkVariable<int> players;
+
     private SpawnPositions _spawnPositions;
     private GameState _gameState;
 
@@ -64,7 +65,7 @@ public class PlayerSpawner : NetworkBehaviour
             SpawnPlayerServerRpc();
         }
     }
-    
+
     public void Despawn(ulong ID)
     {
         if (IsServer)
@@ -82,14 +83,16 @@ public class PlayerSpawner : NetworkBehaviour
                         var winPlayer =
                             NetworkManager.Singleton.SpawnManager.SpawnedObjects[controllers[i].NetworkObjectId];
                         var winName = winPlayer.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
-                        _gameState.WinServerRpc(winName);
+                        if (winPlayer != null)
+                        {
+                            _gameState.WinServerRpc(winName);
+                        }
+
                         break;
                     }
+
+                    _gameState.GameoverServerRpc();
                 }
-            }
-            else
-            {
-                _gameState.GameoverServerRpc();
             }
         }
         else

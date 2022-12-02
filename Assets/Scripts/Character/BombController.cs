@@ -16,8 +16,8 @@ namespace Character
         [ServerRpc(RequireOwnership = false)]
         public void IncreaseBombAmountServerRpc(int value)
         {
-            maxBombAmount.Value += value;
-            bombAmount.Value = maxBombAmount.Value;
+            if (bombAmount.Value >= maxBombAmount.Value) return;
+            bombAmount.Value += value;
         }
 
         private void Update()
@@ -51,7 +51,7 @@ namespace Character
         [ServerRpc(RequireOwnership = false)]
         private void ResetSpawnServerRpc()
         {
-            if(bombAmount.Value >= maxBombAmount.Value) return;
+            if (bombAmount.Value >= maxBombAmount.Value) return;
             bombAmount.Value++;
         }
     }

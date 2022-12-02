@@ -1,11 +1,10 @@
-﻿using System;
-using Unity.Mathematics;
+﻿using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour
 {
-    //Animations
+    //TODO: Animations
     [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
     [SerializeField] private NetworkVariable<int> damage;
@@ -13,6 +12,7 @@ public class Bomb : NetworkBehaviour
     [SerializeField] private Collider trigger;
     [SerializeField] private float yOffset;
     [SerializeField] private GameObject explosionVFX, explosionSound;
+    [SerializeField] private LayerMask ignore;
 
     public float ExplodeDelay => explodeDelay;
 
@@ -53,9 +53,6 @@ public class Bomb : NetworkBehaviour
         Destroy();
     }
 
-    //TODO: kill player if inside bomb
-    //TODO: Adjust ray radius
-
     [ServerRpc(RequireOwnership = false)]
     private void SpawnSoundServerRpc() => SpawnSoundClientRpc();
 
@@ -65,7 +62,7 @@ public class Bomb : NetworkBehaviour
     private void Raycast(Vector3 pos, Vector3 dir, int dist, int rad)
     {
         Ray ray = new Ray(pos, dir);
-        if (Physics.SphereCast(ray, rad, out var hit, dist * gridSize))
+        if (Physics.SphereCast(ray, rad, out var hit, dist * gridSize, ~ignore))
         {
             if (hit.transform.TryGetComponent(out NetworkObject obj))
             {

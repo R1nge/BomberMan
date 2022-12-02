@@ -167,3 +167,6 @@ MonoBehaviour:
     type: 3}
   explosionSound: {fileID: 3440309824840511471, guid: 1d9ddfc7a1c75ac4599b1386a7a7230d,
     type: 3}
+  ignore:
+    serializedVersion: 2
+    m_Bits: 64

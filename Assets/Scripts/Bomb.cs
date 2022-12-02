@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ public class Bomb : NetworkBehaviour
             RoundToNearestGrid(position.z));
         transform.position = position;
     }
-    
+
     float RoundToNearestGrid(float pos)
     {
         float xDiff = pos % gridSize;
@@ -47,9 +48,11 @@ public class Bomb : NetworkBehaviour
         Raycast(position, Vector3.right, distance, radius);
         Raycast(position, Vector3.left, distance, radius);
         SpawnSoundServerRpc();
+        DoDamageInside();
+
         Destroy();
     }
-    
+
     //TODO: kill player if inside bomb
     //TODO: Adjust ray radius
 
@@ -58,7 +61,7 @@ public class Bomb : NetworkBehaviour
 
     [ClientRpc]
     private void SpawnSoundClientRpc() => Instantiate(explosionSound, transform.position, quaternion.identity);
-    
+
     private void Raycast(Vector3 pos, Vector3 dir, int dist, int rad)
     {
         Ray ray = new Ray(pos, dir);
@@ -124,6 +127,25 @@ public class Bomb : NetworkBehaviour
         if (GetNetworkObject(ID).TryGetComponent(out IDamageable damageable))
         {
             damageable.TakeDamage(damage);
+        }
+    }
+
+    private void DoDamageInside()
+    {
+        var coll = new Collider[4];
+        var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
+            Quaternion.identity);
+
+        for (int i = 0; i < size; i++)
+        {
+            if (coll[i].TryGetComponent(out IDamageable _))
+            {
+                if (coll[i].TryGetComponent(out NetworkObject obj))
+                {
+                    if (obj == null || !obj.IsSpawned) return;
+                    DoDamage(damage.Value, obj);
+                }
+            }
         }
     }
 

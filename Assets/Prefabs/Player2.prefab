@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed:
-    m_InternalValue: 8
+    m_InternalValue: 10
   rotationSpeed: 360
 --- !u!114 &673668852280279704
 MonoBehaviour:
@@ -469,7 +469,7 @@ MonoBehaviour:
   bombAmount:
     m_InternalValue: 1
   maxBombAmount:
-    m_InternalValue: 1
+    m_InternalValue: 3
   playerUI: {fileID: 8645013317823587889}
 --- !u!114 &5442496396156970198
 MonoBehaviour:

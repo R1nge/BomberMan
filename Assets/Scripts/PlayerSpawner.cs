@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    [SerializeField] private NetworkVariable<int> players;
+    [SerializeField] private NetworkVariable<int> playersAmount;
     private SpawnPositions _spawnPositions;
     private GameState _gameState;
     private PlayerSkins _skins;
@@ -16,12 +16,22 @@ public class PlayerSpawner : NetworkBehaviour
     {
         if (!NetworkManager.Singleton.IsHost)
         {
-            players = new NetworkVariable<int>();
+            playersAmount = new NetworkVariable<int>();
         }
+
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
 
         _skins = FindObjectOfType<PlayerSkins>();
         _spawnPositions = FindObjectOfType<SpawnPositions>();
         _gameState = FindObjectOfType<GameState>();
+    }
+
+    private void OnClientDisconnect(ulong obj)
+    {
+        if (IsServer)
+        {
+            playersAmount.Value--;
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -41,12 +51,13 @@ public class PlayerSpawner : NetworkBehaviour
         {
             //TODO: load skin that player has chosen
             //Quick and dirty hack, but i'll leave it for now
-            var player = Instantiate(_skins.GetSkin(skinIndex), _spawnPositions.GetPositions()[players.Value],
+            var player = Instantiate(_skins.GetSkin(skinIndex), _spawnPositions.GetPositions()[playersAmount.Value],
                 Quaternion.identity);
             player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
-            player.GetComponent<NetworkObject>().transform.position = _spawnPositions.GetPositions()[players.Value];
+            player.GetComponent<NetworkObject>().transform.position =
+                _spawnPositions.GetPositions()[playersAmount.Value];
 
-            players.Value++;
+            playersAmount.Value++;
         }
         else
         {
@@ -59,9 +70,9 @@ public class PlayerSpawner : NetworkBehaviour
         if (IsServer)
         {
             NetworkManager.Singleton.SpawnManager.SpawnedObjects[ID].Despawn();
-            players.Value--;
+            playersAmount.Value--;
 
-            if (players.Value <= 1)
+            if (playersAmount.Value <= 1)
             {
                 var controllers = FindObjectsOfType<MovementController>();
                 for (int i = 0; i < controllers.Length; i++)
@@ -104,6 +115,6 @@ public class PlayerSpawner : NetworkBehaviour
     public override void OnDestroy()
     {
         base.OnDestroy();
-        players.Dispose();
+        playersAmount.Dispose();
     }
 }

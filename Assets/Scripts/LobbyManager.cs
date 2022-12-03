@@ -13,7 +13,16 @@ public class LobbyManager : NetworkBehaviour
     private void Awake()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += Check;
+        NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
         _skins = FindObjectOfType<PlayerSkins>();
+    }
+
+    private void OnClientDisconnect(ulong obj)
+    {
+        if (IsServer)
+        {
+            _playersAmount.Value--;
+        }
     }
 
     public override void OnNetworkSpawn()
@@ -61,5 +70,6 @@ public class LobbyManager : NetworkBehaviour
         base.OnDestroy();
         if (NetworkManager.Singleton == null) return;
         NetworkManager.Singleton.OnClientConnectedCallback -= Check;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
     }
 }

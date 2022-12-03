@@ -1,15 +1,20 @@
-﻿using Unity.Netcode;
+﻿using BayatGames.SaveGameFree;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Character
 {
     public class BombController : NetworkBehaviour
     {
-        [SerializeField] private GameObject bombPrefab;
         [SerializeField] private NetworkVariable<int> bombAmount, maxBombAmount;
         [SerializeField] private PlayerUI playerUI;
+        private Bombs _bombs;
 
-        private void Awake() => bombAmount.OnValueChanged += playerUI.UpdateBombs;
+        private void Awake()
+        {
+            bombAmount.OnValueChanged += playerUI.UpdateBombs;
+            _bombs = FindObjectOfType<Bombs>();
+        }
 
         private void Start() => playerUI.UpdateBombs(bombAmount.Value, bombAmount.Value);
 
@@ -25,28 +30,31 @@ namespace Character
             if (!IsOwner) return;
             if (Input.GetKeyDown(KeyCode.Space) && bombAmount.Value > 0)
             {
-                Spawn(transform.position);
+                if (IsServer)
+                {
+                    Spawn(transform.position, SaveGame.Load("Bomb", 0));
+                }
+                else
+                {
+                    SpawnServerRpc(transform.position, SaveGame.Load("Bomb", 0));
+                }
             }
         }
 
-        private void Spawn(Vector3 position)
+        private void Spawn(Vector3 position, int index)
         {
             if (IsServer)
             {
                 bombAmount.Value--;
-                var bomb = Instantiate(bombPrefab, position, Quaternion.identity);
+                var bomb = Instantiate(_bombs.GetBomb(index), position, Quaternion.identity);
                 bomb.GetComponent<NetworkObject>().Spawn(true);
                 var countdown = bomb.GetComponent<Bomb>().ExplodeDelay;
                 Invoke(nameof(ResetSpawnServerRpc), countdown);
             }
-            else
-            {
-                SpawnServerRpc(position);
-            }
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SpawnServerRpc(Vector3 position) => Spawn(position);
+        private void SpawnServerRpc(Vector3 position, int index) => Spawn(position, index);
 
         [ServerRpc(RequireOwnership = false)]
         private void ResetSpawnServerRpc()

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 789977084753482667}
   - component: {fileID: 6080893924212595770}
   m_Layer: 0
-  m_Name: ExplosionSound
+  m_Name: AnimeExplosionSound
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

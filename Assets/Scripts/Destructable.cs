@@ -7,6 +7,7 @@ public class Destructable : NetworkBehaviour, IDamageable
     [SerializeField] private int health;
     [SerializeField] private NetworkVariable<float> dropChance;
     [SerializeField] private Powerup[] drops;
+    [SerializeField] private Vector3 dropOffset;
     private NetworkVariable<int> _index = new NetworkVariable<int>();
 
     public void TakeDamage(int amount)
@@ -27,7 +28,7 @@ public class Destructable : NetworkBehaviour, IDamageable
     {
         if (Random.value < 1 - dropChance.Value) return;
         _index.Value = Random.Range(0, drops.Length);
-        var drop = Instantiate(drops[_index.Value], transform.position, Quaternion.identity);
+        var drop = Instantiate(drops[_index.Value], transform.position + dropOffset, Quaternion.identity);
         drop.GetComponent<NetworkObject>().Spawn(true);
     }
 }

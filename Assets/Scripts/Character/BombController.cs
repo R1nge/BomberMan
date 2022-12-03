@@ -12,11 +12,14 @@ namespace Character
 
         private void Awake()
         {
-            bombAmount.OnValueChanged += playerUI.UpdateBombs;
+            bombAmount.OnValueChanged += (value, newValue) =>
+            {
+                playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+            };
             _bombs = FindObjectOfType<Bombs>();
         }
 
-        private void Start() => playerUI.UpdateBombs(bombAmount.Value, bombAmount.Value);
+        private void Start() => playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
 
         [ServerRpc(RequireOwnership = false)]
         public void IncreaseBombAmountServerRpc(int value)

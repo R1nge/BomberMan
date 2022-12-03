@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerUI : NetworkBehaviour
 {
     [SerializeField] private GameObject UI;
-    [SerializeField] private TextMeshProUGUI health, bombs;
+    [SerializeField] private TextMeshProUGUI bombs;
 
     public override void OnNetworkSpawn()
     {
@@ -16,15 +16,9 @@ public class PlayerUI : NetworkBehaviour
             Destroy(this);
         }
     }
-
-
-    public void UpdateHealth(int old,int current)
+    
+    public void UpdateBombs(int current, int max)
     {
-        health.text = "Health: " + current;
-    }
-
-    public void UpdateBombs(int old, int current)
-    {
-        bombs.text = "Bombs: " + current;
+        bombs.text = "Bombs: " + current + "/" + max;
     }
 }

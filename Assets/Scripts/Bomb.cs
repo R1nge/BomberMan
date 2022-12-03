@@ -1,10 +1,10 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour
 {
-    //TODO: Animations
     [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
     [SerializeField] private NetworkVariable<int> damage;
@@ -13,8 +13,15 @@ public class Bomb : NetworkBehaviour
     [SerializeField] private float yOffset;
     [SerializeField] private GameObject explosionVFX, explosionSound;
     [SerializeField] private LayerMask ignore;
+    [SerializeField] private Color explosionColor;
+    private MeshRenderer _meshRenderer;
+    private NetworkVariable<float> _time = new NetworkVariable<float>();
 
+    //TODO: use _time.OnValueChanged for perfect sync
+    
     public float ExplodeDelay => explodeDelay;
+
+    private void Awake() => _meshRenderer = GetComponent<MeshRenderer>();
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
 
@@ -26,6 +33,27 @@ public class Bomb : NetworkBehaviour
             position.y + yOffset,
             RoundToNearestGrid(position.z));
         transform.position = position;
+    }
+
+    private void Update()
+    {
+        if (IsServer)
+        {
+            if (_time.Value < explodeDelay)
+            {
+                _time.Value += Time.deltaTime;
+                _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, explosionColor,
+                    explodeDelay * Time.deltaTime);
+                UpdateColorClientRpc(explosionColor, explodeDelay * Time.deltaTime);
+            }
+        }
+    }
+
+    [ClientRpc]
+    private void UpdateColorClientRpc(Color color, float lerp)
+    {
+        _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, color,
+            lerp);
     }
 
     float RoundToNearestGrid(float pos)
@@ -49,7 +77,6 @@ public class Bomb : NetworkBehaviour
         Raycast(position, Vector3.left, distance, radius);
         SpawnSoundServerRpc();
         DoDamageInside();
-
         Destroy();
     }
 
@@ -95,7 +122,9 @@ public class Bomb : NetworkBehaviour
 
     private void SpawnExplosionVfx(Vector3 dir, int amount)
     {
-        for (int i = 0; i < amount; i++)
+        for (int i = 0;
+            i < amount;
+            i++)
         {
             SpawnExplosionVfxServerRpc(dir, i);
         }
@@ -130,10 +159,12 @@ public class Bomb : NetworkBehaviour
     private void DoDamageInside()
     {
         var coll = new Collider[4];
+
         var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
             Quaternion.identity);
-
-        for (int i = 0; i < size; i++)
+        for (int i = 0;
+            i < size;
+            i++)
         {
             if (coll[i].TryGetComponent(out IDamageable _))
             {

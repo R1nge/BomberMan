@@ -5,14 +5,11 @@ using Random = UnityEngine.Random;
 
 public class MapGenerator : NetworkBehaviour
 {
-    [SerializeField] private int minWidth, minHeight;
-    [SerializeField] private int maxWidth, maxHeight;
-    [SerializeField] private Transform parent;
-    [SerializeField] private GameObject tile, destructable, borderWall, wall;
-    [SerializeField] private Vector3 tileOffset, destructableOffset;
-    [SerializeField] private float tileSize, destructableSize;
+    [SerializeField] private GameObject parent;
+    [SerializeField] private MapConfig[] maps;
     private int _width, _height;
     private bool _spawnObstacle;
+    private int _mapIndex;
     private SpawnPositions _spawnPositions;
 
     private void Awake() => _spawnPositions = FindObjectOfType<SpawnPositions>();
@@ -20,9 +17,13 @@ public class MapGenerator : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
-        _width = GetRandomOddNumber(minWidth, maxWidth);
-        _height = GetRandomOddNumber(minHeight, maxHeight);
-        _spawnPositions.SetSpawnPositions((_width - 1) * tileSize, (_height - 1) * tileSize);
+        _mapIndex = Random.Range(0, maps.Length);
+        _width = Mathf.FloorToInt(maps[_mapIndex].GetSize().x);
+        _height = Mathf.FloorToInt(maps[_mapIndex].GetSize().y);
+        _spawnPositions.SetSpawnPositions((_width - 1) * maps[_mapIndex].tileSize,
+            (_height - 1) * maps[_mapIndex].tileSize);
+        parent = Instantiate(parent);
+        parent.GetComponent<NetworkObject>().Spawn(true);
         SpawnGrid();
         SpawnWalls();
         SpawnDestructables();
@@ -35,9 +36,7 @@ public class MapGenerator : NetworkBehaviour
         {
             for (int z = 0; z < _height; z++)
             {
-                var inst = Instantiate(tile, (new Vector3(x, 0, z) + tileOffset) * tileSize, quaternion.identity);
-                inst.GetComponent<NetworkObject>().Spawn(true);
-                inst.transform.parent = parent;
+                Spawn(maps[_mapIndex].tile, x, z, maps[_mapIndex].tileOffset, maps[_mapIndex].tileSize);
             }
         }
     }
@@ -69,10 +68,8 @@ public class MapGenerator : NetworkBehaviour
                 if (x == _width - 2 && z == _height - 1) continue;
                 if (x == _width - 1 && z == _height - 2) continue;
 
-                var inst = Instantiate(destructable, (new Vector3(x, 0, z) + destructableOffset) * destructableSize,
-                    quaternion.identity);
-                inst.GetComponent<NetworkObject>().Spawn(true);
-                inst.transform.parent = parent;
+                Spawn(maps[_mapIndex].destructable, x, z, maps[_mapIndex].destructableOffset,
+                    maps[_mapIndex].destructableSize);
             }
         }
     }
@@ -85,19 +82,23 @@ public class MapGenerator : NetworkBehaviour
             {
                 if (x < _width + 1 && z == _height)
                 {
-                    SpawnBorderWall(x, z);
+                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
+                        maps[_mapIndex].borderWallSize);
                 }
                 else if (x < _width + 1 && z == -1)
                 {
-                    SpawnBorderWall(x, z);
+                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
+                        maps[_mapIndex].borderWallSize);
                 }
                 else if (x == -1 && z < _height + 1)
                 {
-                    SpawnBorderWall(x, z);
+                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
+                        maps[_mapIndex].borderWallSize);
                 }
                 else if (x == _width && z < _height + 1)
                 {
-                    SpawnBorderWall(x, z);
+                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
+                        maps[_mapIndex].borderWallSize);
                 }
             }
         }
@@ -111,36 +112,17 @@ public class MapGenerator : NetworkBehaviour
             {
                 if (x % 2 == 1 && y % 2 == 1)
                 {
-                    SpawnWall(x, y);
+                    Spawn(maps[_mapIndex].wall, x, y, maps[_mapIndex].wallOffset, maps[_mapIndex].wallSize);
                 }
             }
         }
     }
 
-    private void SpawnBorderWall(int x, int z)
+    private void Spawn(GameObject go, int x, int z, Vector3 offset, float size)
     {
-        var inst = Instantiate(borderWall, (new Vector3(x, 0, z) + destructableOffset) * tileSize,
+        var inst = Instantiate(go, (new Vector3(x, 0, z) + offset) * size,
             quaternion.identity);
         inst.GetComponent<NetworkObject>().Spawn(true);
-        inst.transform.parent = parent;
-    }
-
-    private void SpawnWall(int x, int z)
-    {
-        var inst = Instantiate(wall, (new Vector3(x, 0, z) + destructableOffset) * tileSize,
-            quaternion.identity);
-        inst.GetComponent<NetworkObject>().Spawn(true);
-        inst.transform.parent = parent;
-    }
-
-    private int GetRandomOddNumber(int min, int max)
-    {
-        var num = Random.Range(min, max + 1);
-        if (num % 2 == 0)
-        {
-            num++;
-        }
-
-        return num;
+        inst.transform.parent = parent.transform;
     }
 }

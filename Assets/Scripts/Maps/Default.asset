@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a971a6143834aa3bd01440504b866fc, type: 3}
+  m_Name: Default
+  m_EditorClassIdentifier: 
+  minWidth: 15
+  minHeight: 15
+  maxWidth: 30
+  maxHeight: 30
+  tile: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec, type: 3}
+  destructable: {fileID: 8375072482178510364, guid: c944c564ac471414dadf6d836d0fbb70,
+    type: 3}
+  borderWall: {fileID: 3005893327741374632, guid: 63fde7e6a7b4a0a459b6a7e85efaab8e,
+    type: 3}
+  wall: {fileID: 2498491464355210913, guid: c8cd3d18ba654e44b9d89f085c965d9b, type: 3}
+  tileOffset: {x: 0, y: 0, z: 0}
+  destructableOffset: {x: 0, y: 0.65, z: 0}
+  borderWallOffset: {x: 0, y: 0, z: 0}
+  wallOffset: {x: 0, y: 0.65, z: 0}
+  tileSize: 3
+  destructableSize: 3
+  borderWallSize: 3
+  wallSize: 3

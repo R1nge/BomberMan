@@ -18,10 +18,15 @@ public class Bomb : NetworkBehaviour
     private NetworkVariable<float> _time = new NetworkVariable<float>();
 
     //TODO: use _time.OnValueChanged for perfect sync
-    
+
     public float ExplodeDelay => explodeDelay;
 
-    private void Awake() => _meshRenderer = GetComponent<MeshRenderer>();
+    private void Awake()
+    {
+        _meshRenderer = GetComponent<MeshRenderer>();
+        _time.OnValueChanged +=
+            (value, newValue) => UpdateColor(explosionColor, newValue / explodeDelay / 100);
+    }
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
 
@@ -42,18 +47,21 @@ public class Bomb : NetworkBehaviour
             if (_time.Value < explodeDelay)
             {
                 _time.Value += Time.deltaTime;
-                _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, explosionColor,
-                    explodeDelay * Time.deltaTime);
-                UpdateColorClientRpc(explosionColor, explodeDelay * Time.deltaTime);
             }
         }
     }
 
-    [ClientRpc]
-    private void UpdateColorClientRpc(Color color, float lerp)
+
+    // [ClientRpc]
+    // private void UpdateColorClientRpc(Color color, float lerp)
+    // {
+    //     _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, color,
+    //         lerp);
+    // }
+
+    private void UpdateColor(Color color, float lerp)
     {
-        _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, color,
-            lerp);
+        _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, color, lerp);
     }
 
     float RoundToNearestGrid(float pos)

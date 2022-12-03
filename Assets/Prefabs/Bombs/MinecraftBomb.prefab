@@ -170,4 +170,4 @@ MonoBehaviour:
   ignore:
     serializedVersion: 2
     m_Bits: 64
-  explosionColor: {r: 1, g: 0.21226418, b: 0.21226418, a: 1}
+  explosionColor: {r: 1, g: 0, b: 0, a: 1}

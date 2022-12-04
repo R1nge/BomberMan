@@ -7,6 +7,7 @@ public class MapGenerator : NetworkBehaviour
 {
     [SerializeField] private GameObject parent;
     [SerializeField] private MapConfig[] maps;
+    [SerializeField] private GameObject spawnInCenter;
     private int _width, _height;
     private bool _spawnObstacle;
     private int _mapIndex;
@@ -28,6 +29,8 @@ public class MapGenerator : NetworkBehaviour
         SpawnWalls();
         SpawnDestructables();
         SpawnBorders();
+        Spawn(spawnInCenter, _width / 2, _height  / 2, new Vector3(0, maps[_mapIndex].tileOffset.y + 2, 0),
+            maps[_mapIndex].tileSize);
     }
 
     private void SpawnGrid()
@@ -67,6 +70,8 @@ public class MapGenerator : NetworkBehaviour
                 if (x == _width - 1 && z == _height - 1) continue;
                 if (x == _width - 2 && z == _height - 1) continue;
                 if (x == _width - 1 && z == _height - 2) continue;
+
+                if (x == _width / 2 && z == _height/ 2) continue;
 
                 Spawn(maps[_mapIndex].destructable, x, z, maps[_mapIndex].destructableOffset,
                     maps[_mapIndex].destructableSize);
@@ -112,6 +117,7 @@ public class MapGenerator : NetworkBehaviour
             {
                 if (x % 2 == 1 && y % 2 == 1)
                 {
+                    if (x == _width / 2 && y == _height/ 2) continue;
                     Spawn(maps[_mapIndex].wall, x, y, maps[_mapIndex].wallOffset, maps[_mapIndex].wallSize);
                 }
             }

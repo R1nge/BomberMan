@@ -66,6 +66,8 @@ MonoBehaviour:
   maps:
   - {fileID: 11400000, guid: 8c8dd846b21466940baa4533f34afd59, type: 2}
   - {fileID: 11400000, guid: b731aeca5ce19594a92c8f86928d3506, type: 2}
+  spawnInCenter: {fileID: 7213625600458566743, guid: c6de05a1bc8723e4f82cb03a075a2da1,
+    type: 3}
 --- !u!114 &7144832438692512163
 MonoBehaviour:
   m_ObjectHideFlags: 0

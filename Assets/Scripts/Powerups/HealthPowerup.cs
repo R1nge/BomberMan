@@ -14,7 +14,7 @@ namespace Powerups
             {
                 if (net.TryGetComponent(out Health health))
                 {
-                    //health.IncreaseHealthServerRpc(amount);
+                    health.IncreaseHealthServerRpc(amount);
                 }
             }
         }

@@ -3,7 +3,7 @@ using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Bomb : NetworkBehaviour
+public class Bomb : NetworkBehaviour, IDamageable
 {
     [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
@@ -14,6 +14,7 @@ public class Bomb : NetworkBehaviour
     [SerializeField] private GameObject explosionVFX, explosionSound;
     [SerializeField] private LayerMask ignore;
     [SerializeField] private Color explosionColor;
+    private NetworkVariable<bool> _hasExploded = new NetworkVariable<bool>();
     private MeshRenderer _meshRenderer;
     private NetworkVariable<float> _time = new NetworkVariable<float>();
 
@@ -34,7 +35,7 @@ public class Bomb : NetworkBehaviour
         _time.OnValueChanged +=
             (value, newValue) => UpdateColor(explosionColor, newValue / explodeDelay / 100);
     }
-    
+
     //https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/networktime-ticks/#example-1-using-network-time-to-synchronize-environments
     private void Update()
     {
@@ -93,6 +94,7 @@ public class Bomb : NetworkBehaviour
 
     private void Explode()
     {
+        if (_hasExploded.Value) return;
         var position = transform.position;
         Raycast(position, Vector3.forward, distance, radius);
         Raycast(position, Vector3.back, distance, radius);
@@ -173,6 +175,7 @@ public class Bomb : NetworkBehaviour
     [ServerRpc(RequireOwnership = false)]
     private void DoDamageServerRpc(int damage, ulong ID)
     {
+        _hasExploded.Value = true;
         if (GetNetworkObject(ID).TryGetComponent(out IDamageable damageable))
         {
             damageable.TakeDamage(damage);
@@ -193,7 +196,7 @@ public class Bomb : NetworkBehaviour
             {
                 if (coll[i].TryGetComponent(out NetworkObject obj))
                 {
-                    if (obj == null || !obj.IsSpawned) return;
+                    if (obj == null || !obj.IsSpawned || obj == GetComponent<NetworkObject>()) return;
                     DoDamage(damage.Value, obj);
                 }
             }
@@ -216,4 +219,9 @@ public class Bomb : NetworkBehaviour
     private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
 
     private void OnTriggerExit(Collider other) => trigger.isTrigger = false;
+    public void TakeDamage(int amount)
+    {
+        if(_hasExploded.Value) return;
+        Explode();
+    }
 }

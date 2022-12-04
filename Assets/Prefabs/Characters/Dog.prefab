@@ -374,13 +374,13 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 1.892654
   m_Radius: 0.5
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.9247508, z: 0}
 --- !u!136 &28414560585678159
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -392,9 +392,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.5
-  m_Height: 1.939032
+  m_Height: 1.892654
   m_Direction: 1
-  m_Center: {x: 0, y: 0.90156204, z: 0}
+  m_Center: {x: 0, y: 0.9247508, z: 0}
 --- !u!114 &832228114350086599
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1066,7 +1066,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -80, y: 25}
-  m_SizeDelta: {x: 80, y: 1080080}
+  m_SizeDelta: {x: 80, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7699271352591567091
 CanvasRenderer:

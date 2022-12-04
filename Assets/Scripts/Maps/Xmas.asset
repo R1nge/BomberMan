@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a971a6143834aa3bd01440504b866fc, type: 3}
-  m_Name: Xmass
+  m_Name: Xmas
   m_EditorClassIdentifier: 
   minWidth: 15
   minHeight: 15

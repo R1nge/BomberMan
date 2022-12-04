@@ -1,5 +1,4 @@
-﻿using System;
-using TMPro;
+﻿using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -17,13 +16,7 @@ public class PlayerUI : NetworkBehaviour
         }
     }
 
-    public void UpdateHealth(int old, int current)
-    {
-        hp.text = "Health: " + current;
-    }
+    public void UpdateHealth(int old, int current) => hp.text = current.ToString();
 
-    public void UpdateBombs(int current, int max)
-    {
-        bombs.text = "Bombs: " + current + "/" + max;
-    }
+    public void UpdateBombs(int current, int max) => bombs.text = current + "/" + max;
 }

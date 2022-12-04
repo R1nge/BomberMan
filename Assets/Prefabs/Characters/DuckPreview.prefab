@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2864689498863680243}
   - component: {fileID: 6899056218963391293}
   m_Layer: 0
-  m_Name: Player1Preview
+  m_Name: DuckPreview
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

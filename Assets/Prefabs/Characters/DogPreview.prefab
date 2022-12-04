@@ -196,7 +196,7 @@ GameObject:
   - component: {fileID: 832228114350086599}
   - component: {fileID: 5442496396156970198}
   m_Layer: 0
-  m_Name: Player2Preview
+  m_Name: DogPreview
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

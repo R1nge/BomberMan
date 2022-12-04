@@ -49,7 +49,7 @@ public class LobbyManager : NetworkBehaviour
     private void SpawnPreview(int skinIndex, ulong ID)
     {
         var rot = Quaternion.Euler(new Vector3(0, 180, 0));
-        var player = Instantiate(_skins.GetSkin(skinIndex), positions[_playersAmount.Value].position, rot);
+        var player = Instantiate(_skins.GetPreviewPrefab(skinIndex), positions[_playersAmount.Value].position, rot);
         player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
         _playersAmount.Value++;
     }

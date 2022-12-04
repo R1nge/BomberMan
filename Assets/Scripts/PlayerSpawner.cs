@@ -51,7 +51,7 @@ public class PlayerSpawner : NetworkBehaviour
         {
             //TODO: load skin that player has chosen
             //Quick and dirty hack, but i'll leave it for now
-            var player = Instantiate(_skins.GetSkin(skinIndex), _spawnPositions.GetPositions()[playersAmount.Value],
+            var player = Instantiate(_skins.GetPlayerPrefab(skinIndex), _spawnPositions.GetPositions()[playersAmount.Value],
                 Quaternion.identity);
             player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
             player.GetComponent<NetworkObject>().transform.position =

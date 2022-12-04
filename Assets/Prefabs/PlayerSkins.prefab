@@ -46,9 +46,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   skins:
-  - {fileID: 2671930508506096047, guid: eed06e776bf93ea43bd33efa6e49c071, type: 3}
-  - {fileID: 673668852280279707, guid: 999d912ba9016f74089f06f872557690, type: 3}
-  - {fileID: 560898999308649336, guid: c610cf80e6278f249b4d9896a36c27f6, type: 3}
+  - {fileID: 11400000, guid: c0cb29bc05e32bb45a0e0c94c6425047, type: 2}
+  - {fileID: 11400000, guid: 8a54f7cc28aeb3f4f9834df4a261e3a0, type: 2}
+  - {fileID: 11400000, guid: 3c87849e48f55394094655f90f5ab175, type: 2}
 --- !u!114 &3443781088865692921
 MonoBehaviour:
   m_ObjectHideFlags: 0

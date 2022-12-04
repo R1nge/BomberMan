@@ -10,22 +10,22 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4a971a6143834aa3bd01440504b866fc, type: 3}
-  m_Name: Default
+  m_Name: Minecraft
   m_EditorClassIdentifier: 
   minWidth: 15
   minHeight: 15
   maxWidth: 30
   maxHeight: 30
-  tile: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec, type: 3}
-  destructable: {fileID: 8375072482178510364, guid: c944c564ac471414dadf6d836d0fbb70,
+  tile: {fileID: 8626983368367252015, guid: 79c76703732eddb47a364c0a4e1d5615, type: 3}
+  destructable: {fileID: 567470547942927969, guid: 49b3d53d95cacf24787bd3511099175f,
     type: 3}
-  borderWall: {fileID: 3005893327741374632, guid: 63fde7e6a7b4a0a459b6a7e85efaab8e,
+  borderWall: {fileID: 8626983368367252015, guid: 79c76703732eddb47a364c0a4e1d5615,
     type: 3}
-  wall: {fileID: 2498491464355210913, guid: c8cd3d18ba654e44b9d89f085c965d9b, type: 3}
-  tileOffset: {x: 0, y: 0, z: 0}
-  destructableOffset: {x: 0, y: 0.65, z: 0}
-  borderWallOffset: {x: 0, y: 0, z: 0}
-  wallOffset: {x: 0, y: 0.65, z: 0}
+  wall: {fileID: 8626983368367252015, guid: 79c76703732eddb47a364c0a4e1d5615, type: 3}
+  tileOffset: {x: 0.25, y: -2, z: 0.25}
+  destructableOffset: {x: 0.25, y: 1, z: 0.25}
+  borderWallOffset: {x: 0.25, y: 1, z: 0.25}
+  wallOffset: {x: 0.25, y: 1, z: 0.25}
   tileSize: 3
   destructableSize: 3
   borderWallSize: 3

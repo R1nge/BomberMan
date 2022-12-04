@@ -120,7 +120,7 @@ public class MapGenerator : NetworkBehaviour
 
     private void Spawn(GameObject go, int x, int z, Vector3 offset, float size)
     {
-        var inst = Instantiate(go, (new Vector3(x, 0, z) + offset) * size,
+        var inst = Instantiate(go, new Vector3(x, 0, z) * size + offset,
             quaternion.identity);
         inst.GetComponent<NetworkObject>().Spawn(true);
         inst.transform.parent = parent.transform;

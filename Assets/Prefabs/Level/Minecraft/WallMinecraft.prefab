@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 567470547942927971}
   - component: {fileID: 614612261947805119}
   m_Layer: 0
-  m_Name: wallEarth
+  m_Name: WallMinecraft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

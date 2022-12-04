@@ -2,7 +2,7 @@
 using Unity.Netcode;
 using UnityEngine;
 
-public class Destructable : NetworkBehaviour, IDamageable
+public class Obstacle : NetworkBehaviour, IDamageable
 {
     [SerializeField] private int health;
     [SerializeField] private NetworkVariable<float> dropChance;

@@ -29,8 +29,8 @@ public class MapGenerator : NetworkBehaviour
         SpawnWalls();
         SpawnDestructables();
         SpawnBorders();
-        Spawn(spawnInCenter, _width / 2, _height  / 2, new Vector3(0, maps[_mapIndex].tileOffset.y + 2, 0),
-            maps[_mapIndex].tileSize);
+        Spawn(spawnInCenter, _width / 2, _height / 2, new Vector3(0, maps[_mapIndex].tileOffset.y + 2, 0),
+            maps[_mapIndex].tileSize, Vector3.zero);
     }
 
     private void SpawnGrid()
@@ -39,7 +39,8 @@ public class MapGenerator : NetworkBehaviour
         {
             for (int z = 0; z < _height; z++)
             {
-                Spawn(maps[_mapIndex].tile, x, z, maps[_mapIndex].tileOffset, maps[_mapIndex].tileSize);
+                var map = maps[_mapIndex];
+                Spawn(map.tile, x, z, map.tileOffset, map.tileSize, map.tileRotation);
             }
         }
     }
@@ -71,10 +72,11 @@ public class MapGenerator : NetworkBehaviour
                 if (x == _width - 2 && z == _height - 1) continue;
                 if (x == _width - 1 && z == _height - 2) continue;
 
-                if (x == _width / 2 && z == _height/ 2) continue;
+                if (x == _width / 2 && z == _height / 2) continue;
 
-                Spawn(maps[_mapIndex].destructable, x, z, maps[_mapIndex].destructableOffset,
-                    maps[_mapIndex].destructableSize);
+                var map = maps[_mapIndex];
+                Spawn(map.obstacle, x, z, map.obstacleOffset,
+                    map.obstacleSize, map.obstacleRotation);
             }
         }
     }
@@ -85,25 +87,26 @@ public class MapGenerator : NetworkBehaviour
         {
             for (int z = -1; z < _height + 1; z++)
             {
+                var map = maps[_mapIndex];
                 if (x < _width + 1 && z == _height)
                 {
-                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
-                        maps[_mapIndex].borderWallSize);
+                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                        map.borderSize, map.borderRotation);
                 }
                 else if (x < _width + 1 && z == -1)
                 {
-                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
-                        maps[_mapIndex].borderWallSize);
+                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                        map.borderSize, map.borderRotation);
                 }
                 else if (x == -1 && z < _height + 1)
                 {
-                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
-                        maps[_mapIndex].borderWallSize);
+                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                        map.borderSize, map.borderRotation);
                 }
                 else if (x == _width && z < _height + 1)
                 {
-                    Spawn(maps[_mapIndex].borderWall, x, z, maps[_mapIndex].borderWallOffset,
-                        maps[_mapIndex].borderWallSize);
+                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                        map.borderSize, map.borderRotation);
                 }
             }
         }
@@ -117,17 +120,18 @@ public class MapGenerator : NetworkBehaviour
             {
                 if (x % 2 == 1 && y % 2 == 1)
                 {
-                    if (x == _width / 2 && y == _height/ 2) continue;
-                    Spawn(maps[_mapIndex].wall, x, y, maps[_mapIndex].wallOffset, maps[_mapIndex].wallSize);
+                    if (x == _width / 2 && y == _height / 2) continue;
+                    var map = maps[_mapIndex];
+                    Spawn(map.wall, x, y, map.wallOffset, map.wallSize, map.wallRotation);
                 }
             }
         }
     }
 
-    private void Spawn(GameObject go, int x, int z, Vector3 offset, float size)
+    private void Spawn(GameObject go, int x, int z, Vector3 offset, float size, Vector3 rot)
     {
         var inst = Instantiate(go, new Vector3(x, 0, z) * size + offset,
-            quaternion.identity);
+            Quaternion.Euler(rot));
         inst.GetComponent<NetworkObject>().Spawn(true);
         inst.transform.parent = parent.transform;
     }

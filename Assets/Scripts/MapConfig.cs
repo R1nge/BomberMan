@@ -5,9 +5,10 @@ public class MapConfig : ScriptableObject
 {
     public int minWidth, minHeight;
     public int maxWidth, maxHeight;
-    public GameObject tile, destructable, borderWall, wall;
-    public Vector3 tileOffset, destructableOffset, borderWallOffset, wallOffset;
-    public float tileSize, destructableSize, borderWallSize, wallSize;
+    public Vector3 tileRotation, obstacleRotation, borderRotation, wallRotation;
+    public GameObject tile, obstacle, border, wall;
+    public Vector3 tileOffset, obstacleOffset, borderOffset, wallOffset;
+    public float tileSize, obstacleSize, borderSize, wallSize;
 
     public Vector2 GetSize()
     {

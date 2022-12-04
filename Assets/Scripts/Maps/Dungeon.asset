@@ -17,19 +17,18 @@ MonoBehaviour:
   maxWidth: 30
   maxHeight: 30
   tileRotation: {x: 0, y: 0, z: 0}
-  destructableRotation: {x: 0, y: 0, z: 0}
+  obstacleRotation: {x: 0, y: 0, z: 0}
   borderRotation: {x: 0, y: 0, z: 0}
   wallRotation: {x: 0, y: 0, z: 0}
   tile: {fileID: 5823030500583716817, guid: 7521e7edf28198a48bd5ce6e94c0f436, type: 3}
-  destructable: {fileID: 3191888367443731082, guid: fa2cac5a997057a4894efb977e74617f,
-    type: 3}
+  obstacle: {fileID: 0}
   border: {fileID: 1028645120107464978, guid: 93f7bba9179a7a749aa2a1cc28cff41b, type: 3}
   wall: {fileID: 1028645120107464978, guid: 93f7bba9179a7a749aa2a1cc28cff41b, type: 3}
   tileOffset: {x: 0, y: -1, z: 0}
-  destructableOffset: {x: 0, y: -1, z: 0}
+  obstacleOffset: {x: 0, y: 0, z: 0}
   borderOffset: {x: 0, y: 0, z: 0}
   wallOffset: {x: 0, y: -1, z: 0}
   tileSize: 3
-  destructableSize: 3
+  obstacleSize: 3
   borderSize: 3
   wallSize: 3

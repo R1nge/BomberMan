@@ -13,9 +13,10 @@ namespace Character
         {
             _playerSpawner = FindObjectOfType<PlayerSpawner>();
             _playerUI = GetComponent<PlayerUI>();
+            health.OnValueChanged += _playerUI.UpdateHealth;
         }
 
-        public override void OnNetworkSpawn() => _playerUI.UpdateHealth(health.Value);
+        public override void OnNetworkSpawn() => _playerUI.UpdateHealth(health.Value, health.Value);
 
         public void TakeDamage(int amount)
         {
@@ -27,11 +28,7 @@ namespace Character
             }
         }
 
-        [ServerRpc]
-        public void IncreaseHealthServerRpc(int amount)
-        {
-            health.Value += amount;
-            _playerUI.UpdateHealth(amount);
-        }
+        [ServerRpc(RequireOwnership = false)]
+        public void IncreaseHealthServerRpc(int amount) => health.Value += amount;
     }
 }

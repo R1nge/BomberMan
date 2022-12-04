@@ -17,7 +17,7 @@ public class PlayerUI : NetworkBehaviour
         }
     }
 
-    public void UpdateHealth(int current)
+    public void UpdateHealth(int old, int current)
     {
         hp.text = "Health: " + current;
     }

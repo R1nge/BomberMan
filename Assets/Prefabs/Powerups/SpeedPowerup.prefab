@@ -127,5 +127,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53fd310ef13d42578d3077dd7e770343, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pickupSound: {fileID: 8259351018130910068, guid: 37562ffdb32958c4a964ccaf10af2d5d,
+    type: 3}
   speed:
     m_InternalValue: 12

@@ -5,12 +5,15 @@ namespace Powerups
 {
     public abstract class Powerup : NetworkBehaviour
     {
+        [SerializeField] private GameObject pickupSound;
+
         private void OnTriggerEnter(Collider other)
         {
             if (other.CompareTag("Player"))
             {
                 if (other.TryGetComponent(out NetworkObject networkObject))
                 {
+                    Instantiate(pickupSound, transform.position, Quaternion.identity);
                     PickUpServerRpc(networkObject.NetworkObjectId);
                 }
             }

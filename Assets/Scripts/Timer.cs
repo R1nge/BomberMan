@@ -5,26 +5,29 @@ using UnityEngine;
 public class Timer : NetworkBehaviour
 {
     [SerializeField] private int startTime;
-    private NetworkVariable<int> _currentTime = new NetworkVariable<int>();
+    private NetworkVariable<int> _currentTime;
     private TimerUI _timerUI;
     private GameState _gameState;
 
     private void Awake()
     {
+        _currentTime = new NetworkVariable<int>();
         _timerUI = FindObjectOfType<TimerUI>();
         _gameState = FindObjectOfType<GameState>();
+        _gameState.OnGameStarted += () => StartCoroutine(Timer_c());
     }
 
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
         _currentTime.Value = startTime;
+        _timerUI.UpdateUI(_currentTime.Value);
         _currentTime.OnValueChanged += UpdateUIClientRpc;
-        StartCoroutine(Timer_c());
     }
 
     private IEnumerator Timer_c()
     {
+        if(!IsServer) yield break;
         if (_currentTime.Value <= 0)
         {
             _gameState.GameoverServerRpc();
@@ -37,8 +40,5 @@ public class Timer : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void UpdateUIClientRpc(int old, int value)
-    {
-        _timerUI.UpdateUI(value);
-    }
+    private void UpdateUIClientRpc(int old, int value) => _timerUI.UpdateUI(value);
 }

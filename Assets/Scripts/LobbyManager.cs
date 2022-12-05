@@ -7,13 +7,14 @@ public class LobbyManager : NetworkBehaviour
 {
     [SerializeField] private GameObject start;
     [SerializeField] private Transform[] positions;
-    private NetworkVariable<int> _playersAmount = new NetworkVariable<int>();
+    private NetworkVariable<int> _playersAmount;
     private PlayerSkins _skins;
 
     private void Awake()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += Check;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
+        _playersAmount = new NetworkVariable<int>();
         _skins = FindObjectOfType<PlayerSkins>();
     }
 

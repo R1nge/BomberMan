@@ -14,13 +14,18 @@ public class Bomb : NetworkBehaviour, IDamageable
     [SerializeField] private GameObject explosionVFX, explosionSound;
     [SerializeField] private LayerMask ignore;
     [SerializeField] private Color explosionColor;
-    private NetworkVariable<bool> _hasExploded = new NetworkVariable<bool>();
+    private NetworkVariable<bool> _hasExploded;
     private MeshRenderer _meshRenderer;
-    private NetworkVariable<float> _time = new NetworkVariable<float>();
+    private NetworkVariable<float> _time;
 
     public float ExplodeDelay => explodeDelay;
 
-    private void Awake() => _meshRenderer = GetComponent<MeshRenderer>();
+    private void Awake()
+    {
+        _hasExploded = new NetworkVariable<bool>();
+        _time = new NetworkVariable<float>();
+        _meshRenderer = GetComponent<MeshRenderer>();
+    }
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
 
@@ -219,9 +224,10 @@ public class Bomb : NetworkBehaviour, IDamageable
     private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
 
     private void OnTriggerExit(Collider other) => trigger.isTrigger = false;
+
     public void TakeDamage(int amount)
     {
-        if(_hasExploded.Value) return;
+        if (_hasExploded.Value) return;
         Explode();
     }
 }

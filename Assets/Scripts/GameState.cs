@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -7,7 +8,27 @@ using UnityEngine.SceneManagement;
 public class GameState : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI winner;
-    private NetworkVariable<bool> _gameEnded = new NetworkVariable<bool>();
+    private NetworkVariable<bool> _gameStarted;
+    private NetworkVariable<bool> _gameEnded;
+    public event Action OnGameStarted;
+
+    private void Awake()
+    {
+        _gameStarted = new NetworkVariable<bool>();
+        _gameEnded = new NetworkVariable<bool>();
+    }
+    
+    [ServerRpc(RequireOwnership = false)]
+    public void StartGameServerRpc()
+    {
+        if (_gameEnded.Value) return;
+        if (_gameStarted.Value) return;
+        _gameStarted.Value = true;
+        StartGameClientRpc();
+    }
+
+    [ClientRpc]
+    private void StartGameClientRpc() => OnGameStarted?.Invoke();
 
     [ServerRpc]
     public void WinServerRpc(string nickname)

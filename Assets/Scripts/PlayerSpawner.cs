@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿using System;
 using BayatGames.SaveGameFree;
 using Character;
 using TMPro;
@@ -7,57 +7,58 @@ using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    [SerializeField] private NetworkVariable<int> playersAmount;
+    private NetworkVariable<int> _playersAmount;
     private SpawnPositions _spawnPositions;
     private GameState _gameState;
     private PlayerSkins _skins;
 
     private void Awake()
     {
-        if (!NetworkManager.Singleton.IsHost)
-        {
-            playersAmount = new NetworkVariable<int>();
-        }
-
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
-
+        _playersAmount = new NetworkVariable<int>();
         _skins = FindObjectOfType<PlayerSkins>();
         _spawnPositions = FindObjectOfType<SpawnPositions>();
         _gameState = FindObjectOfType<GameState>();
+    }
+
+    private void Start() => _spawnPositions.GetPositions().OnListChanged += OnOnListChanged;
+
+    private void OnOnListChanged(NetworkListEvent<Vector3> changeevent)
+    {
+        if (changeevent.Index == 3)
+        {
+            if (IsServer)
+            {
+                SpawnPlayer(SaveGame.Load("Skin", 0), NetworkManager.Singleton.LocalClientId);
+            }
+        }
+    }
+
+    public override void OnNetworkSpawn()
+    {
+        if (IsServer) return;
+        SpawnPlayerServerRpc(SaveGame.Load("Skin", 0));
     }
 
     private void OnClientDisconnect(ulong obj)
     {
         if (IsServer)
         {
-            playersAmount.Value--;
+            _playersAmount.Value--;
         }
-    }
-
-    public override void OnNetworkSpawn()
-    {
-        StartCoroutine(Wait_C());
-    }
-
-    private IEnumerator Wait_C()
-    {
-        yield return new WaitForSeconds(1f);
-        SpawnPlayerServerRpc(SaveGame.Load("Skin", 0));
     }
 
     private void SpawnPlayer(int skinIndex, ulong ID)
     {
         if (IsServer)
         {
-            //TODO: load skin that player has chosen
-            //Quick and dirty hack, but i'll leave it for now
-            var player = Instantiate(_skins.GetPlayerPrefab(skinIndex), _spawnPositions.GetPositions()[playersAmount.Value],
+            var player = Instantiate(_skins.GetPlayerPrefab(skinIndex),
+                _spawnPositions.GetPositions()[_playersAmount.Value],
                 Quaternion.identity);
             player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
             player.GetComponent<NetworkObject>().transform.position =
-                _spawnPositions.GetPositions()[playersAmount.Value];
-
-            playersAmount.Value++;
+                _spawnPositions.GetPositions()[_playersAmount.Value];
+            _playersAmount.Value++;
         }
         else
         {
@@ -70,9 +71,9 @@ public class PlayerSpawner : NetworkBehaviour
         if (IsServer)
         {
             NetworkManager.Singleton.SpawnManager.SpawnedObjects[ID].Despawn();
-            playersAmount.Value--;
+            _playersAmount.Value--;
 
-            if (playersAmount.Value <= 1)
+            if (_playersAmount.Value <= 1)
             {
                 var controllers = FindObjectsOfType<MovementController>();
                 for (int i = 0; i < controllers.Length; i++)
@@ -115,6 +116,6 @@ public class PlayerSpawner : NetworkBehaviour
     public override void OnDestroy()
     {
         base.OnDestroy();
-        playersAmount.Dispose();
+        _playersAmount?.Dispose();
     }
 }

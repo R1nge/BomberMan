@@ -6,13 +6,15 @@ using UnityEngine;
 public class PlayerNick : NetworkBehaviour
 {
     [SerializeField] private TextMeshProUGUI nick;
-    private NetworkVariable<NetworkString> _str = new NetworkVariable<NetworkString>();
+    private NetworkVariable<NetworkString> _str;
     private Camera _camera;
     private string _nickStr;
 
+    //TODO: cache Camera.Main
+
     private void Awake()
     {
-        _camera = FindObjectOfType<Camera>();
+        _str = new NetworkVariable<NetworkString>();
         _nickStr = SaveGame.Load<string>("Nickname");
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
     }
@@ -23,7 +25,7 @@ public class PlayerNick : NetworkBehaviour
         SetNickServerRpc(_nickStr);
     }
 
-    private void Start()
+    public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
         SetNickServerRpc(_nickStr);
@@ -45,7 +47,7 @@ public class PlayerNick : NetworkBehaviour
 
     private void Update()
     {
-        nick.transform.rotation = _camera.transform.rotation;
+        nick.transform.rotation = Camera.main.transform.rotation;
     }
 
     public override void OnDestroy()

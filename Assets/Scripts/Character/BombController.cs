@@ -10,13 +10,15 @@ namespace Character
         [SerializeField] private PlayerUI playerUI;
         private Bombs _bombs;
 
-        private void Awake()
+        private void Awake() => _bombs = FindObjectOfType<Bombs>();
+
+        public override void OnNetworkSpawn()
         {
             bombAmount.OnValueChanged += (value, newValue) =>
             {
+                if(playerUI == null) return;
                 playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
             };
-            _bombs = FindObjectOfType<Bombs>();
         }
 
         private void Start() => playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);

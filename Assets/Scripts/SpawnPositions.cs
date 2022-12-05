@@ -10,14 +10,14 @@ public class SpawnPositions : NetworkBehaviour
 
     public void SetSpawnPositions(float width, float height)
     {
-        if (IsServer)
-        {
-            _networkPositions.Add(new Vector3(0, y, 0));
-            _networkPositions.Add(new Vector3(0, y, height));
-            _networkPositions.Add(new Vector3(width, y, 0));
-            _networkPositions.Add(new Vector3(width, y, height));
-        }
+        if (!IsServer) return;
+        _networkPositions.Add(new Vector3(0, y, 0));
+        _networkPositions.Add(new Vector3(0, y, height));
+        _networkPositions.Add(new Vector3(width, y, 0));
+        _networkPositions.Add(new Vector3(width, y, height));
     }
 
     public NetworkList<Vector3> GetPositions() => _networkPositions;
+
+    public override void OnDestroy() => _networkPositions?.Dispose();
 }

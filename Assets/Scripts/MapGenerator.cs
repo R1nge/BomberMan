@@ -1,4 +1,5 @@
-﻿using Unity.Mathematics;
+﻿using System;
+using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -13,16 +14,24 @@ public class MapGenerator : NetworkBehaviour
     private int _mapIndex;
     private SpawnPositions _spawnPositions;
 
-    private void Awake() => _spawnPositions = FindObjectOfType<SpawnPositions>();
+    private void Awake()
+    {
+        _spawnPositions = FindObjectOfType<SpawnPositions>();
+        _mapIndex = Random.Range(0, maps.Length);
+        _width = Mathf.FloorToInt(maps[_mapIndex].GetSize().x);
+        _height = Mathf.FloorToInt(maps[_mapIndex].GetSize().y);
+    }
+
+    private void Start()
+    {
+        if(!IsServer) return;
+        _spawnPositions.SetSpawnPositions((_width - 1) * maps[_mapIndex].tileSize,
+            (_height - 1) * maps[_mapIndex].tileSize);
+    }
 
     public override void OnNetworkSpawn()
     {
         if (!IsServer) return;
-        _mapIndex = Random.Range(0, maps.Length);
-        _width = Mathf.FloorToInt(maps[_mapIndex].GetSize().x);
-        _height = Mathf.FloorToInt(maps[_mapIndex].GetSize().y);
-        _spawnPositions.SetSpawnPositions((_width - 1) * maps[_mapIndex].tileSize,
-            (_height - 1) * maps[_mapIndex].tileSize);
         parent = Instantiate(parent);
         parent.GetComponent<NetworkObject>().Spawn(true);
         SpawnGrid();

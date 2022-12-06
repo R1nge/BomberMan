@@ -17,7 +17,7 @@ public class GameState : NetworkBehaviour
         _gameStarted = new NetworkVariable<bool>();
         _gameEnded = new NetworkVariable<bool>();
     }
-    
+
     [ServerRpc(RequireOwnership = false)]
     public void StartGameServerRpc()
     {
@@ -26,6 +26,16 @@ public class GameState : NetworkBehaviour
         _gameStarted.Value = true;
         StartGameClientRpc();
     }
+
+    [ServerRpc(RequireOwnership = false)]
+    public void TieServerRpc()
+    {
+        TieClientRpc();
+        StartCoroutine(Restart_c());
+    }
+
+    [ClientRpc]
+    private void TieClientRpc() => winner.text = "TIE";
 
     [ClientRpc]
     private void StartGameClientRpc() => OnGameStarted?.Invoke();

@@ -73,7 +73,7 @@ public class PlayerSpawner : NetworkBehaviour
             NetworkManager.Singleton.SpawnManager.SpawnedObjects[ID].Despawn();
             _playersAmount.Value--;
 
-            if (_playersAmount.Value <= 1)
+            if (_playersAmount.Value <= 1 && _playersAmount.Value > 0)
             {
                 var controllers = FindObjectsOfType<MovementController>();
                 for (int i = 0; i < controllers.Length; i++)
@@ -93,6 +93,10 @@ public class PlayerSpawner : NetworkBehaviour
 
                     _gameState.GameoverServerRpc();
                 }
+            }
+            else if (_playersAmount.Value <= 0)
+            {
+                _gameState.TieServerRpc();
             }
         }
         else

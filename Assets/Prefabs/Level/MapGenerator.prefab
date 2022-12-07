@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 7144832438692512162}
   - component: {fileID: 7144832438692512092}
   - component: {fileID: 7144832438692512093}
-  - component: {fileID: 7144832438692512163}
   m_Layer: 0
   m_Name: MapGenerator
   m_TagString: Untagged
@@ -68,16 +67,3 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b731aeca5ce19594a92c8f86928d3506, type: 2}
   spawnInCenter: {fileID: 7213625600458566743, guid: c6de05a1bc8723e4f82cb03a075a2da1,
     type: 3}
---- !u!114 &7144832438692512163
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7144832438692512095}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 68dda634f1014e5899e79f0b2d04bb26, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  y: 0.65

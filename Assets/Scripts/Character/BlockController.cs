@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 
 namespace Character
@@ -8,11 +7,18 @@ namespace Character
     {
         [SerializeField] private float distance;
         [SerializeField] private NetworkVariable<int> digAmount;
-        [SerializeField] private NetworkVariable<int> blockCount;
+        [SerializeField] private NetworkVariable<int> blockAmount;
         private MapGenerator _mapGenerator;
         private GameObject _block;
+        private BlocksUI _blocksUI;
 
-        private void Awake() => _mapGenerator = FindObjectOfType<MapGenerator>();
+        private void Awake()
+        {
+            _mapGenerator = FindObjectOfType<MapGenerator>();
+            _blocksUI = GetComponent<BlocksUI>();
+            digAmount.OnValueChanged += (value, newValue) => { _blocksUI.UpdateDig(newValue); };
+            blockAmount.OnValueChanged += (value, newValue) => { _blocksUI.UpdateBlock(newValue); };
+        }
 
         public override void OnNetworkSpawn()
         {
@@ -28,7 +34,7 @@ namespace Character
             if (!IsOwner) return;
             if (Input.GetMouseButtonDown(0))
             {
-                if (blockCount.Value <= 0) return;
+                if (blockAmount.Value <= 0) return;
                 if (!Physics.Raycast(transform.position, transform.forward, distance))
                 {
                     SpawnBlock(transform.position + transform.forward * distance);
@@ -54,7 +60,7 @@ namespace Character
                 var inst = Instantiate(_block, pos, Quaternion.identity).GetComponent<NetworkObject>();
                 inst.Spawn(true);
                 inst.GetComponent<PlaceInGrid>().PlaceInGridServerRpc();
-                blockCount.Value--;
+                blockAmount.Value--;
             }
             else
             {
@@ -76,7 +82,7 @@ namespace Character
                 if (networkObject.TryGetComponent(out Obstacle obstacle))
                 {
                     obstacle.TakeDamage(1000);
-                    blockCount.Value++;
+                    blockAmount.Value++;
                     digAmount.Value--;
                 }
             }

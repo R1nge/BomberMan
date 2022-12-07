@@ -24,7 +24,6 @@ namespace Character
             if (health.Value <= 0)
             {
                 _playerSpawner.Despawn(GetComponent<NetworkObject>().NetworkObjectId);
-                Debug.LogWarning("Player died", this);
             }
         }
 

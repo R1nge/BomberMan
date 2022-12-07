@@ -27,15 +27,15 @@ MonoBehaviour:
     type: 3}
   border: {fileID: 4104838189498066914, guid: 6988c13d48460b64b9ee04f8c9c36669, type: 3}
   wall: {fileID: 4104838189498066914, guid: 6988c13d48460b64b9ee04f8c9c36669, type: 3}
-  tileOffset: {x: 0, y: 0, z: 0}
-  obstacleOffset: {x: 0, y: 0, z: 0}
-  borderOffset: {x: 0, y: 0, z: 0}
-  wallOffset: {x: 0, y: 0, z: 0}
+  tileOffset: {x: 0, y: -0.075, z: 0}
+  obstacleOffset: {x: 0, y: -0.075, z: 0}
+  borderOffset: {x: 0, y: -0.075, z: 0}
+  wallOffset: {x: 0, y: -0.075, z: 0}
   tileSize: 3
   obstacleSize: 3
   borderSize: 3
   wallSize: 3
   drops:
   - {fileID: 5997730005480801457, guid: e7ed084790843bc4a813896095d6b17a, type: 3}
-  - {fileID: 4540809818351814248, guid: a0fa28d9c80464947aab0daf8d258477, type: 3}
+  - {fileID: 4540809818351814248, guid: 357c67261d2c74b4190a4c6fe1fba480, type: 3}
   - {fileID: 7755224955039302605, guid: fc428269865ce6b43bba800545360301, type: 3}

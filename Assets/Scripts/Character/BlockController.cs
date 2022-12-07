@@ -8,33 +8,30 @@ namespace Character
     {
         [SerializeField] private float distance;
         [SerializeField] private NetworkVariable<int> digAmount;
+        [SerializeField] private NetworkVariable<int> blockCount;
         private MapGenerator _mapGenerator;
         private GameObject _block;
-        private NetworkVariable<int> _blockCount;
 
-        private void Awake()
+        private void Awake() => _mapGenerator = FindObjectOfType<MapGenerator>();
+
+        public override void OnNetworkSpawn()
         {
-            _mapGenerator = FindObjectOfType<MapGenerator>();
-            _blockCount = new NetworkVariable<int>();
+            if (!IsServer) return;
+            _block = _mapGenerator.GetCurrentMapConfig().playerWall;
         }
 
-        public override void OnNetworkSpawn() => _block = _mapGenerator.GetCurrentMapConfig().obstacle;
-
-
-        [ServerRpc]
-        public void IncreaseDigAmountServerRpc(int amount) => digAmount.Value += amount;
+        [ServerRpc(RequireOwnership = false)]
+        public void IncreaseDigAmountServerRpc() => digAmount.Value++;
 
         private void Update()
         {
+            if (!IsOwner) return;
             if (Input.GetMouseButtonDown(0))
             {
-                if (_blockCount.Value <= 0) return;
+                if (blockCount.Value <= 0) return;
                 if (!Physics.Raycast(transform.position, transform.forward, distance))
                 {
-                    if (IsOwner)
-                    {
-                        SpawnBlockServerRpc(transform.position + transform.forward * distance);
-                    }
+                    SpawnBlock(transform.position + transform.forward * distance);
                 }
             }
             else if (Input.GetMouseButtonDown(1))
@@ -42,25 +39,33 @@ namespace Character
                 if (digAmount.Value <= 0) return;
                 if (Physics.Raycast(transform.position, transform.forward, out var hit, distance))
                 {
-                    if (IsOwner)
+                    if (hit.transform.TryGetComponent(out NetworkObject networkObject))
                     {
-                        if (hit.transform.TryGetComponent(out NetworkObject networkObject))
-                        {
-                            DestroyBlockServerRpc(networkObject);
-                        }
+                        DestroyBlockServerRpc(networkObject);
                     }
                 }
+            }
+        }
+
+        private void SpawnBlock(Vector3 pos)
+        {
+            if (IsServer)
+            {
+                var inst = Instantiate(_block, pos, Quaternion.identity).GetComponent<NetworkObject>();
+                inst.Spawn(true);
+                inst.GetComponent<PlaceInGrid>().PlaceInGridServerRpc();
+                blockCount.Value--;
+            }
+            else
+            {
+                SpawnBlockServerRpc(pos);
             }
         }
 
         [ServerRpc]
         private void SpawnBlockServerRpc(Vector3 pos)
         {
-            var inst = Instantiate(_block, pos, Quaternion.identity);
-            var netInst = inst.GetComponent<NetworkObject>();
-            netInst.Spawn(true);
-            netInst.GetComponent<PlaceInGrid>().PlaceInGridServerRpc();
-            _blockCount.Value--;
+            SpawnBlock(pos);
         }
 
         [ServerRpc]
@@ -71,7 +76,7 @@ namespace Character
                 if (networkObject.TryGetComponent(out Obstacle obstacle))
                 {
                     obstacle.TakeDamage(1000);
-                    _blockCount.Value++;
+                    blockCount.Value++;
                     digAmount.Value--;
                 }
             }

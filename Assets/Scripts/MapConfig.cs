@@ -7,6 +7,7 @@ public class MapConfig : ScriptableObject
     public int minWidth, minHeight;
     public int maxWidth, maxHeight;
     public Vector3 tileRotation, obstacleRotation, borderRotation, wallRotation;
+    public GameObject playerWall;
     public GameObject tile, obstacle, border, wall;
     public Vector3 tileOffset, obstacleOffset, borderOffset, wallOffset;
     public float tileSize, obstacleSize, borderSize, wallSize;

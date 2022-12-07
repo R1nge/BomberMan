@@ -21,7 +21,11 @@ namespace Character
             };
         }
 
-        private void Start() => playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+        private void Start()
+        {
+            if (playerUI == null) return;
+            playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+        }
 
         [ServerRpc(RequireOwnership = false)]
         public void IncreaseBombAmountServerRpc(int value)

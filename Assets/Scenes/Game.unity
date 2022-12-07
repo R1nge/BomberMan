@@ -1352,7 +1352,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!114 &1549285994
 MonoBehaviour:
@@ -1667,6 +1667,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: MapGenerator
       objectReference: {fileID: 0}
+    - target: {fileID: 7144832438692512095, guid: 1dd8ba6254bc6b04dac2ef9dc8c957f5,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7144832438692512162, guid: 1dd8ba6254bc6b04dac2ef9dc8c957f5,
         type: 3}
       propertyPath: m_RootOrder
@@ -1735,6 +1740,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 9097859495332757280, guid: 380a8aa3329b28241af7dca2db2ece63,
+        type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9097859495332757281, guid: 380a8aa3329b28241af7dca2db2ece63,
         type: 3}

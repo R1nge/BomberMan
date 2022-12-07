@@ -11,8 +11,7 @@ public class PlayerUI : NetworkBehaviour
     {
         if (!IsOwner)
         {
-            Destroy(UI);
-            Destroy(this);
+            UI.SetActive(false);
         }
     }
 

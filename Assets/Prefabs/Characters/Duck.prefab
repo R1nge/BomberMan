@@ -389,8 +389,8 @@ GameObject:
   - component: {fileID: 7478897090452916194}
   - component: {fileID: -2397869049352029681}
   - component: {fileID: 4664105717556177269}
-  - component: {fileID: 3114037825438893448}
   - component: {fileID: -7902234180951368133}
+  - component: {fileID: 3114037825438893448}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Player
@@ -562,6 +562,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   offset: {x: 0, y: 10, z: -5}
+--- !u!114 &-7902234180951368133
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2671930508506096047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a27f09de0ac4d0ea4f40c1e1caa121c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 2
+  digAmount:
+    m_InternalValue: 0
+  blockCount:
+    m_InternalValue: 1
 --- !u!114 &3114037825438893448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,22 +594,6 @@ MonoBehaviour:
   UI: {fileID: 2963988294445862511}
   hp: {fileID: 5870996807439955106}
   bombs: {fileID: 6962634965138203549}
---- !u!114 &-7902234180951368133
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2671930508506096047}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a27f09de0ac4d0ea4f40c1e1caa121c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distance: 2
-  block: {fileID: 8375072482178510364, guid: c944c564ac471414dadf6d836d0fbb70, type: 3}
-  blockCount:
-    m_InternalValue: 1
 --- !u!1 &2731218687414477970
 GameObject:
   m_ObjectHideFlags: 0

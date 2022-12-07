@@ -20,6 +20,8 @@ MonoBehaviour:
   obstacleRotation: {x: 0, y: 0, z: 0}
   borderRotation: {x: 0, y: 0, z: 0}
   wallRotation: {x: 0, y: 0, z: 0}
+  playerWall: {fileID: 567470547942927969, guid: 49b3d53d95cacf24787bd3511099175f,
+    type: 3}
   tile: {fileID: 8626983368367252015, guid: 79c76703732eddb47a364c0a4e1d5615, type: 3}
   obstacle: {fileID: 567470547942927969, guid: 49b3d53d95cacf24787bd3511099175f, type: 3}
   border: {fileID: 8626983368367252015, guid: 79c76703732eddb47a364c0a4e1d5615, type: 3}

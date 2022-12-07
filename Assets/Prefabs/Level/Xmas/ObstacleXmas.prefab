@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 8656171797485520545}
   - component: {fileID: 3950752581646403843}
   - component: {fileID: -9060901888638740668}
+  - component: {fileID: 1361940819826141124}
   m_Layer: 0
   m_Name: ObstacleXmas
   m_TagString: Untagged
@@ -132,10 +133,6 @@ MonoBehaviour:
   health: 1
   dropChance:
     m_InternalValue: 0.25
-  drops:
-  - {fileID: 7755224955039302605, guid: fc428269865ce6b43bba800545360301, type: 3}
-  - {fileID: 5997730005480801457, guid: e7ed084790843bc4a813896095d6b17a, type: 3}
-  - {fileID: 4540809818351814248, guid: 357c67261d2c74b4190a4c6fe1fba480, type: 3}
   dropOffset: {x: 0, y: 1.25, z: 0}
 --- !u!114 &-9060901888638740668
 MonoBehaviour:
@@ -150,3 +147,29 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yOffset: -0.65
+--- !u!114 &1361940819826141124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403332031520893602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e96cb6065543e43c4a752faaa1468eb1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SyncPositionX: 1
+  SyncPositionY: 1
+  SyncPositionZ: 1
+  SyncRotAngleX: 1
+  SyncRotAngleY: 1
+  SyncRotAngleZ: 1
+  SyncScaleX: 1
+  SyncScaleY: 1
+  SyncScaleZ: 1
+  PositionThreshold: 0.001
+  RotAngleThreshold: 0.01
+  ScaleThreshold: 0.01
+  InLocalSpace: 0
+  Interpolate: 1

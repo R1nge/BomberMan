@@ -16,7 +16,7 @@ namespace Character
         {
             bombAmount.OnValueChanged += (value, newValue) =>
             {
-                if(playerUI == null) return;
+                if (playerUI == null) return;
                 playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
             };
         }
@@ -52,7 +52,9 @@ namespace Character
             {
                 bombAmount.Value--;
                 var bomb = Instantiate(_bombs.GetBomb(index), position, Quaternion.identity);
-                bomb.GetComponent<NetworkObject>().Spawn(true);
+                var net = bomb.GetComponent<NetworkObject>();
+                net.Spawn(true);
+                net.GetComponent<PlaceInGrid>().PlaceInGridServerRpc();
                 var countdown = bomb.GetComponent<Bomb>().ExplodeDelay;
                 Invoke(nameof(ResetSpawnServerRpc), countdown);
             }

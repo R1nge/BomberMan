@@ -10,7 +10,6 @@ public class Bomb : NetworkBehaviour, IDamageable
     [SerializeField] private NetworkVariable<int> damage;
     [SerializeField] private int distance, radius;
     [SerializeField] private Collider trigger;
-    [SerializeField] private float yOffset;
     [SerializeField] private GameObject explosionVFX, explosionSound;
     [SerializeField] private LayerMask ignore;
     [SerializeField] private Color explosionColor;
@@ -31,12 +30,6 @@ public class Bomb : NetworkBehaviour, IDamageable
 
     public override void OnNetworkSpawn()
     {
-        var position = transform.position;
-        position = new Vector3(
-            RoundToNearestGrid(position.x),
-            position.y + yOffset,
-            RoundToNearestGrid(position.z));
-        transform.position = position;
         _time.OnValueChanged +=
             (value, newValue) => UpdateColor(explosionColor, newValue / explodeDelay / 100);
     }
@@ -83,18 +76,6 @@ public class Bomb : NetworkBehaviour, IDamageable
         if (IsOwner) return;
         var timeToWait = time - NetworkManager.ServerTime.Time;
         StartCoroutine(WaitSync((float) timeToWait, color, lerp));
-    }
-
-    float RoundToNearestGrid(float pos)
-    {
-        float xDiff = pos % gridSize;
-        pos -= xDiff;
-        if (xDiff > gridSize / 2)
-        {
-            pos += gridSize;
-        }
-
-        return pos;
     }
 
     private void Explode()

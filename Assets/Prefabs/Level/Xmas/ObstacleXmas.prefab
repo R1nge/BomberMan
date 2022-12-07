@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7403332031521192619}
   - component: {fileID: 8656171797485520545}
   - component: {fileID: 3950752581646403843}
+  - component: {fileID: -9060901888638740668}
   m_Layer: 0
   m_Name: ObstacleXmas
   m_TagString: Untagged
@@ -30,7 +31,7 @@ Transform:
   m_GameObject: {fileID: 7403332031520893602}
   m_LocalRotation: {x: 0.000000021855694, y: -0.00000008742278, z: 1.9106855e-15,
     w: 1}
-  m_LocalPosition: {x: 0.85, y: -1.16, z: -6.53}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 6, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -134,4 +135,18 @@ MonoBehaviour:
   drops:
   - {fileID: 7755224955039302605, guid: fc428269865ce6b43bba800545360301, type: 3}
   - {fileID: 5997730005480801457, guid: e7ed084790843bc4a813896095d6b17a, type: 3}
+  - {fileID: 4540809818351814248, guid: 357c67261d2c74b4190a4c6fe1fba480, type: 3}
   dropOffset: {x: 0, y: 1.25, z: 0}
+--- !u!114 &-9060901888638740668
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403332031520893602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 270413ccf57d46c4a8a8788864df6646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yOffset: -0.65

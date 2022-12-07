@@ -1,8 +1,5 @@
-﻿using System;
-using Unity.Mathematics;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
-using Random = UnityEngine.Random;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -14,6 +11,8 @@ public class MapGenerator : NetworkBehaviour
     private int _mapIndex;
     private SpawnPositions _spawnPositions;
 
+    public MapConfig GetCurrentMapConfig() => maps[_mapIndex];
+
     private void Awake()
     {
         _spawnPositions = FindObjectOfType<SpawnPositions>();
@@ -24,7 +23,7 @@ public class MapGenerator : NetworkBehaviour
 
     private void Start()
     {
-        if(!IsServer) return;
+        if (!IsServer) return;
         _spawnPositions.SetSpawnPositions((_width - 1) * maps[_mapIndex].tileSize,
             (_height - 1) * maps[_mapIndex].tileSize);
     }

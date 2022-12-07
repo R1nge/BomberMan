@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 2394997258475879828}
   - component: {fileID: 6596569319993857921}
   - component: {fileID: 6596569319993857982}
+  - component: {fileID: -1878735453687592410}
   m_Layer: 0
   m_Name: AnimeBomb
   m_TagString: Untagged
@@ -162,7 +163,6 @@ MonoBehaviour:
   distance: 5
   radius: 1
   trigger: {fileID: 2394997258475879828}
-  yOffset: 1.25
   explosionVFX: {fileID: 4469748023635768436, guid: 9ced62cbd4e44a44888cbec894c50bf2,
     type: 3}
   explosionSound: {fileID: 3440309824840511471, guid: 1d9ddfc7a1c75ac4599b1386a7a7230d,
@@ -171,3 +171,16 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   explosionColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &-1878735453687592410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5818765566873767174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 270413ccf57d46c4a8a8788864df6646, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  yOffset: 1

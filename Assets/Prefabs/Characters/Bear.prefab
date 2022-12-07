@@ -192,6 +192,7 @@ GameObject:
   - component: {fileID: -7519992874034617840}
   - component: {fileID: 3609624480444556646}
   - component: {fileID: 3294451567235112809}
+  - component: {fileID: -8692029531688192087}
   m_Layer: 0
   m_Name: Bear
   m_TagString: Player
@@ -378,6 +379,21 @@ MonoBehaviour:
   UI: {fileID: 6687382943974245382}
   hp: {fileID: 2059661382900638960}
   bombs: {fileID: 3285562294404155520}
+--- !u!114 &-8692029531688192087
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 560898999308649336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a27f09de0ac4d0ea4f40c1e1caa121c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  distance: 0
+  digAmount:
+    m_InternalValue: 0
 --- !u!1 &1051040477436880798
 GameObject:
   m_ObjectHideFlags: 0

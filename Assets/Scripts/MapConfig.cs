@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Powerups;
+using UnityEngine;
 
 [CreateAssetMenu(fileName = "MapConfig", menuName = "MapConfig")]
 public class MapConfig : ScriptableObject
@@ -9,6 +10,7 @@ public class MapConfig : ScriptableObject
     public GameObject tile, obstacle, border, wall;
     public Vector3 tileOffset, obstacleOffset, borderOffset, wallOffset;
     public float tileSize, obstacleSize, borderSize, wallSize;
+    public Powerup[] drops;
 
     public Vector2 GetSize()
     {

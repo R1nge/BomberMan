@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 699265439735104842}
   - component: {fileID: 8712359817115727805}
   - component: {fileID: 1206719255328776799}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Model
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -95,8 +95,8 @@ GameObject:
   - component: {fileID: 4540809818351814249}
   - component: {fileID: 4540809818351814251}
   - component: {fileID: 4540809818351814248}
-  m_Layer: 0
-  m_Name: Diamond_Shovel
+  m_Layer: 6
+  m_Name: DigMinecraft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -6,14 +6,6 @@ public class HowToPlayUI : MonoBehaviour
 
     private void Awake() => Close();
 
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape) && howTo.activeSelf)
-        {
-            Close();
-        }
-    }
-
     public void Open()
     {
         button.SetActive(false);

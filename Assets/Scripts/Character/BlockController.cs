@@ -1,5 +1,6 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Character
 {
@@ -28,27 +29,26 @@ namespace Character
 
         [ServerRpc(RequireOwnership = false)]
         public void IncreaseDigAmountServerRpc() => digAmount.Value++;
-
-        private void Update()
+        
+        public void OnPlaceBlock(InputValue value)
         {
             if (!IsOwner) return;
-            if (Input.GetMouseButtonDown(0))
+            if (blockAmount.Value <= 0) return;
+            if (!Physics.Raycast(transform.position, transform.forward, distance))
             {
-                if (blockAmount.Value <= 0) return;
-                if (!Physics.Raycast(transform.position, transform.forward, distance))
-                {
-                    SpawnBlock(transform.position + transform.forward * distance);
-                }
+                SpawnBlock(transform.position + transform.forward * distance);
             }
-            else if (Input.GetMouseButtonDown(1))
+        }
+
+        public void OnBreakBlock(InputValue value)
+        {
+            if (!IsOwner) return;
+            if (digAmount.Value <= 0) return;
+            if (Physics.Raycast(transform.position, transform.forward, out var hit, distance))
             {
-                if (digAmount.Value <= 0) return;
-                if (Physics.Raycast(transform.position, transform.forward, out var hit, distance))
+                if (hit.transform.TryGetComponent(out NetworkObject networkObject))
                 {
-                    if (hit.transform.TryGetComponent(out NetworkObject networkObject))
-                    {
-                        DestroyBlockServerRpc(networkObject);
-                    }
+                    DestroyBlockServerRpc(networkObject);
                 }
             }
         }

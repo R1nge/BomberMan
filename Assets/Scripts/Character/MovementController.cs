@@ -1,5 +1,7 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Character
 {
@@ -11,6 +13,7 @@ namespace Character
         private Vector3 _moveDirection = Vector3.zero;
         private CharacterController _characterController;
         private GameState _gameState;
+        private float _curSpeedX, _curSpeedY;
 
         private void Awake()
         {
@@ -21,7 +24,7 @@ namespace Character
 
         public override void OnNetworkSpawn()
         {
-            if(!IsOwner) return;
+            if (!IsOwner) return;
             _gameState.OnGameStarted += OnGameStartedServerRpc;
         }
 
@@ -33,10 +36,7 @@ namespace Character
             if (!IsOwner || !_canMove.Value) return;
             Vector3 forward = Vector3.forward;
             Vector3 right = Vector3.right;
-            float curSpeedX = _canMove.Value ? speed.Value * Input.GetAxis("Vertical") : 0;
-            float curSpeedY = _canMove.Value ? speed.Value * Input.GetAxis("Horizontal") : 0;
-            _moveDirection = forward * curSpeedX + right * curSpeedY;
-
+            _moveDirection = forward * _curSpeedX + right * _curSpeedY;
             if (_moveDirection != Vector3.zero)
             {
                 var targetRot = Quaternion.LookRotation(_moveDirection, Vector3.up);
@@ -45,6 +45,13 @@ namespace Character
             }
 
             _characterController.Move(_moveDirection * Time.deltaTime);
+        }
+
+        public void OnMove(InputValue value)
+        {
+            if (!_canMove.Value) return;
+            _curSpeedX = value.Get<Vector2>().y * speed.Value;
+            _curSpeedY = value.Get<Vector2>().x * speed.Value;
         }
 
         [ServerRpc(RequireOwnership = false)]

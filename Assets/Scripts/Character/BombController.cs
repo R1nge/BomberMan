@@ -1,6 +1,7 @@
 ﻿using BayatGames.SaveGameFree;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Character
 {
@@ -34,10 +35,10 @@ namespace Character
             bombAmount.Value += value;
         }
 
-        private void Update()
+        public void OnPlaceBomb(InputValue value)
         {
             if (!IsOwner) return;
-            if (Input.GetKeyDown(KeyCode.Space) && bombAmount.Value > 0)
+            if (bombAmount.Value > 0)
             {
                 if (IsServer)
                 {

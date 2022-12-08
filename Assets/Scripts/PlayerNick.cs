@@ -1,4 +1,7 @@
-﻿using BayatGames.SaveGameFree;
+﻿using System;
+using System.Net;
+using System.Net.Sockets;
+using BayatGames.SaveGameFree;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -16,13 +19,21 @@ public class PlayerNick : NetworkBehaviour
     {
         _str = new NetworkVariable<NetworkString>();
         _nickStr = SaveGame.Load<string>("Nickname");
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
     }
+
+    private void Start() => NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
 
     private void OnClientConnected(ulong obj)
     {
         if (!IsOwner) return;
-        SetNickServerRpc(_nickStr);
+        if (IsServer)
+        {
+            SetNickClientRpc(_nickStr);
+        }
+        else
+        {
+            SetNickServerRpc(_nickStr);
+        }
     }
 
     public override void OnNetworkSpawn()

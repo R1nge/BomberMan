@@ -1,11 +1,15 @@
 ﻿using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerUI : NetworkBehaviour
 {
     [SerializeField] private GameObject UI, mobileControls;
     [SerializeField] private TextMeshProUGUI hp, bombs;
+    private PlayerInput _input;
+
+    private void Awake() => _input = GetComponent<PlayerInput>();
 
     public override void OnNetworkSpawn()
     {
@@ -13,6 +17,7 @@ public class PlayerUI : NetworkBehaviour
         {
             UI.SetActive(false);
             mobileControls.SetActive(false);
+            _input.enabled = false;
         }
 #if !UNITY_ANDROID
        else

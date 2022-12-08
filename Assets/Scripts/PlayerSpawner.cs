@@ -50,6 +50,7 @@ public class PlayerSpawner : NetworkBehaviour
 
     private void SpawnPlayer(int skinIndex, ulong ID)
     {
+        if (_gameState.GameStarted.Value) return;
         if (IsServer)
         {
             var player = Instantiate(_skins.GetPlayerPrefab(skinIndex),

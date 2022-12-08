@@ -12,6 +12,8 @@ public class GameState : NetworkBehaviour
     private NetworkVariable<bool> _gameEnded;
     public event Action OnGameStarted;
 
+    public NetworkVariable<bool> GameStarted => _gameStarted;
+
     private void Awake()
     {
         _gameStarted = new NetworkVariable<bool>();

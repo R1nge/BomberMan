@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 7625570216989148931}
   - component: {fileID: 8803022734290683637}
   - component: {fileID: 3528579576006497571}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Place
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -862,7 +862,7 @@ GameObject:
   - component: {fileID: 398265121049037077}
   - component: {fileID: 6718508579774099142}
   - component: {fileID: 1816800616812720}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Remove
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -952,7 +952,7 @@ GameObject:
   - component: {fileID: 2957960979402552315}
   - component: {fileID: 8449247478263706884}
   - component: {fileID: 766999996813652298}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1547,7 +1547,7 @@ GameObject:
   - component: {fileID: 697859413123129901}
   - component: {fileID: 7913254324443090953}
   - component: {fileID: 8365357226512940416}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Joystick
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2255,7 +2255,7 @@ GameObject:
   - component: {fileID: 4699579770061874846}
   - component: {fileID: 6822017885210446307}
   - component: {fileID: 4069234388319948826}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: MobileInput
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2342,11 +2342,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_IgnoreReversedGraphics: 1
+  m_IgnoreReversedGraphics: 0
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 32
 --- !u!1 &8551689694989694297
 GameObject:
   m_ObjectHideFlags: 0

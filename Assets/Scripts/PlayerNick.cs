@@ -1,7 +1,4 @@
-﻿using System;
-using System.Net;
-using System.Net.Sockets;
-using BayatGames.SaveGameFree;
+﻿using BayatGames.SaveGameFree;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -25,14 +22,13 @@ public class PlayerNick : NetworkBehaviour
 
     private void OnClientConnected(ulong obj)
     {
-        if (!IsOwner) return;
-        if (IsServer)
+        if (IsOwner)
         {
-            SetNickClientRpc(_nickStr);
+            SetNickServerRpc(_nickStr);
         }
         else
         {
-            SetNickServerRpc(_nickStr);
+            SetNickClientRpc(_nickStr);
         }
     }
 

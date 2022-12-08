@@ -8,7 +8,8 @@ public class Bomb : NetworkBehaviour, IDamageable
     [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
     [SerializeField] private NetworkVariable<int> damage;
-    [SerializeField] private int distance, radius;
+    [SerializeField] private int distance;
+    [SerializeField] private float radius;
     [SerializeField] private Collider trigger;
     [SerializeField] private GameObject explosionVFX, explosionSound;
     [SerializeField] private LayerMask ignore;
@@ -97,7 +98,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     [ClientRpc]
     private void SpawnSoundClientRpc() => Instantiate(explosionSound, transform.position, quaternion.identity);
 
-    private void Raycast(Vector3 pos, Vector3 dir, int dist, int rad)
+    private void Raycast(Vector3 pos, Vector3 dir, int dist, float rad)
     {
         Ray ray = new Ray(pos, dir);
         if (Physics.SphereCast(ray, rad, out var hit, dist * gridSize, ~ignore))

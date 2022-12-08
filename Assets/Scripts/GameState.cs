@@ -35,7 +35,7 @@ public class GameState : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void TieClientRpc() => winner.text = "TIE";
+    private void TieClientRpc() => winner.text = "DRAW";
 
     [ClientRpc]
     private void StartGameClientRpc() => OnGameStarted?.Invoke();

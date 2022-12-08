@@ -8,24 +8,28 @@ namespace Character
     public class BombController : NetworkBehaviour
     {
         [SerializeField] private NetworkVariable<int> bombAmount, maxBombAmount;
-        [SerializeField] private PlayerUI playerUI;
+        private PlayerUI _playerUI;
         private Bombs _bombs;
 
-        private void Awake() => _bombs = FindObjectOfType<Bombs>();
+        private void Awake()
+        {
+            _playerUI = GetComponent<PlayerUI>();
+            _bombs = FindObjectOfType<Bombs>();
+        }
 
         public override void OnNetworkSpawn()
         {
             bombAmount.OnValueChanged += (value, newValue) =>
             {
-                if (playerUI == null) return;
-                playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+                if (_playerUI == null) return;
+                _playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
             };
         }
 
         private void Start()
         {
-            if (playerUI == null) return;
-            playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+            if (_playerUI == null) return;
+            _playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
         }
 
         [ServerRpc(RequireOwnership = false)]

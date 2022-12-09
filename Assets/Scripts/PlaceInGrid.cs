@@ -14,7 +14,7 @@ public class PlaceInGrid : NetworkBehaviour
         var position = transform.position;
         position = new Vector3(
             RoundToNearestGrid(position.x),
-            position.y + yOffset,
+            RoundToNearestGrid(position.y) + yOffset,
             RoundToNearestGrid(position.z));
         transform.position = position;
     }

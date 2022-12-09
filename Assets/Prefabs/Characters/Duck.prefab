@@ -718,6 +718,7 @@ GameObject:
   - component: {fileID: -7902234180951368133}
   - component: {fileID: 3114037825438893448}
   - component: {fileID: 1347122469770758297}
+  - component: {fileID: 2672677975754860117}
   m_Layer: 0
   m_Name: Duck
   m_TagString: Player
@@ -967,6 +968,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dig: {fileID: 5937952623571390137}
   block: {fileID: 926663636812935232}
+--- !u!114 &2672677975754860117
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2671930508506096047}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f8944d6557453b89f1e31dfd889097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration:
+    m_InternalValue: 15
 --- !u!1 &2731218687414477970
 GameObject:
   m_ObjectHideFlags: 0
@@ -1098,8 +1113,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.5
+  m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

@@ -431,6 +431,7 @@ GameObject:
   - component: {fileID: -2242541620595701034}
   - component: {fileID: 8645013317823587889}
   - component: {fileID: -3943070878389685496}
+  - component: {fileID: 2286465662268619107}
   m_Layer: 0
   m_Name: Dog
   m_TagString: Player
@@ -680,6 +681,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dig: {fileID: 1054735550676448841}
   block: {fileID: 8785229158016931160}
+--- !u!114 &2286465662268619107
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673668852280279707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92f8944d6557453b89f1e31dfd889097, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration:
+    m_InternalValue: 15
 --- !u!1 &698712358413573048
 GameObject:
   m_ObjectHideFlags: 0
@@ -773,8 +788,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 1
-  m_fontSizeBase: 1
+  m_fontSize: 0.5
+  m_fontSizeBase: 0.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18

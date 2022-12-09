@@ -29,12 +29,12 @@ namespace Character
 
         [ServerRpc(RequireOwnership = false)]
         public void IncreaseDigAmountServerRpc() => digAmount.Value++;
-        
+
         public void OnPlaceBlock(InputValue value)
         {
             if (!IsOwner) return;
             if (blockAmount.Value <= 0) return;
-            if (!Physics.Raycast(transform.position, transform.forward, distance))
+            if (!Physics.Raycast(transform.position, transform.forward, distance * 1.25f))
             {
                 SpawnBlock(transform.position + transform.forward * distance);
             }

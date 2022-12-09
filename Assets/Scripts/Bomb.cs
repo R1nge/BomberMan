@@ -205,7 +205,11 @@ public class Bomb : NetworkBehaviour, IDamageable
     [ServerRpc(RequireOwnership = false)]
     private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
 
-    private void OnTriggerExit(Collider other) => trigger.isTrigger = false;
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+        trigger.isTrigger = false;
+    }
 
     public void TakeDamage(int amount)
     {

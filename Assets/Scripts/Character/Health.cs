@@ -8,11 +8,13 @@ namespace Character
         [SerializeField] private NetworkVariable<int> health;
         private PlayerSpawner _playerSpawner;
         private PlayerUI _playerUI;
+        private ShieldController _shieldController;
 
         private void Awake()
         {
             _playerSpawner = FindObjectOfType<PlayerSpawner>();
             _playerUI = GetComponent<PlayerUI>();
+            _shieldController = GetComponent<ShieldController>();
             health.OnValueChanged += _playerUI.UpdateHealth;
         }
 
@@ -20,6 +22,12 @@ namespace Character
 
         public void TakeDamage(int amount)
         {
+            if (_shieldController.IsActive.Value)
+            {
+                _shieldController.UseShieldServerRpc();
+                return;
+            }
+
             health.Value -= amount;
             if (health.Value <= 0)
             {

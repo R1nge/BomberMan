@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System;
+using System.Text;
 using BayatGames.SaveGameFree;
 using TMPro;
 using Unity.Netcode;
@@ -12,33 +13,31 @@ public class ConnectMenu : NetworkBehaviour
     [SerializeField] private TMP_InputField nickInput, ipInput, passwordInput;
     [SerializeField] private Button host, client;
 
+    private void Awake()
+    {
+        ipInput.text = SaveGame.Load("LastIP", String.Empty);
+        nickInput.text = SaveGame.Load("Nickname", nickInput.text);
+    }
+
     private void Start()
     {
-        if (host != null)
+        host.onClick.AddListener(() =>
         {
-            host.onClick.AddListener(() =>
-            {
-                NetworkManager.Singleton.ConnectionApprovalCallback ??= ApprovalCheck;
-                NetworkManager.Singleton.StartHost();
-            });
-        }
+            NetworkManager.Singleton.ConnectionApprovalCallback ??= ApprovalCheck;
+            NetworkManager.Singleton.StartHost();
+        });
 
-        if (client != null)
+        client.onClick.AddListener(() =>
         {
-            client.onClick.AddListener(() =>
-            {
-                NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(passwordInput.text);
-                NetworkManager.Singleton.StartClient();
-            });
-        }
+            NetworkManager.Singleton.NetworkConfig.ConnectionData = Encoding.ASCII.GetBytes(passwordInput.text);
+            NetworkManager.Singleton.StartClient();
+        });
 
         NetworkManager.Singleton.OnServerStarted += OnServerStarted;
+        NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = ipInput.text;
     }
 
-    private void OnServerStarted()
-    {
-        LoadLobby();
-    }
+    private void OnServerStarted() => LoadLobby();
 
     private void LoadLobby()
     {
@@ -50,13 +49,7 @@ public class ConnectMenu : NetworkBehaviour
     public void SetIp()
     {
         NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = ipInput.text;
-    }
-
-    public void Disconnect()
-    {
-        NetworkManager.Singleton.Shutdown();
-        Destroy(NetworkManager.Singleton.gameObject);
-        SceneManager.LoadScene("MainMenu");
+        SaveGame.Save("LastIP", ipInput.text);
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request,

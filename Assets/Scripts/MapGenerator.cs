@@ -99,22 +99,22 @@ public class MapGenerator : NetworkBehaviour
                 if (x < _width + 1 && z == _height)
                 {
                     Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.borderRotation);
+                        map.borderSize, map.topRotation);
                 }
                 else if (x < _width + 1 && z == -1)
                 {
                     Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.borderRotation);
+                        map.borderSize, -map.topRotation);
                 }
                 else if (x == -1 && z < _height + 1)
                 {
                     Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.borderRotation);
+                        map.borderSize, map.leftRotation);
                 }
                 else if (x == _width && z < _height + 1)
                 {
                     Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.borderRotation);
+                        map.borderSize, -map.leftRotation);
                 }
             }
         }

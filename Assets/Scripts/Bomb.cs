@@ -135,9 +135,7 @@ public class Bomb : NetworkBehaviour, IDamageable
 
     private void SpawnExplosionVfx(Vector3 dir, int amount)
     {
-        for (int i = 0;
-            i < amount;
-            i++)
+        for (int i = 0; i < amount; i++)
         {
             SpawnExplosionVfxServerRpc(dir, i);
         }

@@ -10,14 +10,18 @@ namespace Character
         [SerializeField] private NetworkVariable<float> duration;
         [SerializeField] private int distance;
         [SerializeField] private float radius;
-        [SerializeField] private int gridSize;
         [SerializeField] private GameObject explosionVFX;
         [SerializeField] private LayerMask ignore;
         private NetworkVariable<bool> _isActive;
+        private MapGenerator _mapGenerator;
 
         public NetworkVariable<bool> IsActive => _isActive;
 
-        private void Awake() => _isActive = new NetworkVariable<bool>();
+        private void Awake()
+        {
+            _isActive = new NetworkVariable<bool>();
+            _mapGenerator = FindObjectOfType<MapGenerator>();
+        }
 
         [ServerRpc(RequireOwnership = false)]
         public void ApplyShieldServerRpc()
@@ -31,9 +35,10 @@ namespace Character
         public void UseShieldServerRpc()
         {
             if (!_isActive.Value) return;
-            //TODO: Raycast, spawn explosions
+
             var position = transform.position;
-            Raycast(position, Vector3.forward, distance * gridSize, radius);
+
+            Raycast(position, Vector3.forward, distance, radius);
             Raycast(position, Vector3.back, distance, radius);
             Raycast(position, Vector3.right, distance, radius);
             Raycast(position, Vector3.left, distance, radius);
@@ -43,13 +48,14 @@ namespace Character
         private void Raycast(Vector3 pos, Vector3 dir, int dist, float rad)
         {
             Ray ray = new Ray(pos, dir);
-            if (Physics.SphereCast(ray, rad, out var hit, dist * gridSize, ~ignore))
+            var size = _mapGenerator.GetCurrentMapConfig().tileSize;
+            if (Physics.SphereCast(ray, rad, out var hit, dist * size, ~ignore))
             {
                 if (hit.transform.TryGetComponent(out NetworkObject obj))
                 {
                     if (hit.transform.TryGetComponent(out IDamageable _))
                     {
-                        var amount = Mathf.CeilToInt((hit.distance + gridSize) / gridSize);
+                        var amount = Mathf.CeilToInt((hit.distance + size) / size);
                         SpawnExplosionVfx(dir, amount);
 
                         if (!obj.IsSpawned || obj == null) return;
@@ -57,13 +63,13 @@ namespace Character
                     }
                     else
                     {
-                        var amount = Mathf.RoundToInt((hit.distance + gridSize) / gridSize);
+                        var amount = Mathf.RoundToInt((hit.distance + size) / size);
                         SpawnExplosionVfx(dir, amount);
                     }
                 }
                 else
                 {
-                    var amount = Mathf.RoundToInt((hit.distance + gridSize) / gridSize);
+                    var amount = Mathf.RoundToInt((hit.distance + size) / size);
                     SpawnExplosionVfx(dir, amount);
                 }
             }
@@ -76,21 +82,20 @@ namespace Character
 
         private void SpawnExplosionVfx(Vector3 dir, int amount)
         {
-            for (int i = 0;
-                i < amount;
-                i++)
+            for (int i = 0; i < amount; i++)
             {
                 SpawnExplosionVfxServerRpc(dir, i);
             }
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SpawnExplosionVfxServerRpc(Vector3 dir, int i) => SpawnExplosionVfxClientRpc(dir, i);
+        private void SpawnExplosionVfxServerRpc(Vector3 dir, int i) =>
+            SpawnExplosionVfxClientRpc(dir, i, _mapGenerator.GetCurrentMapConfig().tileSize);
 
         [ClientRpc]
-        private void SpawnExplosionVfxClientRpc(Vector3 dir, int i)
+        private void SpawnExplosionVfxClientRpc(Vector3 dir, int i, float size)
         {
-            Instantiate(explosionVFX, transform.position + dir * i * gridSize, Quaternion.identity);
+            Instantiate(explosionVFX, transform.position + dir * i * size, Quaternion.identity);
         }
 
         private void DoDamage(int damage, NetworkObjectReference hit)

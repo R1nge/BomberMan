@@ -9,6 +9,8 @@ public class Timer : NetworkBehaviour
     private TimerUI _timerUI;
     private GameState _gameState;
 
+    public NetworkVariable<int> CurrentTime => _currentTime;
+
     private void Awake()
     {
         _currentTime = new NetworkVariable<int>();

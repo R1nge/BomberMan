@@ -1,7 +1,7 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 
-public class PlaceInGrid : NetworkBehaviour
+public class PlaceInGridClass : NetworkBehaviour
 {
     [SerializeField] private float yOffset;
     private MapGenerator _mapGenerator;
@@ -10,6 +10,16 @@ public class PlaceInGrid : NetworkBehaviour
 
     [ServerRpc]
     public void PlaceInGridServerRpc()
+    {
+        var position = transform.position;
+        position = new Vector3(
+            RoundToNearestGrid(position.x),
+            RoundToNearestGrid(position.y) + yOffset,
+            RoundToNearestGrid(position.z));
+        transform.position = position;
+    }
+
+    public void PlaceInGrid()
     {
         var position = transform.position;
         position = new Vector3(

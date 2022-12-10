@@ -8,7 +8,6 @@ public class Bomb : NetworkBehaviour, IDamageable
     [SerializeField] private float gridSize;
     [SerializeField] private float explodeDelay;
     [SerializeField] private NetworkVariable<int> damage;
-    [SerializeField] private int distance;
     [SerializeField] private float radius;
     [SerializeField] private Collider trigger;
     [SerializeField] private GameObject explosionVFX, explosionSound;
@@ -17,6 +16,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     private NetworkVariable<bool> _hasExploded;
     private MeshRenderer _meshRenderer;
     private NetworkVariable<float> _time;
+    private BombDistance _bombDistance;
 
     public float ExplodeDelay => explodeDelay;
 
@@ -25,6 +25,7 @@ public class Bomb : NetworkBehaviour, IDamageable
         _hasExploded = new NetworkVariable<bool>();
         _time = new NetworkVariable<float>();
         _meshRenderer = GetComponent<MeshRenderer>();
+        _bombDistance = FindObjectOfType<BombDistance>();
     }
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
@@ -83,10 +84,10 @@ public class Bomb : NetworkBehaviour, IDamageable
     {
         if (_hasExploded.Value) return;
         var position = transform.position;
-        Raycast(position, Vector3.forward, distance, radius);
-        Raycast(position, Vector3.back, distance, radius);
-        Raycast(position, Vector3.right, distance, radius);
-        Raycast(position, Vector3.left, distance, radius);
+        Raycast(position, Vector3.forward, _bombDistance.Distance.Value, radius);
+        Raycast(position, Vector3.back, _bombDistance.Distance.Value, radius);
+        Raycast(position, Vector3.right, _bombDistance.Distance.Value, radius);
+        Raycast(position, Vector3.left, _bombDistance.Distance.Value, radius);
         SpawnSoundServerRpc();
         DoDamageInside();
         Destroy();
@@ -127,7 +128,7 @@ public class Bomb : NetworkBehaviour, IDamageable
         }
         else
         {
-            var amount = distance + 1;
+            var amount = _bombDistance.Distance.Value + 1;
             SpawnExplosionVfx(dir, amount);
         }
     }

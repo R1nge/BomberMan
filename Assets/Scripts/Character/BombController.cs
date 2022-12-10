@@ -46,6 +46,7 @@ namespace Character
         public void OnPlaceBomb(InputValue value)
         {
             if (!IsOwner) return;
+            if (_gameState.GameEnded.Value) return;
             if (!_gameState.GameStarted.Value) return;
             if (bombAmount.Value > 0)
             {
@@ -55,6 +56,9 @@ namespace Character
                 }
                 else
                 {
+                    //TODO: spawn locally
+                    // var bomb = Instantiate(_bombs.GetBomb(_currentBomb), transform.position, Quaternion.identity);
+                    // bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
                     SpawnServerRpc(transform.position, _currentBomb);
                 }
             }
@@ -68,7 +72,7 @@ namespace Character
                 var bomb = Instantiate(_bombs.GetBomb(index), position, Quaternion.identity);
                 var net = bomb.GetComponent<NetworkObject>();
                 net.Spawn(true);
-                net.GetComponent<PlaceInGrid>().PlaceInGridServerRpc();
+                net.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
                 var countdown = bomb.GetComponent<Bomb>().ExplodeDelay;
                 Invoke(nameof(ResetSpawnServerRpc), countdown);
             }

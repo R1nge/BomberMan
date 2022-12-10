@@ -160,7 +160,7 @@ MonoBehaviour:
   explodeDelay: 1.25
   damage:
     m_InternalValue: 1
-  distance: 5
+  distance: {fileID: 11400000, guid: 48e3e8abb38f7384eb0ecf5a60a97ffe, type: 2}
   radius: 0.95
   trigger: {fileID: 2394997258475879828}
   explosionVFX: {fileID: 4469748023635768436, guid: 9ced62cbd4e44a44888cbec894c50bf2,

@@ -59,20 +59,18 @@ namespace Character
             {
                 var inst = Instantiate(_block, pos, Quaternion.identity).GetComponent<NetworkObject>();
                 inst.Spawn(true);
-                inst.GetComponent<PlaceInGrid>().PlaceInGridServerRpc();
+                inst.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
                 blockAmount.Value--;
             }
             else
             {
+                //TODO: spawn locally
                 SpawnBlockServerRpc(pos);
             }
         }
 
         [ServerRpc]
-        private void SpawnBlockServerRpc(Vector3 pos)
-        {
-            SpawnBlock(pos);
-        }
+        private void SpawnBlockServerRpc(Vector3 pos) => SpawnBlock(pos);
 
         [ServerRpc]
         private void DestroyBlockServerRpc(NetworkObjectReference obj)

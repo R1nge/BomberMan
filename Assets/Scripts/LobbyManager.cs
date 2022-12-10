@@ -18,7 +18,7 @@ public class LobbyManager : NetworkBehaviour
         _skins = FindObjectOfType<PlayerSkins>();
     }
 
-    private void OnClientDisconnect(ulong obj)
+    public void OnClientDisconnect(ulong obj)
     {
         if (IsServer)
         {

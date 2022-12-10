@@ -13,6 +13,7 @@ public class GameState : NetworkBehaviour
     public event Action OnGameStarted;
 
     public NetworkVariable<bool> GameStarted => _gameStarted;
+    public NetworkVariable<bool> GameEnded => _gameEnded;
 
     private void Awake()
     {
@@ -37,7 +38,7 @@ public class GameState : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void TieClientRpc() => winner.text = "DRAW";
+    private void TieClientRpc() => winner.text = "TIE";
 
     [ClientRpc]
     private void StartGameClientRpc() => OnGameStarted?.Invoke();
@@ -55,6 +56,7 @@ public class GameState : NetworkBehaviour
     public void GameoverServerRpc()
     {
         if (_gameEnded.Value) return;
+        _gameEnded.Value = true;
         GameoverClientRpc("GAMEOVER");
         StartCoroutine(Restart_c());
     }

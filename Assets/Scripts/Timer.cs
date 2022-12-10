@@ -32,7 +32,7 @@ public class Timer : NetworkBehaviour
         if(!IsServer) yield break;
         if (_currentTime.Value <= 0)
         {
-            _gameState.GameoverServerRpc();
+            _gameState.GameOverServerRpc();
             yield break;
         }
 

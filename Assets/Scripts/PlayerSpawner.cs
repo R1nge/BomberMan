@@ -4,6 +4,7 @@ using Character;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerSpawner : NetworkBehaviour
 {
@@ -11,14 +12,26 @@ public class PlayerSpawner : NetworkBehaviour
     private SpawnPositions _spawnPositions;
     private GameState _gameState;
     private PlayerSkins _skins;
+    private NetworkList<int> _lockedPositions;
 
     private void Awake()
     {
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
         _playersAmount = new NetworkVariable<int>();
         _skins = FindObjectOfType<PlayerSkins>();
         _spawnPositions = FindObjectOfType<SpawnPositions>();
         _gameState = FindObjectOfType<GameState>();
+        _lockedPositions = new NetworkList<int>();
+    }
+
+    private void OnClientConnected(ulong obj)
+    {
+        if (!IsServer) return;
+        if (_playersAmount.Value <= 1)
+        {
+            _gameState.GameOverServerRpc();
+        }
     }
 
     private void Start() => _spawnPositions.GetPositions().OnListChanged += OnOnListChanged;
@@ -53,18 +66,33 @@ public class PlayerSpawner : NetworkBehaviour
         if (_gameState.GameStarted.Value) return;
         if (IsServer)
         {
+            var pos = GetRandomCorner();
             var player = Instantiate(_skins.GetPlayerPrefab(skinIndex),
-                _spawnPositions.GetPositions()[_playersAmount.Value],
+                _spawnPositions.GetPositions()[pos],
                 Quaternion.identity);
-            player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
-            player.GetComponent<NetworkObject>().transform.position =
-                _spawnPositions.GetPositions()[_playersAmount.Value];
+            var net = player.GetComponent<NetworkObject>();
+            net.SpawnWithOwnership(ID, true);
+            net.transform.position =
+                _spawnPositions.GetPositions()[pos];
             _playersAmount.Value++;
         }
         else
         {
             SpawnPlayerServerRpc(skinIndex);
         }
+    }
+
+    private int GetRandomCorner()
+    {
+        var pos = Random.Range(0, 4);
+        if (_lockedPositions.Contains(pos))
+        {
+            return GetRandomCorner();
+        }
+
+        _lockedPositions.Add(pos);
+        print(pos);
+        return pos;
     }
 
     public void Despawn(ulong ID)
@@ -92,7 +120,7 @@ public class PlayerSpawner : NetworkBehaviour
                         break;
                     }
 
-                    _gameState.GameoverServerRpc();
+                    _gameState.GameOverServerRpc();
                 }
             }
             else if (_playersAmount.Value <= 0)

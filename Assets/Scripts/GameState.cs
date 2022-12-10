@@ -53,7 +53,7 @@ public class GameState : NetworkBehaviour
     }
 
     [ServerRpc]
-    public void GameoverServerRpc()
+    public void GameOverServerRpc()
     {
         if (_gameEnded.Value) return;
         _gameEnded.Value = true;

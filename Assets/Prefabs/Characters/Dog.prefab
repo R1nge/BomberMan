@@ -694,8 +694,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92f8944d6557453b89f1e31dfd889097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 1
   duration:
     m_InternalValue: 15
+  distance: 3
+  radius: 0.95
+  gridSize: 3
+  explosionVFX: {fileID: 4469748023635768436, guid: 9ced62cbd4e44a44888cbec894c50bf2,
+    type: 3}
+  ignore:
+    serializedVersion: 2
+    m_Bits: 64
 --- !u!1 &698712358413573048
 GameObject:
   m_ObjectHideFlags: 0

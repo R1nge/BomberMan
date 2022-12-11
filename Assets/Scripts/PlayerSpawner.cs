@@ -104,7 +104,7 @@ public class PlayerSpawner : NetworkBehaviour
         var player2 = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom);
         var c = player2.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
         _killFeed.DisplayKillServerRpc(d, c);
-        
+
         if (IsServer)
         {
             NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom).Despawn();
@@ -127,9 +127,9 @@ public class PlayerSpawner : NetworkBehaviour
 
                         break;
                     }
-
-                    _gameState.GameOverServerRpc();
                 }
+
+                _gameState.GameOverServerRpc();
             }
             else if (_playersAmount.Value <= 0)
             {

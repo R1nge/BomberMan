@@ -8,7 +8,7 @@ public class PlaceInGridClass : NetworkBehaviour
 
     private void Awake() => _mapGenerator = FindObjectOfType<MapGenerator>();
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void PlaceInGridServerRpc()
     {
         var position = transform.position;

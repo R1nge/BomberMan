@@ -15,7 +15,7 @@ public class PlayerNick : NetworkBehaviour
     private void Awake()
     {
         _str = new NetworkVariable<NetworkString>();
-        _nickStr = SaveGame.Load<string>("Nickname");
+        _nickStr = SaveGame.Load<string>("Nickname") + Random.Range(0, 100);
     }
 
     private void Start() => NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;

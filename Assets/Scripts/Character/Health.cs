@@ -31,7 +31,16 @@ namespace Character
             health.Value -= amount;
             if (health.Value <= 0)
             {
-                _playerSpawner.Despawn(GetComponent<NetworkObject>().NetworkObjectId);
+                _playerSpawner.Despawn(GetComponent<NetworkObject>().OwnerClientId, GetComponent<NetworkObject>().OwnerClientId);
+            }
+        }
+
+        public void TakeDamageFromPlayer(int amount, ulong who, ulong whom)
+        {
+            health.Value -= amount;
+            if (health.Value <= 0)
+            {
+                _playerSpawner.Despawn(who, whom);
             }
         }
 

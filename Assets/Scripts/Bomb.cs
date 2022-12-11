@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using Character;
+using TMPro;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
@@ -162,9 +164,20 @@ public class Bomb : NetworkBehaviour, IDamageable
     private void DoDamageServerRpc(int damage, ulong ID)
     {
         _hasExploded.Value = true;
-        if (GetNetworkObject(ID).TryGetComponent(out IDamageable damageable))
+        var obj = GetNetworkObject(ID);
+        if (obj.TryGetComponent(out IDamageable damageable))
         {
-            damageable.TakeDamage(damage);
+            if (obj.CompareTag("Player"))
+            {
+                if (obj.TryGetComponent(out Health health))
+                {
+                    health.TakeDamageFromPlayer(damage, OwnerClientId, obj.OwnerClientId);
+                }
+            }
+            else
+            {
+                damageable.TakeDamage(damage);
+            }
         }
     }
 

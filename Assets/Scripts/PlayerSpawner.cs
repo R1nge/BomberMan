@@ -13,6 +13,7 @@ public class PlayerSpawner : NetworkBehaviour
     private GameState _gameState;
     private PlayerSkins _skins;
     private NetworkList<int> _lockedPositions;
+    private KillFeed _killFeed;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class PlayerSpawner : NetworkBehaviour
         _spawnPositions = FindObjectOfType<SpawnPositions>();
         _gameState = FindObjectOfType<GameState>();
         _lockedPositions = new NetworkList<int>();
+        _killFeed = FindObjectOfType<KillFeed>();
     }
 
     private void OnClientConnected(ulong obj)
@@ -71,7 +73,7 @@ public class PlayerSpawner : NetworkBehaviour
                 _spawnPositions.GetPositions()[pos],
                 Quaternion.identity);
             var net = player.GetComponent<NetworkObject>();
-            net.SpawnWithOwnership(ID, true);
+            net.SpawnAsPlayerObject(ID, true);
             net.transform.position =
                 _spawnPositions.GetPositions()[pos];
             _playersAmount.Value++;
@@ -95,11 +97,17 @@ public class PlayerSpawner : NetworkBehaviour
         return pos;
     }
 
-    public void Despawn(ulong ID)
+    public void Despawn(ulong who, ulong whom)
     {
+        var player = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(who);
+        var d = player.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        var player2 = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom);
+        var c = player2.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        _killFeed.DisplayKillServerRpc(d, c);
+        
         if (IsServer)
         {
-            NetworkManager.Singleton.SpawnManager.SpawnedObjects[ID].Despawn();
+            NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom).Despawn();
             _playersAmount.Value--;
 
             if (_playersAmount.Value <= 1 && _playersAmount.Value > 0)
@@ -130,14 +138,14 @@ public class PlayerSpawner : NetworkBehaviour
         }
         else
         {
-            DespawnServerRpc(ID);
+            DespawnServerRpc(who);
         }
     }
 
     [ServerRpc]
     private void DespawnServerRpc(ulong ID)
     {
-        Despawn(ID);
+        Despawn(ID, ID);
     }
 
     [ServerRpc(RequireOwnership = false)]

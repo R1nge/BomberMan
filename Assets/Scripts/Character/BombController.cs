@@ -52,7 +52,7 @@ namespace Character
             {
                 if (IsServer)
                 {
-                    Spawn(transform.position, _currentBomb);
+                    Spawn(transform.position, _currentBomb, NetworkObject.OwnerClientId);
                 }
                 else
                 {
@@ -64,14 +64,14 @@ namespace Character
             }
         }
 
-        private void Spawn(Vector3 position, int index)
+        private void Spawn(Vector3 position, int index, ulong ID)
         {
             if (IsServer && CanSpawn())
             {
                 bombAmount.Value--;
                 var bomb = Instantiate(_bombs.GetBomb(index), position, Quaternion.identity);
                 var net = bomb.GetComponent<NetworkObject>();
-                net.Spawn(true);
+                net.SpawnWithOwnership(ID, true);
                 net.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
                 var countdown = bomb.GetComponent<Bomb>().ExplodeDelay;
                 Invoke(nameof(ResetSpawnServerRpc), countdown);
@@ -98,7 +98,10 @@ namespace Character
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SpawnServerRpc(Vector3 position, int index) => Spawn(position, index);
+        private void SpawnServerRpc(Vector3 position, int index, ServerRpcParams rpcParams = default)
+        {
+            Spawn(position, index, rpcParams.Receive.SenderClientId);
+        }
 
         [ServerRpc(RequireOwnership = false)]
         private void ResetSpawnServerRpc()

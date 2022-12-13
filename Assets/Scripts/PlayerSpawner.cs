@@ -15,6 +15,8 @@ public class PlayerSpawner : NetworkBehaviour
     private NetworkList<int> _lockedPositions;
     private KillFeed _killFeed;
 
+    public NetworkVariable<int> PlayersAmount => _playersAmount;
+
     private void Awake()
     {
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
@@ -110,7 +112,7 @@ public class PlayerSpawner : NetworkBehaviour
             NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom).Despawn();
             _playersAmount.Value--;
 
-            if (_playersAmount.Value <= 1 && _playersAmount.Value > 0)
+            if (_playersAmount.Value is <= 1 and > 0)
             {
                 var controllers = FindObjectsOfType<MovementController>();
                 for (int i = 0; i < controllers.Length; i++)

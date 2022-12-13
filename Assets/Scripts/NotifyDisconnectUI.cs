@@ -10,6 +10,7 @@ public class NotifyDisconnectUI : NetworkBehaviour
 
     private void Awake()
     {
+        if (!IsServer) return;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
     }
 

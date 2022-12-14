@@ -509,6 +509,7 @@ GameObject:
   - component: {fileID: 8645013317823587889}
   - component: {fileID: -3943070878389685496}
   - component: {fileID: 2286465662268619107}
+  - component: {fileID: -2152637283124326062}
   m_Layer: 0
   m_Name: Dog
   m_TagString: Player
@@ -770,16 +771,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92f8944d6557453b89f1e31dfd889097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 1
   duration:
     m_InternalValue: 15
-  distance: 3
-  radius: 0.5
-  explosionVFX: {fileID: 4469748023635768436, guid: 9ced62cbd4e44a44888cbec894c50bf2,
+--- !u!114 &-2152637283124326062
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 673668852280279707}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ab4904fcc4c49bbbe6c558cd2bd7367, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitSound: {fileID: 8512674186640454949, guid: daf5c9a7de96dd647a3e4f4abc8155fb,
     type: 3}
-  ignore:
-    serializedVersion: 2
-    m_Bits: 64
 --- !u!1 &698712358413573048
 GameObject:
   m_ObjectHideFlags: 0

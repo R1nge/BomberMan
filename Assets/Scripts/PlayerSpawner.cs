@@ -121,11 +121,8 @@ public class PlayerSpawner : NetworkBehaviour
                     {
                         var winPlayer =
                             NetworkManager.Singleton.SpawnManager.SpawnedObjects[controllers[i].NetworkObjectId];
-                        var winName = winPlayer.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
-                        if (winPlayer != null)
-                        {
-                            _gameState.WinServerRpc(winName);
-                        }
+                        var winName = winPlayer.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
+                        _gameState.WinServerRpc(winName);
 
                         break;
                     }

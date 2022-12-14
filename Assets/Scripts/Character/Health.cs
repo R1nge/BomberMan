@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Character
@@ -9,6 +10,7 @@ namespace Character
         private PlayerSpawner _playerSpawner;
         private PlayerUI _playerUI;
         private ShieldController _shieldController;
+        public event Action OnTakenDamage;
 
         private void Awake()
         {
@@ -32,6 +34,7 @@ namespace Character
 
         public void TakeDamagePlayer(int amount, ulong who, ulong whom)
         {
+            OnTakenDamage?.Invoke();
             if (_shieldController.IsActive.Value)
             {
                 _shieldController.UseShieldServerRpc();

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 3950752581646403843}
   - component: {fileID: -9060901888638740668}
   - component: {fileID: 1361940819826141124}
+  - component: {fileID: -970992035766314164}
   m_Layer: 0
   m_Name: PlayerObstacleXmas
   m_TagString: Untagged
@@ -173,3 +174,26 @@ MonoBehaviour:
   ScaleThreshold: 0.01
   InLocalSpace: 0
   Interpolate: 1
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 065287a (Kinda working)
+--- !u!114 &-970992035766314164
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7403332031520893602}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+<<<<<<< HEAD
+  maxDistance: 30
+>>>>>>> 0572340 (Added object visibility)
+=======
+  maxDistance: 15
+>>>>>>> 065287a (Kinda working)

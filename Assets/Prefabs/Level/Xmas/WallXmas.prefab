@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3037242424089432206}
   - component: {fileID: -8488355620407959193}
   - component: {fileID: 9114275863997122692}
+  - component: {fileID: 7466408041610027999}
   m_Layer: 0
   m_Name: WallXmas
   m_TagString: Untagged
@@ -128,3 +129,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yOffset: 0
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 065287a (Kinda working)
+--- !u!114 &7466408041610027999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4104838189498066914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+<<<<<<< HEAD
+  maxDistance: 30
+>>>>>>> 0572340 (Added object visibility)
+=======
+  maxDistance: 15
+>>>>>>> 065287a (Kinda working)

@@ -22,21 +22,22 @@ namespace Character
 
         public void TakeDamage(int amount)
         {
+            health.Value -= amount;
+            if (health.Value <= 0)
+            {
+                _playerSpawner.Despawn(GetComponent<NetworkObject>().OwnerClientId,
+                    GetComponent<NetworkObject>().OwnerClientId);
+            }
+        }
+
+        public void TakeDamagePlayer(int amount, ulong who, ulong whom)
+        {
             if (_shieldController.IsActive.Value)
             {
                 _shieldController.UseShieldServerRpc();
                 return;
             }
 
-            health.Value -= amount;
-            if (health.Value <= 0)
-            {
-                _playerSpawner.Despawn(GetComponent<NetworkObject>().OwnerClientId, GetComponent<NetworkObject>().OwnerClientId);
-            }
-        }
-
-        public void TakeDamageFromPlayer(int amount, ulong who, ulong whom)
-        {
             health.Value -= amount;
             if (health.Value <= 0)
             {

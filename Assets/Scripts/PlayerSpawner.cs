@@ -102,9 +102,9 @@ public class PlayerSpawner : NetworkBehaviour
     public void Despawn(ulong who, ulong whom)
     {
         var player = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(who);
-        var d = player.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        var d = player.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
         var player2 = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom);
-        var c = player2.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        var c = player2.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
         _killFeed.DisplayKillServerRpc(d, c);
 
         if (IsServer)

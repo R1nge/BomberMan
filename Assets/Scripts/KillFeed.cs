@@ -20,7 +20,15 @@ public class KillFeed : NetworkBehaviour
     [ServerRpc]
     public void DisplayKillServerRpc(NetworkString who, NetworkString whom)
     {
-        _display.Value = who + " killed " + whom;
+        if (who == whom)
+        {
+            _display.Value = who + " suicided";
+        }
+        else
+        {
+            _display.Value = who + " killed " + whom;
+        }
+
         StartCoroutine(ResetText_c());
     }
 

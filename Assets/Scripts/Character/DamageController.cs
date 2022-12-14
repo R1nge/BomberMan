@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using Unity.Mathematics;
+using Unity.Netcode;
 using UnityEngine;
 
 namespace Character
@@ -17,10 +18,11 @@ namespace Character
         private void OnTakenDamage() => OnTakenDamageServerRpc();
 
         [ServerRpc(RequireOwnership = false)]
-        private void OnTakenDamageServerRpc() => OnTakenDamageClientRpc();
-
-        [ClientRpc]
-        private void OnTakenDamageClientRpc() => Instantiate(hitSound);
+        private void OnTakenDamageServerRpc()
+        {
+            var sound = Instantiate(hitSound, transform.position, quaternion.identity);
+            sound.GetComponent<NetworkObject>().Spawn();
+        }
 
         private void OnDestroy() => _health.OnTakenDamage -= OnTakenDamage;
     }

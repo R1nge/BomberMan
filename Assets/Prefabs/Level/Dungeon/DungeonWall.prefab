@@ -116,11 +116,6 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 065287a (Kinda working)
 --- !u!114 &-5736096090506844084
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -133,9 +128,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
   maxDistance: 26
->>>>>>> 0572340 (Added object visibility)
-=======
-  maxDistance: 15
->>>>>>> 065287a (Kinda working)

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8631378845246792766}
   - component: {fileID: 8631378845246792753}
   - component: {fileID: 3667122311315212424}
-  - component: {fileID: -7769985709622759996}
+  - component: {fileID: 4955989811784382331}
   m_Layer: 0
   m_Name: ObstacleMinecraft
   m_TagString: Untagged
@@ -129,12 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yOffset: 0
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 065287a (Kinda working)
---- !u!114 &-7769985709622759996
+--- !u!114 &4955989811784382331
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -146,9 +141,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-<<<<<<< HEAD
-  maxDistance: 20
->>>>>>> 0572340 (Added object visibility)
-=======
-  maxDistance: 15
->>>>>>> 065287a (Kinda working)
+  maxDistance: 25

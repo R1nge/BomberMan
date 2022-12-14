@@ -462,7 +462,7 @@ MonoBehaviour:
   duration:
     m_InternalValue: 15
   distance: 3
-  radius: 0.95
+  radius: 0.5
   explosionVFX: {fileID: 4469748023635768436, guid: 9ced62cbd4e44a44888cbec894c50bf2,
     type: 3}
   ignore:

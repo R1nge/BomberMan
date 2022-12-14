@@ -113,7 +113,7 @@ public class Bomb : NetworkBehaviour, IDamageable
                     var amount = Mathf.CeilToInt((hit.distance + gridSize) / gridSize);
                     SpawnExplosionVfx(dir, amount);
 
-                    if (!obj.IsSpawned || obj == null) return;
+                    if (!obj.IsSpawned) return;
                     DoDamage(damage.Value, obj);
                 }
                 else
@@ -171,7 +171,7 @@ public class Bomb : NetworkBehaviour, IDamageable
             {
                 if (obj.TryGetComponent(out Health health))
                 {
-                    health.TakeDamageFromPlayer(damage, OwnerClientId, obj.OwnerClientId);
+                    health.TakeDamagePlayer(damage, OwnerClientId, obj.OwnerClientId);
                 }
             }
             else

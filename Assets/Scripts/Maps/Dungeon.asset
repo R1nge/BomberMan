@@ -38,5 +38,6 @@ MonoBehaviour:
   - {fileID: 5997730005480801457, guid: e7ed084790843bc4a813896095d6b17a, type: 3}
   - {fileID: 7755224955039302605, guid: fc428269865ce6b43bba800545360301, type: 3}
   - {fileID: 4540809818351814248, guid: 357c67261d2c74b4190a4c6fe1fba480, type: 3}
+  - {fileID: 2928810695611043883, guid: 59c78de5ff5f96048a8b440323447e19, type: 3}
   topRotation: {x: 0, y: 0, z: 0}
   leftRotation: {x: 0, y: -90, z: 0}

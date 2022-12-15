@@ -29,7 +29,7 @@ MonoBehaviour:
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  obstacle:
+  destructable:
     m_AssetGUID: ca517eba8d197c94b82452282a7235fb
     m_SubObjectName: 
     m_SubObjectType: 

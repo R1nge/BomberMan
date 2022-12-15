@@ -25,22 +25,22 @@ MonoBehaviour:
     m_SubObjectType: 
     m_EditorAssetChanged: 0
   tile:
-    m_AssetGUID: 49b3d53d95cacf24787bd3511099175f
-    m_SubObjectName: 
-    m_SubObjectType: 
-    m_EditorAssetChanged: 0
-  obstacle:
     m_AssetGUID: 79c76703732eddb47a364c0a4e1d5615
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
-  border:
+  destructable:
     m_AssetGUID: 49b3d53d95cacf24787bd3511099175f
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0
+  border:
+    m_AssetGUID: 79c76703732eddb47a364c0a4e1d5615
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   wall:
-    m_AssetGUID: 49b3d53d95cacf24787bd3511099175f
+    m_AssetGUID: 79c76703732eddb47a364c0a4e1d5615
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

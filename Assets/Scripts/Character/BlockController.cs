@@ -1,5 +1,6 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.ResourceManagement.AsyncOperations;
 
@@ -11,7 +12,6 @@ namespace Character
         [SerializeField] private NetworkVariable<int> digAmount;
         [SerializeField] private NetworkVariable<int> blockAmount;
         private MapGenerator _mapGenerator;
-        private GameObject _block;
         private BlocksUI _blocksUI;
 
         private void Awake()
@@ -20,19 +20,6 @@ namespace Character
             _blocksUI = GetComponent<BlocksUI>();
             digAmount.OnValueChanged += (value, newValue) => { _blocksUI.UpdateDig(newValue); };
             blockAmount.OnValueChanged += (value, newValue) => { _blocksUI.UpdateBlock(newValue); };
-        }
-
-        public override void OnNetworkSpawn()
-        {
-            if (!IsServer) return;
-
-            _mapGenerator.GetCurrentMapConfig().playerWall.LoadAssetAsync<GameObject>().Completed += handle =>
-            {
-                if (handle.Status == AsyncOperationStatus.Succeeded)
-                {
-                    _block = handle.Result;
-                }
-            };
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -65,9 +52,17 @@ namespace Character
         {
             if (IsServer)
             {
-                var inst = Instantiate(_block, pos, Quaternion.identity).GetComponent<NetworkObject>();
-                inst.Spawn(true);
-                inst.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
+                //???
+                //
+                //TODO: fix delay on first spawn, caused by addressables loading asset into memory
+                var inst = Addressables.InstantiateAsync(_mapGenerator.GetCurrentMapConfig().playerWall,
+                    pos, Quaternion.identity);
+                inst.Completed += handle =>
+                {
+                    handle.Result.GetComponent<NetworkObject>().Spawn(true);
+                    handle.Result.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
+                };
+
                 blockAmount.Value--;
             }
             else

@@ -57,6 +57,10 @@ MonoBehaviour:
     m_Address: DungeonTile
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: c6de05a1bc8723e4f82cb03a075a2da1
+    m_Address: HealthPowerup.prefab
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 367bda4dbb75cbb4291dbaa603fe3606, type: 2}
   m_SchemaSet:

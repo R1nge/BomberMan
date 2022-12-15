@@ -11,7 +11,7 @@ public class MapGenerator : NetworkBehaviour
     private bool _spawnObstacle;
     private int _mapIndex;
     private SpawnPositions _spawnPositions;
-    private AsyncOperationHandle<GameObject> _tile, _destrutable, _wall, _border;
+    private AsyncOperationHandle<GameObject> _tile, _destructable, _wall, _border;
 
     public MapConfig GetCurrentMapConfig() => maps[_mapIndex];
 
@@ -65,8 +65,8 @@ public class MapGenerator : NetworkBehaviour
     private void SpawnDestructables()
     {
         var map = maps[_mapIndex];
-        _destrutable = map.destructable.LoadAssetAsync<GameObject>();
-        _destrutable.Completed += handle =>
+        _destructable = map.destructable.LoadAssetAsync<GameObject>();
+        _destructable.Completed += handle =>
         {
             for (int x = 0; x < _width; x++)
             {

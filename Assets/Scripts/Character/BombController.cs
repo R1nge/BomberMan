@@ -57,8 +57,8 @@ namespace Character
                 else
                 {
                     //TODO: spawn locally
-                    var bomb = Instantiate(_bombs.GetClientBomb(_currentBomb), transform.position, Quaternion.identity);
-                    bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
+                    // var bomb = Instantiate(_bombs.GetClientBomb(_currentBomb), transform.position, Quaternion.identity);
+                    // bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
                     SpawnServerRpc(transform.position, _currentBomb);
                 }
             }

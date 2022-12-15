@@ -11,7 +11,7 @@ public class MapGenerator : NetworkBehaviour
     private bool _spawnObstacle;
     private int _mapIndex;
     private SpawnPositions _spawnPositions;
-    private AsyncOperationHandle<GameObject> _tile, _obstacle, _wall, _border;
+    private AsyncOperationHandle<GameObject> _tile, _destrutable, _wall, _border;
 
     public MapConfig GetCurrentMapConfig() => maps[_mapIndex];
 
@@ -35,7 +35,7 @@ public class MapGenerator : NetworkBehaviour
         if (!IsServer) return;
         parent = Instantiate(parent);
         parent.GetComponent<NetworkObject>().Spawn(true);
-        SpawnGrid();
+        SpawnTiles();
         SpawnWalls();
         SpawnDestructables();
         SpawnBorders();
@@ -43,7 +43,7 @@ public class MapGenerator : NetworkBehaviour
             maps[_mapIndex].tileSize, Vector3.zero);
     }
 
-    private void SpawnGrid()
+    private void SpawnTiles()
     {
         var map = maps[_mapIndex];
         _tile = map.tile.LoadAssetAsync<GameObject>();
@@ -65,8 +65,8 @@ public class MapGenerator : NetworkBehaviour
     private void SpawnDestructables()
     {
         var map = maps[_mapIndex];
-        _obstacle = map.obstacle.LoadAssetAsync<GameObject>();
-        _obstacle.Completed += handle =>
+        _destrutable = map.destructable.LoadAssetAsync<GameObject>();
+        _destrutable.Completed += handle =>
         {
             for (int x = 0; x < _width; x++)
             {
@@ -184,6 +184,6 @@ public class MapGenerator : NetworkBehaviour
         map.wall.ReleaseAsset();
         map.playerWall.ReleaseAsset();
         map.border.ReleaseAsset();
-        map.obstacle.ReleaseAsset();
+        map.destructable.ReleaseAsset();
     }
 }

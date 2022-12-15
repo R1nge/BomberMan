@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 1361940819826141124}
   - component: {fileID: -970992035766314164}
   m_Layer: 0
-  m_Name: PlayerObstacleXmas
+  m_Name: PlayerDestructableXmas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

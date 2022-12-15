@@ -9,7 +9,7 @@ public class MapConfig : ScriptableObject
     public int maxWidth, maxHeight;
     public Vector3 tileRotation, obstacleRotation, wallRotation;
     public AssetReferenceGameObject playerWall;
-    public AssetReferenceGameObject tile, obstacle, border, wall;
+    public AssetReferenceGameObject tile, destructable, border, wall;
     public Vector3 tileOffset, obstacleOffset, borderOffset, wallOffset;
     public float tileSize, obstacleSize, borderSize, wallSize;
     public Powerup[] drops;

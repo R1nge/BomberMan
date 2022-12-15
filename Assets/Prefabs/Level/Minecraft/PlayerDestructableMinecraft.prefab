@@ -18,7 +18,7 @@ GameObject:
   - component: {fileID: 5278747190148622642}
   - component: {fileID: 729894074959088270}
   m_Layer: 0
-  m_Name: PlayerWallMinecraft
+  m_Name: PlayerDestructableMinecraft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

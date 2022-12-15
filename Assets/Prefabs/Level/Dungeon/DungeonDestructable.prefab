@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: -1161768536194926117}
   - component: {fileID: 4666849623971333288}
   m_Layer: 0
-  m_Name: DungeonObstacle
+  m_Name: DungeonDestructable
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

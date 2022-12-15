@@ -1,6 +1,7 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Character
 {
@@ -24,7 +25,14 @@ namespace Character
         public override void OnNetworkSpawn()
         {
             if (!IsServer) return;
-            _block = _mapGenerator.GetCurrentMapConfig().playerWall;
+
+            _mapGenerator.GetCurrentMapConfig().playerWall.LoadAssetAsync<GameObject>().Completed += handle =>
+            {
+                if (handle.Status == AsyncOperationStatus.Succeeded)
+                {
+                    _block = handle.Result;
+                }
+            };
         }
 
         [ServerRpc(RequireOwnership = false)]

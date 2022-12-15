@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: 
+  m_GroupName: Default Local Group
+  m_Data:
+    m_SerializedData: []
+  m_GUID: a50dc7e3c8acafd45976dc70353c7a55
+  m_SerializeEntries:
+  - m_GUID: eda1183e00ddb104a9eb6d13494041ec
+    m_Address: XmasTile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: ca517eba8d197c94b82452282a7235fb
+    m_Address: ObstacleXmas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 4d45cce30e0fde44eaa333c84c342b88
+    m_Address: PlayerObstacleXmas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 6988c13d48460b64b9ee04f8c9c36669
+    m_Address: WallXmas
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 49b3d53d95cacf24787bd3511099175f
+    m_Address: WallMinecraft
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 79c76703732eddb47a364c0a4e1d5615
+    m_Address: ObstacleMinecraft
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 9bf4be07a5472e94596b4d27e36cfc91
+    m_Address: PlayerWallMinecraft
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 93f7bba9179a7a749aa2a1cc28cff41b
+    m_Address: DungeonWall
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: fa2cac5a997057a4894efb977e74617f
+    m_Address: DungeonObstacle
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  - m_GUID: 7521e7edf28198a48bd5ce6e94c0f436
+    m_Address: DungeonTile
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 367bda4dbb75cbb4291dbaa603fe3606, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: ffc4124221fe1834c846830a8a9f9aa3, type: 2}
+    - {fileID: 11400000, guid: 664562712c2daa648bf84a8d32920ec5, type: 2}

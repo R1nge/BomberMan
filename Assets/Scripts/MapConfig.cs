@@ -1,5 +1,6 @@
 ﻿using Powerups;
 using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 [CreateAssetMenu(fileName = "MapConfig", menuName = "MapConfig")]
 public class MapConfig : ScriptableObject
@@ -7,8 +8,8 @@ public class MapConfig : ScriptableObject
     public int minWidth, minHeight;
     public int maxWidth, maxHeight;
     public Vector3 tileRotation, obstacleRotation, wallRotation;
-    public GameObject playerWall;
-    public GameObject tile, obstacle, border, wall;
+    public AssetReferenceGameObject playerWall;
+    public AssetReferenceGameObject tile, obstacle, border, wall;
     public Vector3 tileOffset, obstacleOffset, borderOffset, wallOffset;
     public float tileSize, obstacleSize, borderSize, wallSize;
     public Powerup[] drops;

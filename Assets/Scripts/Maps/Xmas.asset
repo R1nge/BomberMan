@@ -12,20 +12,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a971a6143834aa3bd01440504b866fc, type: 3}
   m_Name: Xmas
   m_EditorClassIdentifier: 
-  minWidth: 15
-  minHeight: 15
-  maxWidth: 30
-  maxHeight: 30
+  minWidth: 10
+  minHeight: 10
+  maxWidth: 20
+  maxHeight: 20
   tileRotation: {x: 0, y: 0, z: 0}
   obstacleRotation: {x: 0, y: 0, z: 0}
   wallRotation: {x: 0, y: 0, z: 0}
-  playerWall: {fileID: 7403332031520893602, guid: 4d45cce30e0fde44eaa333c84c342b88,
-    type: 3}
-  tile: {fileID: 9196196049732257649, guid: eda1183e00ddb104a9eb6d13494041ec, type: 3}
-  obstacle: {fileID: 7403332031520893602, guid: ca517eba8d197c94b82452282a7235fb,
-    type: 3}
-  border: {fileID: 4104838189498066914, guid: 6988c13d48460b64b9ee04f8c9c36669, type: 3}
-  wall: {fileID: 4104838189498066914, guid: 6988c13d48460b64b9ee04f8c9c36669, type: 3}
+  playerWall:
+    m_AssetGUID: 4d45cce30e0fde44eaa333c84c342b88
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  tile:
+    m_AssetGUID: eda1183e00ddb104a9eb6d13494041ec
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  obstacle:
+    m_AssetGUID: ca517eba8d197c94b82452282a7235fb
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  border:
+    m_AssetGUID: 6988c13d48460b64b9ee04f8c9c36669
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
+  wall:
+    m_AssetGUID: 6988c13d48460b64b9ee04f8c9c36669
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_EditorAssetChanged: 0
   tileOffset: {x: 0, y: -0.075, z: 0}
   obstacleOffset: {x: 0, y: -0.075, z: 0}
   borderOffset: {x: 0, y: -0.075, z: 0}

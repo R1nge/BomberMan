@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5386524a246473e9e5243a5cdae12b1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 3
+  timer: 5
 --- !u!4 &82898121
 Transform:
   m_ObjectHideFlags: 0
@@ -1334,6 +1334,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fed40f852d80494497873ec8b560440d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  targetFrameRate: 0
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

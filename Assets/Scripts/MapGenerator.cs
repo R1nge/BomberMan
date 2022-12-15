@@ -1,5 +1,6 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
+using UnityEngine.ResourceManagement.AsyncOperations;
 
 public class MapGenerator : NetworkBehaviour
 {
@@ -10,6 +11,7 @@ public class MapGenerator : NetworkBehaviour
     private bool _spawnObstacle;
     private int _mapIndex;
     private SpawnPositions _spawnPositions;
+    private AsyncOperationHandle<GameObject> _tile, _obstacle, _wall, _border;
 
     public MapConfig GetCurrentMapConfig() => maps[_mapIndex];
 
@@ -43,97 +45,127 @@ public class MapGenerator : NetworkBehaviour
 
     private void SpawnGrid()
     {
-        for (int x = 0; x < _width; x++)
+        var map = maps[_mapIndex];
+        _tile = map.tile.LoadAssetAsync<GameObject>();
+        _tile.Completed += handle =>
         {
-            for (int z = 0; z < _height; z++)
+            for (int x = 0; x < _width; x++)
             {
-                var map = maps[_mapIndex];
-                Spawn(map.tile, x, z, map.tileOffset, map.tileSize, map.tileRotation);
+                for (int z = 0; z < _height; z++)
+                {
+                    if (handle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        Spawn(handle.Result, x, z, map.tileOffset, map.tileSize, map.tileRotation);
+                    }
+                }
             }
-        }
+        };
     }
 
     private void SpawnDestructables()
     {
-        for (int x = 0; x < _width; x++)
+        var map = maps[_mapIndex];
+        _obstacle = map.obstacle.LoadAssetAsync<GameObject>();
+        _obstacle.Completed += handle =>
         {
-            for (int z = 0; z < _height; z++)
+            for (int x = 0; x < _width; x++)
             {
-                _spawnObstacle = Mathf.FloorToInt(Random.Range(0, 2)) == 0;
-                if (!_spawnObstacle) continue;
+                for (int z = 0; z < _height; z++)
+                {
+                    _spawnObstacle = Mathf.FloorToInt(Random.Range(0, 2)) == 0;
+                    if (!_spawnObstacle) continue;
 
-                if (x % 2 == 1 && z % 2 == 1) continue;
+                    if (x % 2 == 1 && z % 2 == 1) continue;
 
-                if (x == 0 && z == 0) continue;
-                if (x == 1 && z == 0) continue;
-                if (x == 0 && z == 1) continue;
+                    if (x == 0 && z == 0) continue;
+                    if (x == 1 && z == 0) continue;
+                    if (x == 0 && z == 1) continue;
 
-                if (x == _width - 1 && z == 0) continue;
-                if (x == _width - 2 && z == 0) continue;
-                if (x == _width - 1 && z == 1) continue;
+                    if (x == _width - 1 && z == 0) continue;
+                    if (x == _width - 2 && z == 0) continue;
+                    if (x == _width - 1 && z == 1) continue;
 
-                if (x == 0 && z == _height - 1) continue;
-                if (x == 1 && z == _height - 1) continue;
-                if (x == 0 && z == _height - 2) continue;
+                    if (x == 0 && z == _height - 1) continue;
+                    if (x == 1 && z == _height - 1) continue;
+                    if (x == 0 && z == _height - 2) continue;
 
-                if (x == _width - 1 && z == _height - 1) continue;
-                if (x == _width - 2 && z == _height - 1) continue;
-                if (x == _width - 1 && z == _height - 2) continue;
+                    if (x == _width - 1 && z == _height - 1) continue;
+                    if (x == _width - 2 && z == _height - 1) continue;
+                    if (x == _width - 1 && z == _height - 2) continue;
 
-                if (x == _width / 2 && z == _height / 2) continue;
+                    if (x == _width / 2 && z == _height / 2) continue;
 
-                var map = maps[_mapIndex];
-                Spawn(map.obstacle, x, z, map.obstacleOffset,
-                    map.obstacleSize, map.obstacleRotation);
+
+                    if (handle.Status == AsyncOperationStatus.Succeeded)
+                    {
+                        Spawn(handle.Result, x, z, map.obstacleOffset,
+                            map.obstacleSize, map.obstacleRotation);
+                    }
+                }
             }
-        }
+        };
     }
 
     private void SpawnBorders()
     {
-        for (int x = -1; x < _width + 1; x++)
+        var map = maps[_mapIndex];
+        _border = map.border.LoadAssetAsync<GameObject>();
+        _border.Completed += handle =>
         {
-            for (int z = -1; z < _height + 1; z++)
+            if (handle.Status == AsyncOperationStatus.Succeeded)
             {
-                var map = maps[_mapIndex];
-                if (x < _width + 1 && z == _height)
+                for (int x = -1; x < _width + 1; x++)
                 {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.topRotation);
-                }
-                else if (x < _width + 1 && z == -1)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, -map.topRotation);
-                }
-                else if (x == -1 && z < _height + 1)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.leftRotation);
-                }
-                else if (x == _width && z < _height + 1)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, -map.leftRotation);
+                    for (int z = -1; z < _height + 1; z++)
+                    {
+                        if (x < _width + 1 && z == _height)
+                        {
+                            Spawn(handle.Result, x, z, maps[_mapIndex].borderOffset,
+                                map.borderSize, map.topRotation);
+                        }
+                        else if (x < _width + 1 && z == -1)
+                        {
+                            Spawn(handle.Result, x, z, maps[_mapIndex].borderOffset,
+                                map.borderSize, -map.topRotation);
+                        }
+                        else if (x == -1 && z < _height + 1)
+                        {
+                            Spawn(handle.Result, x, z, maps[_mapIndex].borderOffset,
+                                map.borderSize, map.leftRotation);
+                        }
+                        else if (x == _width && z < _height + 1)
+                        {
+                            Spawn(handle.Result, x, z, maps[_mapIndex].borderOffset,
+                                map.borderSize, -map.leftRotation);
+                        }
+                    }
                 }
             }
-        }
+        };
     }
 
     private void SpawnWalls()
     {
-        for (int x = 0; x < _width; x++)
+        var map = maps[_mapIndex];
+        _wall = map.wall.LoadAssetAsync<GameObject>();
+        _wall.Completed += handle =>
         {
-            for (int y = 0; y < _height; y++)
+            for (int x = 0; x < _width; x++)
             {
-                if (x % 2 == 1 && y % 2 == 1)
+                for (int y = 0; y < _height; y++)
                 {
-                    if (x == _width / 2 && y == _height / 2) continue;
-                    var map = maps[_mapIndex];
-                    Spawn(map.wall, x, y, map.wallOffset, map.wallSize, map.wallRotation);
+                    if (x % 2 == 1 && y % 2 == 1)
+                    {
+                        if (x == _width / 2 && y == _height / 2) continue;
+
+                        if (handle.Status == AsyncOperationStatus.Succeeded)
+                        {
+                            Spawn(handle.Result, x, y, map.wallOffset, map.wallSize, map.wallRotation);
+                        }
+                    }
                 }
             }
-        }
+        };
     }
 
     private void Spawn(GameObject go, int x, int z, Vector3 offset, float size, Vector3 rot)
@@ -142,5 +174,16 @@ public class MapGenerator : NetworkBehaviour
             Quaternion.Euler(rot));
         inst.GetComponent<NetworkObject>().Spawn(true);
         inst.transform.parent = parent.transform;
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        var map = maps[_mapIndex];
+        map.tile.ReleaseAsset();
+        map.wall.ReleaseAsset();
+        map.playerWall.ReleaseAsset();
+        map.border.ReleaseAsset();
+        map.obstacle.ReleaseAsset();
     }
 }

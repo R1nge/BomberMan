@@ -15,10 +15,7 @@ public class LobbyKick : NetworkBehaviour
         kick.onClick.AddListener(Kick);
     }
 
-    public override void OnNetworkSpawn()
-    {
-        kick.gameObject.SetActive(IsServer && !IsOwner);
-    }
+    public override void OnNetworkSpawn() => kick.gameObject.SetActive(IsServer && !IsOwner);
 
     private void Kick()
     {
@@ -39,7 +36,8 @@ public class LobbyKick : NetworkBehaviour
     public override void OnDestroy()
     {
         base.OnDestroy();
-        NetworkManager.Singleton.OnClientDisconnectCallback -= LoadMainMenu;
         kick.onClick.RemoveAllListeners();
+        if (NetworkManager.Singleton == null) return;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= LoadMainMenu;
     }
 }

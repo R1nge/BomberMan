@@ -61,6 +61,10 @@ MonoBehaviour:
     m_Address: HealthPowerup.prefab
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: af8820b0f4bdbab46a286ae08353f6cc
+    m_Address: PlayerDungeonDestructable
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 367bda4dbb75cbb4291dbaa603fe3606, type: 2}
   m_SchemaSet:

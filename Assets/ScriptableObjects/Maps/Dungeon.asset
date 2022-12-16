@@ -20,7 +20,7 @@ MonoBehaviour:
   obstacleRotation: {x: 0, y: 0, z: 0}
   wallRotation: {x: 0, y: 0, z: 0}
   playerWall:
-    m_AssetGUID: fa2cac5a997057a4894efb977e74617f
+    m_AssetGUID: af8820b0f4bdbab46a286ae08353f6cc
     m_SubObjectName: 
     m_SubObjectType: 
     m_EditorAssetChanged: 0

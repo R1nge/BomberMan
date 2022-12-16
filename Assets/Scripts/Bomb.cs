@@ -71,7 +71,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     {
         ChangeColorClientRpc(time, color, lerp);
         var timeToWait = time - NetworkManager.ServerTime.Time;
-        StartCoroutine(WaitSync((float) timeToWait, color, lerp));
+        StartCoroutine(WaitSync((float)timeToWait, color, lerp));
     }
 
     [ClientRpc]
@@ -79,7 +79,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     {
         if (IsOwner) return;
         var timeToWait = time - NetworkManager.ServerTime.Time;
-        StartCoroutine(WaitSync((float) timeToWait, color, lerp));
+        StartCoroutine(WaitSync((float)timeToWait, color, lerp));
     }
 
     private void Explode()
@@ -149,7 +149,8 @@ public class Bomb : NetworkBehaviour, IDamageable
     [ClientRpc]
     private void SpawnExplosionVfxClientRpc(Vector3 dir, int i)
     {
-        Instantiate(explosionVFX, transform.position + dir * i * gridSize, Quaternion.identity);
+        var vfx = VfxPool.Instance.GetPooledObject();
+        vfx.transform.position = transform.position + dir * i * gridSize;
     }
 
     private void DoDamage(int damage, NetworkObjectReference hit)
@@ -188,8 +189,8 @@ public class Bomb : NetworkBehaviour, IDamageable
         var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
             Quaternion.identity);
         for (int i = 0;
-            i < size;
-            i++)
+             i < size;
+             i++)
         {
             if (coll[i].TryGetComponent(out IDamageable _))
             {

@@ -8,7 +8,7 @@ public class SetFps : MonoBehaviour
     private void Start()
     {
         QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 99999;
+        Application.targetFrameRate = 999999;
         //Application.targetFrameRate = targetFrameRate;
     }
 #endif

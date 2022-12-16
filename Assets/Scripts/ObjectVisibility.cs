@@ -62,6 +62,9 @@ public class ObjectVisibility : NetworkBehaviour
 
     private void Update()
     {
-        Check();
+        if (Time.frameCount % 15 == 0)
+        {
+            Check();
+        }
     }
 }

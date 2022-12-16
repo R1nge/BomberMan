@@ -14,7 +14,6 @@ GameObject:
   - component: {fileID: 3191888367443731080}
   - component: {fileID: 3191888367443731081}
   - component: {fileID: -1161768536194926117}
-  - component: {fileID: 4666849623971333288}
   m_Layer: 0
   m_Name: DungeonDestructable
   m_TagString: Untagged
@@ -65,8 +64,8 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4973734387028869240, guid: a4b903213e337f848b234447845c9b22, type: 3}
-  - {fileID: 7575915981058242857, guid: 4b003c09944237d478d092ceda0a292b, type: 3}
+  - {fileID: 2100000, guid: 8da023e1bdf7d184a90ad71db1a18ddf, type: 2}
+  - {fileID: 2100000, guid: 11e7620afd3731f478bbb4d483c7174d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -133,18 +132,3 @@ MonoBehaviour:
   dropChance:
     m_InternalValue: 0.2
   dropOffset: {x: 0, y: 1.5, z: 0}
---- !u!114 &4666849623971333288
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3191888367443731082}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistance: 26
-
-

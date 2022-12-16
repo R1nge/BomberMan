@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 567470547942927971}
   - component: {fileID: 614612261947805119}
   - component: {fileID: -1347697898946242766}
-  - component: {fileID: -8997809725034842670}
   m_Layer: 0
   m_Name: DestructablelMinecraft
   m_TagString: Untagged
@@ -146,16 +145,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   yOffset: 1.35
---- !u!114 &-8997809725034842670
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 567470547942927969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistance: 25

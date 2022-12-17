@@ -65,6 +65,10 @@ MonoBehaviour:
     m_Address: PlayerDungeonDestructable
     m_ReadOnly: 0
     m_SerializedLabels: []
+  - m_GUID: 7802ffd4ace114646a626b3083cef3a2
+    m_Address: ShieldEffect
+    m_ReadOnly: 0
+    m_SerializedLabels: []
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: 367bda4dbb75cbb4291dbaa603fe3606, type: 2}
   m_SchemaSet:

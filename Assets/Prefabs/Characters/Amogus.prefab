@@ -459,6 +459,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92f8944d6557453b89f1e31dfd889097, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shieldEffect: {fileID: 4548889326462533289, guid: 7802ffd4ace114646a626b3083cef3a2,
+    type: 3}
   duration:
     m_InternalValue: 15
 --- !u!114 &-1134896098800662992
@@ -2494,7 +2496,6 @@ GameObject:
   - component: {fileID: 5137530273657129245}
   - component: {fileID: 1774082618916631765}
   - component: {fileID: 8998195558453905137}
-  - component: {fileID: 7288581067037567864}
   m_Layer: 5
   m_Name: Joystick
   m_TagString: Untagged
@@ -2509,7 +2510,7 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5106047080173140885}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2560,20 +2561,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &7288581067037567864
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5106047080173140885}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e9d677f1681015749b15c436eec6d880, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_MovementRange: 50
-  m_ControlPath: <Gamepad>/leftStick
 --- !u!1 &5130139650536229808
 GameObject:
   m_ObjectHideFlags: 0
@@ -3212,6 +3199,7 @@ GameObject:
   - component: {fileID: 5767359775067336806}
   - component: {fileID: 5736786380125708059}
   - component: {fileID: 2975004495634286306}
+  - component: {fileID: 7198076642786641065}
   m_Layer: 5
   m_Name: MobileInput
   m_TagString: Untagged
@@ -3304,6 +3292,19 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 32
+--- !u!114 &7198076642786641065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7193988484800278912}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a43b842bf7f2b74ba203909ff8e9cbe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  knob: {fileID: 5137530273657129245}
 --- !u!1 &7465896941568598945
 GameObject:
   m_ObjectHideFlags: 0

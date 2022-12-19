@@ -4,12 +4,11 @@ public class BombColor : MonoBehaviour
 {
     [SerializeField] private float explodeDelay;
     [SerializeField] private Color explosionColor;
-    private float _time;
     private MeshRenderer _meshRenderer;
+    private float _time;
 
     private void Awake() => _meshRenderer = GetComponent<MeshRenderer>();
 
-    //https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/networktime-ticks/#example-1-using-network-time-to-synchronize-environments
     private void Update()
     {
         if (_time < explodeDelay)

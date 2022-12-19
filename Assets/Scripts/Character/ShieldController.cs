@@ -7,13 +7,18 @@ namespace Character
     public class ShieldController : NetworkBehaviour
     {
         [SerializeField] private GameObject shieldEffect;
-        [SerializeField] private NetworkVariable<float> duration;
+        [SerializeField] private float duration;
+        private NetworkVariable<float> _duration;
         private GameObject _shieldEffectRef;
         private NetworkVariable<bool> _isActive;
 
         public NetworkVariable<bool> IsActive => _isActive;
 
-        private void Awake() => _isActive = new NetworkVariable<bool>();
+        private void Awake()
+        {
+            _isActive = new NetworkVariable<bool>();
+            _duration = new NetworkVariable<float>(duration);
+        }
 
         [ServerRpc(RequireOwnership = false)]
         public void ApplyShieldServerRpc()
@@ -38,6 +43,7 @@ namespace Character
             if (!_isActive.Value) return;
             UseShieldClientRpc();
             _isActive.Value = false;
+            _duration.Value = duration;
         }
 
         [ClientRpc]
@@ -45,11 +51,11 @@ namespace Character
 
         private IEnumerator Timer_c()
         {
-            while (duration.Value > 0 && _isActive.Value)
+            while (_duration.Value > 0 && _isActive.Value)
             {
                 yield return new WaitForSeconds(1);
-                duration.Value -= 1;
-                if (duration.Value <= 0)
+                _duration.Value -= 1;
+                if (_duration.Value <= 0)
                 {
                     UseShieldServerRpc();
                 }

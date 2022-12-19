@@ -461,8 +461,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shieldEffect: {fileID: 4548889326462533289, guid: 7802ffd4ace114646a626b3083cef3a2,
     type: 3}
-  duration:
-    m_InternalValue: 15
+  duration: 15
 --- !u!114 &6821888105980107174
 MonoBehaviour:
   m_ObjectHideFlags: 0

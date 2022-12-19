@@ -5,11 +5,11 @@ using UnityEngine;
 public class Bombs : NetworkBehaviour
 {
     [SerializeField] private GameObject[] bombs;
-    [SerializeField] private GameObject[] clientBombs;
+    [SerializeField] private NetworkObject bombLogic;
 
     public GameObject GetBomb(int index) => bombs[index];
 
-    public GameObject GetClientBomb(int index) => clientBombs[index];
+    public NetworkObject GetBombLogic() => bombLogic;
 
     public void SetBomb(int index) => SaveGame.Save("Bomb", index);
 }

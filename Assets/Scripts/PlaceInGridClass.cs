@@ -1,7 +1,7 @@
 ﻿using Unity.Netcode;
 using UnityEngine;
 
-public class PlaceInGridClass : NetworkBehaviour
+public class PlaceInGridClass : MonoBehaviour
 {
     [SerializeField] private float yOffset;
     private MapGenerator _mapGenerator;

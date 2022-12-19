@@ -52,24 +52,37 @@ namespace Character
             {
                 if (IsServer)
                 {
-                    Spawn(transform.position, _currentBomb, NetworkObject.OwnerClientId);
+                    Spawn(NetworkObject.OwnerClientId);
                 }
                 else
                 {
-                    //TODO: spawn locally
-                    // var bomb = Instantiate(_bombs.GetClientBomb(_currentBomb), transform.position, Quaternion.identity);
-                    // bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
-                    SpawnServerRpc(transform.position, _currentBomb);
+                    SpawnServerRpc();
                 }
+
+                SpawnBombObjectServerRpc(_bombs.NetworkObject);
             }
         }
 
-        private void Spawn(Vector3 position, int index, ulong ID)
+        [ServerRpc]
+        private void SpawnBombObjectServerRpc(NetworkObjectReference net) => SpawnBombObjectClientRpc(net);
+
+        [ClientRpc]
+        private void SpawnBombObjectClientRpc(NetworkObjectReference net)
+        {
+            if (net.TryGet(out NetworkObject networkObject))
+            {
+                var bomb = Instantiate(networkObject.GetComponent<Bombs>().GetBomb(_currentBomb), transform.position,
+                    Quaternion.identity);
+                bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
+            }
+        }
+
+        private void Spawn(ulong ID)
         {
             if (IsServer && CanSpawn())
             {
                 bombAmount.Value--;
-                var bomb = Instantiate(_bombs.GetBomb(index), position, Quaternion.identity);
+                var bomb = Instantiate(_bombs.GetBombLogic(), transform.position, Quaternion.identity);
                 var net = bomb.GetComponent<NetworkObject>();
                 net.SpawnWithOwnership(ID, true);
                 net.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
@@ -85,8 +98,8 @@ namespace Character
             var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
                 Quaternion.identity);
             for (int i = 0;
-                i < size;
-                i++)
+                 i < size;
+                 i++)
             {
                 if (coll[i].TryGetComponent(out Bomb _))
                 {
@@ -98,9 +111,9 @@ namespace Character
         }
 
         [ServerRpc(RequireOwnership = false)]
-        private void SpawnServerRpc(Vector3 position, int index, ServerRpcParams rpcParams = default)
+        private void SpawnServerRpc(ServerRpcParams rpcParams = default)
         {
-            Spawn(position, index, rpcParams.Receive.SenderClientId);
+            Spawn(rpcParams.Receive.SenderClientId);
         }
 
         [ServerRpc(RequireOwnership = false)]

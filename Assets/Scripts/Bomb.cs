@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using Character;
-using TMPro;
+﻿using Character;
 using Unity.Mathematics;
 using Unity.Netcode;
 using UnityEngine;
@@ -12,11 +10,9 @@ public class Bomb : NetworkBehaviour, IDamageable
     [SerializeField] private NetworkVariable<int> damage;
     [SerializeField] private float radius;
     [SerializeField] private Collider trigger;
-    [SerializeField] private GameObject explosionVFX, explosionSound;
+    [SerializeField] private GameObject explosionSound;
     [SerializeField] private LayerMask ignore;
-    [SerializeField] private Color explosionColor;
     private NetworkVariable<bool> _hasExploded;
-    private MeshRenderer _meshRenderer;
     private NetworkVariable<float> _time;
     private BombDistance _bombDistance;
 
@@ -26,17 +22,10 @@ public class Bomb : NetworkBehaviour, IDamageable
     {
         _hasExploded = new NetworkVariable<bool>();
         _time = new NetworkVariable<float>();
-        _meshRenderer = GetComponent<MeshRenderer>();
         _bombDistance = FindObjectOfType<BombDistance>();
     }
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
-
-    public override void OnNetworkSpawn()
-    {
-        _time.OnValueChanged +=
-            (value, newValue) => UpdateColor(explosionColor, newValue / explodeDelay / 100);
-    }
 
     //https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/networktime-ticks/#example-1-using-network-time-to-synchronize-environments
     private void Update()
@@ -48,38 +37,6 @@ public class Bomb : NetworkBehaviour, IDamageable
                 _time.Value += Time.deltaTime;
             }
         }
-    }
-
-    private void UpdateColor(Color color, float lerp)
-    {
-        ChangeColorServerRpc(NetworkManager.LocalTime.Time, color, lerp);
-        StartCoroutine(WaitSync(0, color, lerp));
-    }
-
-    private IEnumerator WaitSync(float timeToWait, Color color, float lerp)
-    {
-        if (timeToWait > 0)
-        {
-            yield return new WaitForSeconds(timeToWait);
-        }
-
-        _meshRenderer.material.color = Color.Lerp(_meshRenderer.materials[0].color, color, lerp);
-    }
-
-    [ServerRpc(RequireOwnership = false)]
-    private void ChangeColorServerRpc(double time, Color color, float lerp)
-    {
-        ChangeColorClientRpc(time, color, lerp);
-        var timeToWait = time - NetworkManager.ServerTime.Time;
-        StartCoroutine(WaitSync((float)timeToWait, color, lerp));
-    }
-
-    [ClientRpc]
-    private void ChangeColorClientRpc(double time, Color color, float lerp)
-    {
-        if (IsOwner) return;
-        var timeToWait = time - NetworkManager.ServerTime.Time;
-        StartCoroutine(WaitSync((float)timeToWait, color, lerp));
     }
 
     private void Explode()

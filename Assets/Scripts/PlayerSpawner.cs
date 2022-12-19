@@ -95,7 +95,6 @@ public class PlayerSpawner : NetworkBehaviour
         }
 
         _lockedPositions.Add(pos);
-        print(pos);
         return pos;
     }
 

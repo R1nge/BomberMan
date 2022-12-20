@@ -58,22 +58,6 @@ namespace Character
                 {
                     SpawnServerRpc();
                 }
-
-                SpawnBombObjectServerRpc(_bombs.NetworkObject);
-            }
-        }
-
-        [ServerRpc]
-        private void SpawnBombObjectServerRpc(NetworkObjectReference net) => SpawnBombObjectClientRpc(net);
-
-        [ClientRpc]
-        private void SpawnBombObjectClientRpc(NetworkObjectReference net)
-        {
-            if (net.TryGet(out NetworkObject networkObject))
-            {
-                var bomb = Instantiate(networkObject.GetComponent<Bombs>().GetBomb(_currentBomb), transform.position,
-                    Quaternion.identity);
-                bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
             }
         }
 
@@ -82,12 +66,11 @@ namespace Character
             if (IsServer && CanSpawn())
             {
                 bombAmount.Value--;
-                var bomb = Instantiate(_bombs.GetBombLogic(), transform.position, Quaternion.identity);
+                var bomb = Instantiate(_bombs.GetBomb(_currentBomb), transform.position, Quaternion.identity);
+                bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
                 var net = bomb.GetComponent<NetworkObject>();
                 net.SpawnWithOwnership(ID, true);
-                net.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
-                var countdown = bomb.GetComponent<Bomb>().ExplodeDelay;
-                Invoke(nameof(ResetSpawnServerRpc), countdown);
+                net.GetComponent<Bomb>().OnBombExploded += ResetSpawnServerRpc;
             }
         }
 

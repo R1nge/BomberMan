@@ -2,7 +2,6 @@
 using Character;
 using Unity.Mathematics;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Bomb : NetworkBehaviour, IDamageable
@@ -25,18 +24,18 @@ public class Bomb : NetworkBehaviour, IDamageable
         _hasExploded = new NetworkVariable<bool>();
         _time = new NetworkVariable<float>();
         _bombDistance = FindObjectOfType<BombDistance>();
+        NetworkManager.NetworkTickSystem.Tick += OnTick;
     }
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
-
-    //https://docs-multiplayer.unity3d.com/netcode/current/advanced-topics/networktime-ticks/#example-1-using-network-time-to-synchronize-environments
-    private void Update()
+    
+    private void OnTick()
     {
         if (IsServer)
         {
             if (_time.Value < explodeDelay)
             {
-                _time.Value += Time.deltaTime;
+                _time.Value += NetworkManager.Singleton.LocalTime.FixedDeltaTime;
             }
         }
     }
@@ -188,5 +187,11 @@ public class Bomb : NetworkBehaviour, IDamageable
     {
         if (_hasExploded.Value) return;
         Explode();
+    }
+
+    public override void OnDestroy()
+    {
+        base.OnDestroy();
+        NetworkManager.NetworkTickSystem.Tick -= OnTick;
     }
 }

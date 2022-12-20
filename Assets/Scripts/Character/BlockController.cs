@@ -52,22 +52,18 @@ namespace Character
         {
             if (IsServer)
             {
-                //???
-                //
-                //TODO: fix delay on first spawn, caused by addressables loading asset into memory
                 var inst = Addressables.InstantiateAsync(_mapGenerator.GetCurrentMapConfig().playerWall,
                     pos, Quaternion.identity);
                 inst.Completed += handle =>
                 {
+                    handle.Result.GetComponent<PlaceInGridClass>().PlaceInGrid();
                     handle.Result.GetComponent<NetworkObject>().Spawn(true);
-                    handle.Result.GetComponent<PlaceInGridClass>().PlaceInGridServerRpc();
                 };
 
                 blockAmount.Value--;
             }
             else
             {
-                //TODO: spawn locally
                 SpawnBlockServerRpc(pos);
             }
         }

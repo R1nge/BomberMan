@@ -6,6 +6,8 @@ public class PlayerSkins : NetworkBehaviour
 {
     [SerializeField] private SkinData[] skins;
 
+    public int GetSkinsCount() => skins.Length;
+
     public GameObject GetPlayerPrefab(int index) => skins[index].inGamePrefab;
 
     public GameObject GetPreviewPrefab(int index) => skins[index].previewPrefab;

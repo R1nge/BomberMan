@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Character
 {
-    public class ShieldController : NetworkBehaviour
+    public class CharacterShield : NetworkBehaviour
     {
         [SerializeField] private GameObject shieldEffect;
         [SerializeField] private float duration;

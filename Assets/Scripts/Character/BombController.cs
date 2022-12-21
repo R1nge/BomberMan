@@ -81,9 +81,8 @@ namespace Character
 
             var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
                 Quaternion.identity);
-            for (int i = 0;
-                 i < size;
-                 i++)
+            
+            for (int i = 0; i < size; i++)
             {
                 if (coll[i].TryGetComponent(out Bomb _))
                 {

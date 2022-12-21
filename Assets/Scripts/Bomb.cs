@@ -108,7 +108,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     [ClientRpc]
     private void SpawnExplosionVfxClientRpc(Vector3 dir, int i)
     {
-        var vfx = VfxPool.Instance.GetPooledObject();
+        var vfx = VfxPool.Instance.GetPooledVfx();
         vfx.transform.position = transform.position + dir * i * gridSize;
     }
 

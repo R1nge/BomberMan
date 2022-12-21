@@ -9,14 +9,14 @@ namespace Character
         [SerializeField] private NetworkVariable<int> health;
         private PlayerSpawner _playerSpawner;
         private PlayerUI _playerUI;
-        private ShieldController _shieldController;
+        private CharacterShield _characterShield;
         public event Action OnTakenDamage;
 
         private void Awake()
         {
             _playerSpawner = FindObjectOfType<PlayerSpawner>();
             _playerUI = GetComponent<PlayerUI>();
-            _shieldController = GetComponent<ShieldController>();
+            _characterShield = GetComponent<CharacterShield>();
             health.OnValueChanged += _playerUI.UpdateHealth;
         }
 
@@ -35,9 +35,9 @@ namespace Character
         public void TakeDamagePlayer(int amount, ulong who, ulong whom)
         {
             OnTakenDamage?.Invoke();
-            if (_shieldController.IsActive.Value)
+            if (_characterShield.IsActive.Value)
             {
-                _shieldController.UseShieldServerRpc();
+                _characterShield.UseShieldServerRpc();
                 return;
             }
 

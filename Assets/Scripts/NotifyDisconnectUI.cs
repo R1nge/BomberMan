@@ -17,7 +17,7 @@ public class NotifyDisconnectUI : NetworkBehaviour
     private void OnClientDisconnect(ulong obj)
     {
         var client = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(obj);
-        var nick = client.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text;
+        var nick = client.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
         OnClientDisconnectedClientRpc(nick);
     }
 

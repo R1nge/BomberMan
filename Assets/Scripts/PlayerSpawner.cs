@@ -113,7 +113,7 @@ public class PlayerSpawner : NetworkBehaviour
 
             if (_playersAmount.Value is <= 1 and > 0)
             {
-                var controllers = FindObjectsOfType<MovementController>();
+                var controllers = FindObjectsOfType<CharacterMovement>();
                 for (int i = 0; i < controllers.Length; i++)
                 {
                     if (controllers[i].GetComponent<NetworkObject>().IsSpawned)

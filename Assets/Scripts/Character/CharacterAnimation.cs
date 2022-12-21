@@ -2,7 +2,7 @@
 
 namespace Character
 {
-    public class AnimationController : MonoBehaviour
+    public class CharacterAnimation : MonoBehaviour
     {
         [SerializeField] private float speed;
         [SerializeField] private float height;

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Character
 {
-    public class CameraController : NetworkBehaviour
+    public class CharacterCamera : NetworkBehaviour
     {
         [SerializeField] private Vector3 offset;
         private Camera _camera;

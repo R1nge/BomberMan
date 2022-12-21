@@ -12,7 +12,7 @@ public class LobbyManager : NetworkBehaviour
 
     private void Awake()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback += Check;
+        NetworkManager.Singleton.OnClientConnectedCallback += CheckIsFull;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
         _playersAmount = new NetworkVariable<int>();
         _skins = FindObjectOfType<PlayerSkins>();
@@ -35,7 +35,7 @@ public class LobbyManager : NetworkBehaviour
         }
     }
 
-    private void Check(ulong ID)
+    private void CheckIsFull(ulong ID)
     {
         if (IsServer)
         {
@@ -70,7 +70,7 @@ public class LobbyManager : NetworkBehaviour
     {
         base.OnDestroy();
         if (NetworkManager.Singleton == null) return;
-        NetworkManager.Singleton.OnClientConnectedCallback -= Check;
+        NetworkManager.Singleton.OnClientConnectedCallback -= CheckIsFull;
         NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
     }
 }

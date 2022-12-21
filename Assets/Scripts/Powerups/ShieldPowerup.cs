@@ -9,7 +9,7 @@ namespace Powerups
         {
             if (reference.TryGet(out NetworkObject net))
             {
-                if (net.TryGetComponent(out ShieldController shieldController))
+                if (net.TryGetComponent(out CharacterShield shieldController))
                 {
                     shieldController.ApplyShieldServerRpc();
                 }

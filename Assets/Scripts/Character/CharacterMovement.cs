@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace Character
 {
-    public class MovementController : NetworkBehaviour
+    public class CharacterMovement : NetworkBehaviour
     {
         [SerializeField] private NetworkVariable<float> speed;
         [SerializeField] private float rotationSpeed;
@@ -31,27 +31,32 @@ namespace Character
         [ServerRpc(RequireOwnership = false)]
         private void OnGameStartedServerRpc() => _canMove.Value = true;
 
+        public void OnMove(InputValue value)
+        {
+            if (!_canMove.Value) return;
+            _curSpeedX = value.Get<Vector2>().y * speed.Value;
+            _curSpeedY = value.Get<Vector2>().x * speed.Value;
+        }
+
         private void Update()
         {
             if (!IsOwner || !_canMove.Value) return;
-            Vector3 forward = Vector3.forward;
-            Vector3 right = Vector3.right;
-            _moveDirection = forward * _curSpeedX + right * _curSpeedY;
+
+            _moveDirection = Vector3.forward * _curSpeedX + Vector3.right * _curSpeedY;
+
+            Rotate();
+
+            _characterController.Move(_moveDirection * Time.deltaTime);
+        }
+
+        private void Rotate()
+        {
             if (_moveDirection != Vector3.zero)
             {
                 var targetRot = Quaternion.LookRotation(_moveDirection, Vector3.up);
                 transform.rotation =
                     Quaternion.RotateTowards(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
             }
-
-            _characterController.Move(_moveDirection * Time.deltaTime);
-        }
-
-        public void OnMove(InputValue value)
-        {
-            if (!_canMove.Value) return;
-            _curSpeedX = value.Get<Vector2>().y * speed.Value;
-            _curSpeedY = value.Get<Vector2>().x * speed.Value;
         }
 
         [ServerRpc(RequireOwnership = false)]

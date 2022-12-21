@@ -27,6 +27,9 @@ public class Timer : NetworkBehaviour
         _currentTime.OnValueChanged += UpdateUIClientRpc;
     }
 
+    [ClientRpc]
+    private void UpdateUIClientRpc(int old, int value) => _timerUI.UpdateUI(value);
+
     private IEnumerator Timer_c()
     {
         if(!IsServer) yield break;
@@ -40,7 +43,4 @@ public class Timer : NetworkBehaviour
         _currentTime.Value--;
         StartCoroutine(Timer_c());
     }
-
-    [ClientRpc]
-    private void UpdateUIClientRpc(int old, int value) => _timerUI.UpdateUI(value);
 }

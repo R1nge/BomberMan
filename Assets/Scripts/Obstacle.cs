@@ -26,9 +26,6 @@ public class Obstacle : NetworkBehaviour, IDamageable
         }
     }
 
-    [ServerRpc]
-    private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
-
     [ServerRpc(RequireOwnership = false)]
     private void SpawnDropServerRpc()
     {
@@ -38,4 +35,7 @@ public class Obstacle : NetworkBehaviour, IDamageable
             transform.position + dropOffset, Quaternion.identity);
         drop.GetComponent<NetworkObject>().Spawn(true);
     }
+
+    [ServerRpc]
+    private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();
 }

@@ -6,7 +6,7 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Character
 {
-    public class BlockController : NetworkBehaviour
+    public class CharacterBlock : NetworkBehaviour
     {
         [SerializeField] private float distance;
         [SerializeField] private NetworkVariable<int> digAmount;

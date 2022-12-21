@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Character
 {
-    public class DamageController : MonoBehaviour
+    public class CharacterDamage : MonoBehaviour
     {
         [SerializeField] private GameObject hitSound;
         private Health _health;

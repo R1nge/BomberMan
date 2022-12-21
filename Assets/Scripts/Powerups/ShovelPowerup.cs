@@ -9,7 +9,7 @@ namespace Powerups
         {
             if (reference.TryGet(out NetworkObject net))
             {
-                if (net.TryGetComponent(out BlockController blockController))
+                if (net.TryGetComponent(out CharacterBlock blockController))
                 {
                     blockController.IncreaseDigAmountServerRpc();
                 }

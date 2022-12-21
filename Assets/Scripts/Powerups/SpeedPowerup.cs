@@ -12,7 +12,7 @@ namespace Powerups
         {
             if (reference.TryGet(out NetworkObject net))
             {
-                if (net.TryGetComponent(out MovementController movementController))
+                if (net.TryGetComponent(out CharacterMovement movementController))
                 {
                     movementController.SetSpeedServerRpc(speed.Value);
                 }

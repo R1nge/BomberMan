@@ -55,7 +55,7 @@ public class VfxPool : MonoBehaviour
         }
     }
 
-    public GameObject GetPooledObject()
+    public GameObject GetPooledVfx()
     {
         for (int i = 0; i < amountToPool; i++)
         {

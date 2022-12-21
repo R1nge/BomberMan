@@ -8,8 +8,5 @@ public class SkinSlot : MonoBehaviour
 
     public void SetIcon(Sprite sprite) => icon.sprite = sprite;
 
-    public void SetCallback(PlayerSkins skin, int index) => select.onClick.AddListener(() =>
-    {
-        skin.SetSkin(index);
-    });
+    public void SetCallback(PlayerSkins skin, int index) => select.onClick.AddListener(() => { skin.SetSkin(index); });
 }

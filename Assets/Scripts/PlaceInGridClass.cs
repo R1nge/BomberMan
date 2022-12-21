@@ -1,5 +1,4 @@
-﻿using Unity.Netcode;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlaceInGridClass : MonoBehaviour
 {
@@ -7,17 +6,6 @@ public class PlaceInGridClass : MonoBehaviour
     private MapGenerator _mapGenerator;
 
     private void Awake() => _mapGenerator = FindObjectOfType<MapGenerator>();
-
-    [ServerRpc(RequireOwnership = false)]
-    public void PlaceInGridServerRpc()
-    {
-        var position = transform.position;
-        position = new Vector3(
-            RoundToNearestGrid(position.x),
-            RoundToNearestGrid(position.y) + yOffset,
-            RoundToNearestGrid(position.z));
-        transform.position = position;
-    }
 
     public void PlaceInGrid()
     {

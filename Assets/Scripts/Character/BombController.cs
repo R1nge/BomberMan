@@ -70,7 +70,8 @@ namespace Character
                 bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
                 var net = bomb.GetComponent<NetworkObject>();
                 net.SpawnWithOwnership(ID, true);
-                net.GetComponent<Bomb>().OnBombExploded += ResetSpawnServerRpc;
+                net.DontDestroyWithOwner = true;
+                net.GetComponent<Bomb>().OnBombExploded += ResetSpawn;
             }
         }
 
@@ -97,6 +98,12 @@ namespace Character
         private void SpawnServerRpc(ServerRpcParams rpcParams = default)
         {
             Spawn(rpcParams.Receive.SenderClientId);
+        }
+
+        private void ResetSpawn()
+        {
+            if (!IsSpawned) return;
+            ResetSpawnServerRpc();
         }
 
         [ServerRpc(RequireOwnership = false)]

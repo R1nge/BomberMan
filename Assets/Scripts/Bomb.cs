@@ -147,9 +147,7 @@ public class Bomb : NetworkBehaviour, IDamageable
 
         var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
             Quaternion.identity);
-        for (int i = 0;
-             i < size;
-             i++)
+        for (int i = 0; i < size; i++)
         {
             if (coll[i].TryGetComponent(out IDamageable _))
             {
@@ -164,13 +162,13 @@ public class Bomb : NetworkBehaviour, IDamageable
 
     private void Destroy()
     {
-        if (!IsServer)
+        if (IsServer)
         {
-            DestroyServerRpc();
+            GetComponent<NetworkObject>().Despawn();
         }
         else
         {
-            GetComponent<NetworkObject>().Despawn();
+            DestroyServerRpc();
         }
     }
 

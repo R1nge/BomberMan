@@ -2,7 +2,6 @@
 using UnityEngine;
 using UnityEngine.AddressableAssets;
 using UnityEngine.InputSystem;
-using UnityEngine.ResourceManagement.AsyncOperations;
 
 namespace Character
 {
@@ -18,8 +17,8 @@ namespace Character
         {
             _mapGenerator = FindObjectOfType<MapGenerator>();
             _blocksUI = GetComponent<BlocksUI>();
-            digAmount.OnValueChanged += (value, newValue) => { _blocksUI.UpdateDig(newValue); };
-            blockAmount.OnValueChanged += (value, newValue) => { _blocksUI.UpdateBlock(newValue); };
+            digAmount.OnValueChanged += (_, newValue) => { _blocksUI.UpdateDig(newValue); };
+            blockAmount.OnValueChanged += (_, newValue) => { _blocksUI.UpdateBlock(newValue); };
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -29,9 +28,10 @@ namespace Character
         {
             if (!IsOwner) return;
             if (blockAmount.Value <= 0) return;
-            if (!Physics.Raycast(transform.position, transform.forward, distance * 1.25f))
+            var distanceMultiplier = 1.55f;
+            if (!Physics.Raycast(transform.position, transform.forward, distance * distanceMultiplier))
             {
-                SpawnBlock(transform.position + transform.forward * distance);
+                SpawnBlock(transform.position + transform.forward * distance * distanceMultiplier);
             }
         }
 

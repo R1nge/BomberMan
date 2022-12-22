@@ -15,6 +15,9 @@ namespace Character
         private GameState _gameState;
         private float _curSpeedX, _curSpeedY;
 
+        [ServerRpc(RequireOwnership = false)]
+        public void SetSpeedServerRpc(float value) => speed.Value = value;
+        
         private void Awake()
         {
             _canMove = new NetworkVariable<bool>();
@@ -58,9 +61,6 @@ namespace Character
                     Quaternion.RotateTowards(transform.rotation, targetRot, rotationSpeed * Time.deltaTime);
             }
         }
-
-        [ServerRpc(RequireOwnership = false)]
-        public void SetSpeedServerRpc(float value) => speed.Value = value;
 
         public override void OnDestroy()
         {

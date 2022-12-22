@@ -413,6 +413,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   distance: 2
+  rayRadius: 1
   digAmount:
     m_InternalValue: 0
   blockAmount:

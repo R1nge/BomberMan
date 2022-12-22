@@ -23,7 +23,7 @@ namespace Character
 
         public override void OnNetworkSpawn()
         {
-            bombAmount.OnValueChanged += (value, newValue) =>
+            bombAmount.OnValueChanged += (_, _) =>
             {
                 if (_playerUI == null) return;
                 _playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
@@ -71,6 +71,8 @@ namespace Character
                 var net = bomb.GetComponent<NetworkObject>();
                 net.SpawnWithOwnership(ID, true);
                 net.DontDestroyWithOwner = true;
+
+                //TODO: fix possible memory leak
                 net.GetComponent<Bomb>().OnBombExploded += ResetSpawn;
             }
         }
@@ -81,7 +83,7 @@ namespace Character
 
             var size = Physics.OverlapBoxNonAlloc(transform.position, transform.localScale / 4, coll,
                 Quaternion.identity);
-            
+
             for (int i = 0; i < size; i++)
             {
                 if (coll[i].TryGetComponent(out Bomb _))

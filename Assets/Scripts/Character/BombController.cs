@@ -101,9 +101,10 @@ namespace Character
             Spawn(rpcParams.Receive.SenderClientId);
         }
 
-        private void ResetSpawn()
+        private void ResetSpawn(Bomb bomb)
         {
             if (!IsSpawned) return;
+            bomb.OnBombExploded -= ResetSpawn;
             ResetSpawnServerRpc();
         }
 

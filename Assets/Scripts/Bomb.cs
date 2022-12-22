@@ -17,7 +17,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     private NetworkVariable<float> _time;
     private BombDistance _bombDistance;
 
-    public event Action OnBombExploded;
+    public event Action<Bomb> OnBombExploded;
 
     private void Awake()
     {
@@ -28,7 +28,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     }
 
     private void Start() => Invoke(nameof(Explode), explodeDelay);
-    
+
     private void OnTick()
     {
         if (IsServer)
@@ -43,7 +43,7 @@ public class Bomb : NetworkBehaviour, IDamageable
     private void Explode()
     {
         if (_hasExploded.Value) return;
-        OnBombExploded?.Invoke();
+        OnBombExploded?.Invoke(this);
         var position = transform.position;
         Raycast(position, Vector3.forward, _bombDistance.Distance.Value, radius);
         Raycast(position, Vector3.back, _bombDistance.Distance.Value, radius);

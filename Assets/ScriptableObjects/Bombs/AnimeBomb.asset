@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcc80f3455aa4d06b8d4d090bc57e38f, type: 3}
+  m_Name: AnimeBomb
+  m_EditorClassIdentifier: 
+  inGamePrefab: {fileID: 5818765566873767174, guid: 346d0d54d684cf740bbac273f0dccd7c,
+    type: 3}
+  iconPreview: {fileID: 21300026, guid: 7ab74e659e1f0a34d9cfec21c478fc12, type: 3}
+  sound: {fileID: 8300000, guid: 9d00b17e03ef6b64e90a997a438b3506, type: 3}

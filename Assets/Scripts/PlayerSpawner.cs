@@ -31,7 +31,27 @@ public class PlayerSpawner : NetworkBehaviour
 
     private void OnClientConnected(ulong obj)
     {
+        if (GetNetworkObject(obj) == null) return;
+        if (!GetNetworkObject(obj).IsSpawned) return;
+        if (OwnerClientId != obj) return;
+        print("Connected");
+        if (_gameState.GameStarted.Value && !_gameState.GameEnded.Value)
+        {
+            if (_playersAmount.Value <= 1)
+            {
+                _gameState.GameOverServerRpc();
+            }
+        }
+
+        _playersAmount.Value++;
+    }
+
+    private void OnClientDisconnect(ulong obj)
+    {
+        if (!GetNetworkObject(obj).IsSpawned) return;
         if (!IsServer) return;
+        print("DISConnected");
+        _playersAmount.Value--;
         if (_playersAmount.Value <= 1)
         {
             _gameState.GameOverServerRpc();
@@ -55,14 +75,6 @@ public class PlayerSpawner : NetworkBehaviour
     {
         if (IsServer) return;
         SpawnPlayerServerRpc(SaveGame.Load("Skin", 0));
-    }
-
-    private void OnClientDisconnect(ulong obj)
-    {
-        if (IsServer)
-        {
-            _playersAmount.Value--;
-        }
     }
 
     private void SpawnPlayer(int skinIndex, ulong ID)

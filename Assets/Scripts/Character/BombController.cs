@@ -10,14 +10,14 @@ namespace Character
         [SerializeField] private NetworkVariable<int> bombAmount, maxBombAmount;
         private PlayerUI _playerUI;
         private GameState _gameState;
-        private Bombs _bombs;
+        private PlayerBombs _bombs;
         private int _currentBomb;
 
         private void Awake()
         {
             _playerUI = GetComponent<PlayerUI>();
             _gameState = FindObjectOfType<GameState>();
-            _bombs = FindObjectOfType<Bombs>();
+            _bombs = FindObjectOfType<PlayerBombs>();
             _currentBomb = SaveGame.Load("Bomb", 0);
         }
 
@@ -66,13 +66,11 @@ namespace Character
             if (IsServer && CanSpawn())
             {
                 bombAmount.Value--;
-                var bomb = Instantiate(_bombs.GetBomb(_currentBomb), transform.position, Quaternion.identity);
+                var bomb = Instantiate(_bombs.GetBombPrefab(_currentBomb), transform.position, Quaternion.identity);
                 bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
                 var net = bomb.GetComponent<NetworkObject>();
                 net.SpawnWithOwnership(ID, true);
                 net.DontDestroyWithOwner = true;
-
-                //TODO: fix possible memory leak
                 net.GetComponent<Bomb>().OnBombExploded += ResetSpawn;
             }
         }

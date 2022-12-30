@@ -2,12 +2,14 @@
 
 public class BombSoundPreview : MonoBehaviour
 {
-    [SerializeField] private AudioClip[] sounds;
     [SerializeField] private AudioSource source;
+    private PlayerBombs _bombs;
+
+    private void Awake() => _bombs = FindObjectOfType<PlayerBombs>();
 
     public void Preview(int index)
     {
-        source.clip = sounds[index];
+        source.clip = _bombs.GetSound(index);
         source.Play(0);
     }
 }

@@ -33,7 +33,6 @@ public class LobbyKick : NetworkBehaviour
     private void LoadMainMenu(ulong obj)
     {
         if (IsServer || !IsOwner) return;
-        Destroy(NetworkManager.Singleton.gameObject);
         SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 

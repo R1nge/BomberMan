@@ -52,27 +52,33 @@ namespace Character
             {
                 if (IsServer)
                 {
-                    Spawn(NetworkObject.OwnerClientId);
+                    Spawn(_currentBomb, NetworkObject.OwnerClientId);
                 }
                 else
                 {
-                    SpawnServerRpc();
+                    SpawnServerRpc(_currentBomb);
                 }
             }
         }
 
-        private void Spawn(ulong ID)
+        private void Spawn(int bombIndex, ulong ID)
         {
             if (IsServer && CanSpawn())
             {
                 bombAmount.Value--;
-                var bomb = Instantiate(_bombs.GetBombPrefab(_currentBomb), transform.position, Quaternion.identity);
+                var bomb = Instantiate(_bombs.GetBombPrefab(bombIndex), transform.position, Quaternion.identity);
                 bomb.GetComponent<PlaceInGridClass>().PlaceInGrid();
                 var net = bomb.GetComponent<NetworkObject>();
                 net.SpawnWithOwnership(ID, true);
                 net.DontDestroyWithOwner = true;
                 net.GetComponent<Bomb>().OnBombExploded += ResetSpawn;
             }
+        }
+
+        [ServerRpc(RequireOwnership = false)]
+        private void SpawnServerRpc(int bombIndex, ServerRpcParams rpcParams = default)
+        {
+            Spawn(bombIndex, rpcParams.Receive.SenderClientId);
         }
 
         private bool CanSpawn()
@@ -91,12 +97,6 @@ namespace Character
             }
 
             return true;
-        }
-
-        [ServerRpc(RequireOwnership = false)]
-        private void SpawnServerRpc(ServerRpcParams rpcParams = default)
-        {
-            Spawn(rpcParams.Receive.SenderClientId);
         }
 
         private void ResetSpawn(Bomb bomb)

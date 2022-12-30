@@ -8,11 +8,11 @@ public class BombSlot : MonoBehaviour
 
     public void SetIcon(Sprite sprite) => icon.sprite = sprite;
 
-    public void SetCallback(PlayerBombs skin, BombSoundPreview sound, int index)
+    public void SetCallback(PlayerBombs bomb, BombSoundPreview sound, int index)
     {
         select.onClick.AddListener(() =>
         {
-            skin.SetBomb(index);
+            bomb.SetBomb(index);
             sound.Preview(index);
         });
     }

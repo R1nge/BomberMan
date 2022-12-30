@@ -202,12 +202,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7100219}
   m_CullTransparentMesh: 1
---- !u!1 &9493312 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 633310853136546655, guid: b656531c0f201f343a6431390ac6f945,
-    type: 3}
-  m_PrefabInstance: {fileID: 633310853127118879}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &17497607
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,7 +827,8 @@ MonoBehaviour:
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}
     - Override: 0
-      Prefab: {fileID: 9493312}
+      Prefab: {fileID: 633310853136546655, guid: b656531c0f201f343a6431390ac6f945,
+        type: 3}
       SourcePrefabToOverride: {fileID: 0}
       SourceHashToOverride: 0
       OverridingTargetPrefab: {fileID: 0}

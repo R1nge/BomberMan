@@ -12,27 +12,42 @@ public class LobbyManager : NetworkBehaviour
 
     private void Awake()
     {
-        NetworkManager.Singleton.OnClientConnectedCallback += CheckIsFull;
+        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
         NetworkManager.Singleton.OnClientDisconnectCallback += OnClientDisconnect;
-        _playersAmount = new NetworkVariable<int>();
+        _playersAmount = new NetworkVariable<int>(1);
         _skins = FindObjectOfType<PlayerSkins>();
     }
 
-    public void OnClientDisconnect(ulong obj)
+    private void OnClientConnected(ulong obj)
     {
-        if (IsServer)
+        if (!IsServer)
         {
-            _playersAmount.Value--;
+            SpawnPreviewServerRpc(SaveGame.Load("Skin", 0));
+            return;
         }
+
+        _playersAmount.Value++;
+        CheckIsFull(obj);
+        start.SetActive(_playersAmount.Value != 1);
     }
 
     public override void OnNetworkSpawn()
     {
-        SpawnPreviewServerRpc(SaveGame.Load("Skin", 0));
         if (!IsServer)
         {
             start.gameObject.SetActive(false);
+            return;
         }
+
+        SpawnPreviewServerRpc(SaveGame.Load("Skin", 0));
+        start.SetActive(_playersAmount.Value != 1);
+    }
+
+    public void OnClientDisconnect(ulong obj)
+    {
+        if (!IsServer) return;
+        _playersAmount.Value--;
+        start.SetActive(_playersAmount.Value != 1);
     }
 
     private void CheckIsFull(ulong ID)
@@ -50,9 +65,8 @@ public class LobbyManager : NetworkBehaviour
     private void SpawnPreview(int skinIndex, ulong ID)
     {
         var rot = Quaternion.Euler(new Vector3(0, 180, 0));
-        var player = Instantiate(_skins.GetPreviewPrefab(skinIndex), positions[_playersAmount.Value].position, rot);
+        var player = Instantiate(_skins.GetPreviewPrefab(skinIndex), positions[_playersAmount.Value - 1].position, rot);
         player.GetComponent<NetworkObject>().SpawnWithOwnership(ID, true);
-        _playersAmount.Value++;
     }
 
     [ServerRpc(RequireOwnership = false)]

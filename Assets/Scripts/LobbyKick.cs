@@ -11,8 +11,11 @@ public class LobbyKick : NetworkBehaviour
     private void Awake()
     {
         _lobbyManager = FindObjectOfType<LobbyManager>();
-        NetworkManager.Singleton.OnClientDisconnectCallback += LoadMainMenu;
-        kick.onClick.AddListener(Kick);
+        if (!IsServer)
+        {
+            NetworkManager.Singleton.OnClientDisconnectCallback += LoadMainMenu;
+            kick.onClick.AddListener(Kick);
+        }
     }
 
     public override void OnNetworkSpawn() => kick.gameObject.SetActive(IsServer && !IsOwner);
@@ -29,8 +32,9 @@ public class LobbyKick : NetworkBehaviour
 
     private void LoadMainMenu(ulong obj)
     {
-        if (IsServer) return;
-        SceneManager.LoadScene("MainMenu");
+        if (IsServer || !IsOwner) return;
+        Destroy(NetworkManager.Singleton.gameObject);
+        SceneManager.LoadScene("MainMenu", LoadSceneMode.Single);
     }
 
     public override void OnDestroy()

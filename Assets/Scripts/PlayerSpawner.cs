@@ -80,13 +80,30 @@ public class PlayerSpawner : NetworkBehaviour
         if (IsServer)
         {
             var pos = GetRandomCorner();
+            var rot = new Quaternion();
+
+            switch (pos)
+            {
+                case 0:
+                    rot = Quaternion.identity;
+                    break;
+                case 1:
+                    rot = Quaternion.Euler(new Vector3(0, -180));
+                    break;
+                case 2:
+                    rot = Quaternion.identity;
+                    break;
+                case 3:
+                    rot = Quaternion.Euler(new Vector3(0, -180));
+                    break;
+            }
+
             var player = Instantiate(_skins.GetPlayerPrefab(skinIndex),
-                _spawnPositions.GetPositions()[pos],
-                Quaternion.identity);
+                _spawnPositions.GetPositions()[pos], rot);
+
             var net = player.GetComponent<NetworkObject>();
             net.SpawnAsPlayerObject(ID, true);
-            net.transform.position =
-                _spawnPositions.GetPositions()[pos];
+            net.transform.position = _spawnPositions.GetPositions()[pos];
             _playersAmount.Value++;
         }
         else

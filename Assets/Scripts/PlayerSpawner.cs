@@ -85,14 +85,10 @@ public class PlayerSpawner : NetworkBehaviour
             switch (pos)
             {
                 case 0:
-                    rot = Quaternion.identity;
-                    break;
-                case 1:
-                    rot = Quaternion.Euler(new Vector3(0, -180));
-                    break;
                 case 2:
                     rot = Quaternion.identity;
                     break;
+                case 1:
                 case 3:
                     rot = Quaternion.Euler(new Vector3(0, -180));
                     break;
@@ -167,10 +163,7 @@ public class PlayerSpawner : NetworkBehaviour
     }
 
     [ServerRpc]
-    private void DespawnServerRpc(ulong ID)
-    {
-        Despawn(ID, ID);
-    }
+    private void DespawnServerRpc(ulong ID) => Despawn(ID, ID);
 
     [ServerRpc(RequireOwnership = false)]
     private void SpawnPlayerServerRpc(int skinIndex, ServerRpcParams rpcParams = default)

@@ -1,4 +1,5 @@
-﻿using BayatGames.SaveGameFree;
+﻿using System;
+using BayatGames.SaveGameFree;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -6,13 +7,21 @@ public class PlayerSkins : NetworkBehaviour
 {
     [SerializeField] private SkinData[] skins;
 
+    public event Action<SkinData> OnSkinChanged;
+
+    public SkinData GetSkinData(int index) => skins[index];
+
     public int GetSkinsCount() => skins.Length;
 
     public GameObject GetPlayerPrefab(int index) => skins[index].inGamePrefab;
 
-    public GameObject GetPreviewPrefab(int index) => skins[index].previewPrefab;
+    public GameObject GetPreviewPrefab(int index) => skins[index].lobbyPreview;
 
     public Sprite GetSprite(int index) => skins[index].iconPreview;
 
-    public void SetSkin(int index) => SaveGame.Save("Skin", index);
+    public void SetSkin(int index)
+    {
+        OnSkinChanged?.Invoke(skins[index]);
+        SaveGame.Save("Skin", index);
+    }
 }

@@ -4,6 +4,7 @@
 public class SkinData : ScriptableObject
 {
     public GameObject inGamePrefab;
-    public GameObject previewPrefab;
+    public GameObject lobbyPreview;
+    public GameObject offlinePreview;
     public Sprite iconPreview;
 }

@@ -149,7 +149,7 @@ GameObject:
   - component: {fileID: 4978251411692512565}
   - component: {fileID: 6307591540236301673}
   m_Layer: 0
-  m_Name: BearPreview
+  m_Name: BearLobby
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

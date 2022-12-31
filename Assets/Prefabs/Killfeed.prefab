@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5153014619842407437}
   - component: {fileID: 5153014619842407475}
   - component: {fileID: 5153014619842407474}
-  - component: {fileID: 740339261525534041}
   m_Layer: 0
   m_Name: Killfeed
   m_TagString: Untagged
@@ -60,18 +59,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bec00b2b1b5b41e0a27304f674d6e953, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &740339261525534041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5153014619842407436}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2a8cd13c290640fabafca1bb88dd2564, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   killFeed: {fileID: 0}

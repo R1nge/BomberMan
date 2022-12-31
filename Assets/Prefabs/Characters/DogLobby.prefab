@@ -232,7 +232,7 @@ GameObject:
   - component: {fileID: 5442496396156970198}
   - component: {fileID: 6847357013229175600}
   m_Layer: 0
-  m_Name: DogPreview
+  m_Name: DogLobby
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

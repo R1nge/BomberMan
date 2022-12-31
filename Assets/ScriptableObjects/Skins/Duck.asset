@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inGamePrefab: {fileID: 2671930508506096047, guid: eed06e776bf93ea43bd33efa6e49c071,
     type: 3}
-  previewPrefab: {fileID: 2671930508506096047, guid: 1b3d171a837b46d43bd0f41f7f0d475c,
+  lobbyPreview: {fileID: 2671930508506096047, guid: 1b3d171a837b46d43bd0f41f7f0d475c,
+    type: 3}
+  offlinePreview: {fileID: 24568468180814593, guid: 827a3e0407691bc42a4d8d3f23c87312,
     type: 3}
   iconPreview: {fileID: 21300000, guid: dc925a2a4bbe82d42af7a191cdfd59d8, type: 3}

@@ -271,7 +271,7 @@ GameObject:
   - component: {fileID: 6064035901873419213}
   - component: {fileID: 9035166100006269769}
   m_Layer: 0
-  m_Name: AmogusPreview
+  m_Name: AmogusLobby
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

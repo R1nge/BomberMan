@@ -5,19 +5,19 @@ using UnityEngine.InputSystem;
 
 namespace Character
 {
-    public class BombController : NetworkBehaviour
+    public class CharacterBomb : NetworkBehaviour
     {
         [SerializeField] private NetworkVariable<int> bombAmount, maxBombAmount;
-        private PlayerUI _playerUI;
         private GameState _gameState;
+        private PlayerUI _playerUI;
         private PlayerBombs _bombs;
         private int _currentBomb;
 
         private void Awake()
         {
-            _playerUI = GetComponent<PlayerUI>();
             _gameState = FindObjectOfType<GameState>();
             _bombs = FindObjectOfType<PlayerBombs>();
+            _playerUI = GetComponent<PlayerUI>();
             _currentBomb = SaveGame.Load("Bomb", 0);
         }
 

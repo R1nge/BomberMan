@@ -1,10 +1,9 @@
-﻿using System;
-using BayatGames.SaveGameFree;
+﻿using BayatGames.SaveGameFree;
 using Character;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
-using Random = UnityEngine.Random;
+using UnityEngine.SceneManagement;
 
 public class PlayerSpawner : NetworkBehaviour
 {
@@ -29,28 +28,26 @@ public class PlayerSpawner : NetworkBehaviour
         _killFeed = FindObjectOfType<KillFeed>();
     }
 
-    private void OnClientConnected(ulong obj)
+    private void OnClientConnected(ulong ID)
     {
-        if (GetNetworkObject(obj) == null) return;
-        if (!GetNetworkObject(obj).IsSpawned) return;
-        if (OwnerClientId != obj) return;
-        print("Connected");
-        if (_gameState.GameStarted.Value && !_gameState.GameEnded.Value)
+        if (_playersAmount.Value >= 4)
         {
-            if (_playersAmount.Value <= 1)
+            if (IsServer)
             {
-                _gameState.GameOverServerRpc();
+                NetworkManager.Singleton.DisconnectClient(ID);
+                _playersAmount.Value = 4;
+            }
+            else
+            {
+                SceneManager.LoadScene("MainMenu");
             }
         }
-
-        _playersAmount.Value++;
     }
 
-    private void OnClientDisconnect(ulong obj)
+    private void OnClientDisconnect(ulong ID)
     {
-        if (!GetNetworkObject(obj).IsSpawned) return;
         if (!IsServer) return;
-        print("DISConnected");
+        if (GetNetworkObject(ID) == null) return;
         _playersAmount.Value--;
         if (_playersAmount.Value <= 1)
         {
@@ -168,5 +165,8 @@ public class PlayerSpawner : NetworkBehaviour
     {
         base.OnDestroy();
         _playersAmount?.Dispose();
+        if (NetworkManager.Singleton == null) return;
+        NetworkManager.Singleton.OnClientConnectedCallback -= OnClientConnected;
+        NetworkManager.Singleton.OnClientDisconnectCallback -= OnClientDisconnect;
     }
 }

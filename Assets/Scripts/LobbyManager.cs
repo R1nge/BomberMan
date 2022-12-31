@@ -28,7 +28,10 @@ public class LobbyManager : NetworkBehaviour
 
         _playersAmount.Value++;
         CheckIsFull(obj);
-        start.SetActive(_playersAmount.Value != 1);
+        if (start != null)
+        {
+            start.SetActive(_playersAmount.Value != 1);
+        }
     }
 
     public override void OnNetworkSpawn()

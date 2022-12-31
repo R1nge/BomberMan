@@ -1,5 +1,4 @@
-﻿using System;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -11,13 +10,13 @@ namespace Character
         [SerializeField] private float rotationSpeed;
         private NetworkVariable<bool> _canMove;
         private Vector3 _moveDirection = Vector3.zero;
+        private float _curSpeedX, _curSpeedY;
         private CharacterController _characterController;
         private GameState _gameState;
-        private float _curSpeedX, _curSpeedY;
 
         [ServerRpc(RequireOwnership = false)]
         public void SetSpeedServerRpc(float value) => speed.Value = value;
-        
+
         private void Awake()
         {
             _canMove = new NetworkVariable<bool>();

@@ -12,7 +12,7 @@ namespace Powerups
         {
             if (reference.TryGet(out NetworkObject net))
             {
-                if (net.TryGetComponent(out BombController bombController))
+                if (net.TryGetComponent(out CharacterBomb bombController))
                 {
                     bombController.IncreaseBombAmountServerRpc(amount);
                 }

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 9196196049732257663}
   - component: {fileID: 9196196049732257662}
   - component: {fileID: 2597276946064485830}
-  - component: {fileID: 175489844198106885}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -102,16 +101,3 @@ MonoBehaviour:
   AlwaysReplicateAsRoot: 0
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &175489844198106885
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9196196049732257649}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c4dac341943e40cd8ac046c2781722c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxDistance: 20

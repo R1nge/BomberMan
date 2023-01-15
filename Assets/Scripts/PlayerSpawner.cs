@@ -42,6 +42,11 @@ public class PlayerSpawner : NetworkBehaviour
                 SceneManager.LoadScene("MainMenu");
             }
         }
+
+        if (_playersAmount.Value <= 1)
+        {
+            _gameState.GameOverServerRpc();
+        }
     }
 
     private void OnClientDisconnect(ulong ID)

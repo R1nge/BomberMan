@@ -52,7 +52,7 @@ public class GameState : NetworkBehaviour
         StartCoroutine(Restart_c());
     }
 
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void GameOverServerRpc()
     {
         if (_gameEnded.Value) return;

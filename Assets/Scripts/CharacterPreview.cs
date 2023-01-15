@@ -1,5 +1,4 @@
-﻿using BayatGames.SaveGameFree;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CharacterPreview : MonoBehaviour
 {
@@ -12,7 +11,7 @@ public class CharacterPreview : MonoBehaviour
         _skins = FindObjectOfType<PlayerSkins>();
         _skins.OnSkinChanged += OnSkinChanged;
 
-        SpawnPreview(_skins.GetSkinData(SaveGame.Load("Skin", 0)));
+        SpawnPreview(_skins.GetSkinData(PlayerPrefs.GetInt("Skin")));
     }
 
     private void OnSkinChanged(SkinData skin) => SpawnPreview(skin);

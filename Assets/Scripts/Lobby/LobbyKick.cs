@@ -6,11 +6,9 @@ using UnityEngine.UI;
 public class LobbyKick : NetworkBehaviour
 {
     [SerializeField] private Button kick;
-    private LobbyManager _lobbyManager;
 
     private void Awake()
     {
-        _lobbyManager = FindObjectOfType<LobbyManager>();
         if (!IsServer)
         {
             NetworkManager.Singleton.OnClientDisconnectCallback += LoadMainMenu;
@@ -22,11 +20,6 @@ public class LobbyKick : NetworkBehaviour
 
     private void Kick()
     {
-        if (IsServer)
-        {
-            _lobbyManager.OnClientDisconnect(GetComponent<NetworkObject>().OwnerClientId);
-        }
-
         NetworkManager.Singleton.DisconnectClient(GetComponent<NetworkObject>().OwnerClientId);
     }
 
@@ -40,7 +33,5 @@ public class LobbyKick : NetworkBehaviour
     {
         base.OnDestroy();
         kick.onClick.RemoveAllListeners();
-        if (NetworkManager.Singleton == null) return;
-        NetworkManager.Singleton.OnClientDisconnectCallback -= LoadMainMenu;
     }
 }

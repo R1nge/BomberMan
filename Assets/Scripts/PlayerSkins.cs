@@ -22,6 +22,6 @@ public class PlayerSkins : NetworkBehaviour
     public void SetSkin(int index)
     {
         OnSkinChanged?.Invoke(skins[index]);
-        SaveGame.Save("Skin", index);
+        PlayerPrefs.SetInt("Skin", index);
     }
 }

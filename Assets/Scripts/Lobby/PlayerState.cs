@@ -22,7 +22,9 @@ namespace Lobby
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref ClientId);
+            serializer.SerializeValue(ref SkinIndex);
             serializer.SerializeValue(ref IsReady);
+            serializer.SerializeValue(ref Nickname);
         }
 
         public bool Equals(PlayerState other)

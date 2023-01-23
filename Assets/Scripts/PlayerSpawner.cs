@@ -1,4 +1,5 @@
 ﻿using Character;
+using Lobby;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -67,7 +68,14 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (IsServer)
             {
-                SpawnPlayer(PlayerPrefs.GetInt("Skin"), NetworkManager.Singleton.LocalClientId);
+                var players = LobbySingleton.Instance.GetPlayersList();
+                for (int i = 0; i < players.Count; i++)
+                {
+                    if (players[i].ClientId == NetworkManager.Singleton.LocalClientId)
+                    {
+                        SpawnPlayer(players[i].SkinIndex, NetworkManager.Singleton.LocalClientId);
+                    }
+                }
             }
         }
     }
@@ -75,7 +83,7 @@ public class PlayerSpawner : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (IsServer) return;
-        SpawnPlayerServerRpc(PlayerPrefs.GetInt("Skin"));
+        SpawnPlayerServerRpc();
     }
 
     private void SpawnPlayer(int skinIndex, ulong ID)
@@ -108,7 +116,7 @@ public class PlayerSpawner : NetworkBehaviour
         }
         else
         {
-            SpawnPlayerServerRpc(skinIndex);
+            SpawnPlayerServerRpc();
         }
     }
 
@@ -124,55 +132,83 @@ public class PlayerSpawner : NetworkBehaviour
         return pos;
     }
 
-    public void Despawn(ulong who, ulong whom)
+    public void Despawn(ulong killerID, ulong killedID)
     {
-        var player = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(who);
-        var d = player.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
-        var player2 = NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom);
-        var c = player2.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
-        _killFeed.DisplayKillServerRpc(d, c);
-
         if (IsServer)
         {
-            NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(whom).Despawn();
+            UpdateKillFeed(killerID, killedID);
+            NetworkManager.Singleton.SpawnManager.GetPlayerNetworkObject(killedID).Despawn();
             _playersAmount.Value--;
-
-            if (_playersAmount.Value is <= 1 and > 0)
-            {
-                var controllers = FindObjectsOfType<CharacterMovement>();
-                for (int i = 0; i < controllers.Length; i++)
-                {
-                    if (controllers[i].GetComponent<NetworkObject>().IsSpawned)
-                    {
-                        var winPlayer =
-                            NetworkManager.Singleton.SpawnManager.SpawnedObjects[controllers[i].NetworkObjectId];
-                        var winName = winPlayer.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
-                        _gameState.WinServerRpc(winName);
-
-                        break;
-                    }
-                }
-
-                _gameState.GameOverServerRpc();
-            }
-            else if (_playersAmount.Value <= 0)
-            {
-                _gameState.TieServerRpc();
-            }
+            TryFindWinner();
         }
         else
         {
-            DespawnServerRpc(who);
+            DespawnServerRpc(killerID);
         }
+    }
+
+    private void TryFindWinner()
+    {
+        if (_playersAmount.Value is <= 1 and > 0)
+        {
+            var controllers = FindObjectsOfType<CharacterMovement>();
+            for (int i = 0; i < controllers.Length; i++)
+            {
+                if (controllers[i].GetComponent<NetworkObject>().IsSpawned)
+                {
+                    var winPlayer =
+                        NetworkManager.Singleton.SpawnManager.SpawnedObjects[controllers[i].NetworkObjectId];
+                    var winName = winPlayer.transform.Find("Canvas/Nick").GetComponent<TextMeshProUGUI>().text;
+                    _gameState.WinServerRpc(winName);
+
+                    break;
+                }
+            }
+
+            _gameState.GameOverServerRpc();
+        }
+        else if (_playersAmount.Value <= 0)
+        {
+            _gameState.TieServerRpc();
+        }
+    }
+
+    private void UpdateKillFeed(ulong killerID, ulong killedID)
+    {
+        var players = LobbySingleton.Instance.GetPlayersList();
+        NetworkString killerName = default;
+        NetworkString killedName = default;
+
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].ClientId == killerID)
+            {
+                killerName = players[i].Nickname;
+            }
+
+            if (players[i].ClientId == killedID)
+            {
+                killedName = players[i].Nickname;
+            }
+        }
+
+        _killFeed.DisplayKillServerRpc(killerName, killedName);
     }
 
     [ServerRpc]
     private void DespawnServerRpc(ulong ID) => Despawn(ID, ID);
 
     [ServerRpc(RequireOwnership = false)]
-    private void SpawnPlayerServerRpc(int skinIndex, ServerRpcParams rpcParams = default)
+    private void SpawnPlayerServerRpc(ServerRpcParams rpcParams = default)
     {
-        SpawnPlayer(skinIndex, rpcParams.Receive.SenderClientId);
+        var players = LobbySingleton.Instance.GetPlayersList();
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].ClientId == rpcParams.Receive.SenderClientId)
+            {
+                SpawnPlayer(players[i].SkinIndex, rpcParams.Receive.SenderClientId);
+            }
+        }
     }
 
     public override void OnDestroy()

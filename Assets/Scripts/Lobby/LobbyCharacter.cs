@@ -49,6 +49,7 @@ namespace Lobby
         [ServerRpc(RequireOwnership = false)]
         public void ClearUIServerRpc()
         {
+            nickname.text = "";
             ready.text = "";
             ClearUIClientRpc();
         }
@@ -56,6 +57,7 @@ namespace Lobby
         [ClientRpc]
         private void ClearUIClientRpc()
         {
+            nickname.text = "";
             ready.text = "";
         }
 

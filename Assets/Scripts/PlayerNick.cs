@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Lobby;
+using TMPro;
 using Unity.Netcode;
 using UnityEngine;
 
@@ -12,27 +13,49 @@ public class PlayerNick : NetworkBehaviour
 
     private void Awake()
     {
-        _nickStr = PlayerPrefs.GetString("Nickname");
+        if (!IsOwner) return;
+        GetNicknameServerRpc();
         NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
+    }
+
+    [ServerRpc]
+    private void GetNicknameServerRpc()
+    {
+        var players = LobbySingleton.Instance.GetPlayersList();
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].ClientId == NetworkManager.Singleton.LocalClientId)
+            {
+                _nickStr = players[i].Nickname;
+            }
+        }
     }
 
     private void OnClientConnected(ulong obj)
     {
         if (!IsOwner) return;
-        SetNickServerRpc(_nickStr);
+        SetNickServerRpc();
     }
 
     public override void OnNetworkSpawn()
     {
         if (!IsOwner) return;
-        SetNickServerRpc(_nickStr);
+        SetNickServerRpc();
     }
 
-    [ServerRpc(RequireOwnership = false)]
-    private void SetNickServerRpc(NetworkString str)
+    [ServerRpc]
+    private void SetNickServerRpc(ServerRpcParams rpcParams = default)
     {
-        nick.text = str;
-        SetNickClientRpc(str);
+        var players = LobbySingleton.Instance.GetPlayersList();
+        for (int i = 0; i < players.Count; i++)
+        {
+            if (players[i].ClientId == rpcParams.Receive.SenderClientId)
+            {
+                _nickStr = players[i].Nickname;
+                nick.text = _nickStr;
+                SetNickClientRpc(_nickStr);
+            }
+        }
     }
 
     [ClientRpc]

@@ -6,8 +6,21 @@ namespace Lobby
 {
     public class LobbyCharacter : NetworkBehaviour
     {
-        [SerializeField] private TextMeshProUGUI ready;
+        [SerializeField] private TextMeshProUGUI ready, nickname;
         private PlayerSkins _skins;
+
+        [ServerRpc(RequireOwnership = false)]
+        public void UpdateNicknameServerRpc(NetworkString s)
+        {
+            nickname.text = s;
+            UpdateNicknameClientRpc(s);
+        }
+
+        [ClientRpc]
+        private void UpdateNicknameClientRpc(NetworkString s)
+        {
+            nickname.text = s;
+        }
 
         private void Awake()
         {
@@ -15,14 +28,14 @@ namespace Lobby
         }
 
         [ServerRpc(RequireOwnership = false)]
-        public void UpdateSkinServerRpc(int index)
+        public void UpdateSkinServerRpc(int index, ServerRpcParams rpcParams = default)
         {
             if (!IsServer) return;
             if (transform.childCount == 1 || transform.childCount == 2)
             {
                 var newSkin = Instantiate(_skins.GetPreviewPrefab(index), transform.position,
                     Quaternion.Euler(new Vector3(0, 180, 0)));
-                newSkin.GetComponent<NetworkObject>().Spawn(true);
+                newSkin.GetComponent<NetworkObject>().SpawnWithOwnership(rpcParams.Receive.SenderClientId, true);
                 newSkin.GetComponent<NetworkObject>().DontDestroyWithOwner = false;
                 newSkin.transform.parent = transform;
             }

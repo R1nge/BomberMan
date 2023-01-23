@@ -135,8 +135,7 @@ PlayerSettings:
     16:9: 1
     Others: 1
   bundleVersion: 0.52
-  preloadedAssets:
-  - {fileID: 11400000, guid: 843927aff88c9594fab82ca4afd6b941, type: 2}
+  preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -785,7 +784,7 @@ PlayerSettings:
     Android: 1
     Standalone: 0
   il2cppCompilerConfiguration:
-    Android: 2
+    Android: 1
     Standalone: 2
   managedStrippingLevel:
     Android: 4

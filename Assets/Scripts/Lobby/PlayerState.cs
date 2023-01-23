@@ -4,41 +4,40 @@ using Unity.Netcode;
 namespace Lobby
 {
     [Serializable]
-    public struct LobbyPlayerState : INetworkSerializable, IEquatable<LobbyPlayerState>
+    public struct PlayerState : INetworkSerializable, IEquatable<PlayerState>
     {
         public ulong ClientId;
-        public NetworkString PlayerName;
         public int SkinIndex;
         public bool IsReady;
+        public NetworkString Nickname;
 
-        public LobbyPlayerState(ulong clientId, string playerName, int skinIndex, bool isReady)
+        public PlayerState(ulong clientId, int skinIndex, bool isReady, NetworkString nickname)
         {
             ClientId = clientId;
-            PlayerName = playerName;
             SkinIndex = skinIndex;
             IsReady = isReady;
+            Nickname = nickname;
         }
 
         public void NetworkSerialize<T>(BufferSerializer<T> serializer) where T : IReaderWriter
         {
             serializer.SerializeValue(ref ClientId);
-            serializer.SerializeValue(ref PlayerName);
             serializer.SerializeValue(ref IsReady);
         }
 
-        public bool Equals(LobbyPlayerState other)
+        public bool Equals(PlayerState other)
         {
-            return ClientId == other.ClientId && PlayerName.Equals(other.PlayerName) && IsReady == other.IsReady;
+            return ClientId == other.ClientId && SkinIndex == other.SkinIndex && IsReady == other.IsReady;
         }
 
         public override bool Equals(object obj)
         {
-            return obj is LobbyPlayerState other && Equals(other);
+            return obj is PlayerState other && Equals(other);
         }
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(ClientId, PlayerName, IsReady);
+            return HashCode.Combine(ClientId, SkinIndex, IsReady);
         }
     }
 }

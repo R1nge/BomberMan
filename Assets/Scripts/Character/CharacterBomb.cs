@@ -1,5 +1,4 @@
-﻿using BayatGames.SaveGameFree;
-using Unity.Netcode;
+﻿using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -18,7 +17,7 @@ namespace Character
             _gameState = FindObjectOfType<GameState>();
             _bombs = FindObjectOfType<PlayerBombs>();
             _playerUI = GetComponent<PlayerUI>();
-            _currentBomb = SaveGame.Load("Bomb", 0);
+            _currentBomb = PlayerPrefs.GetInt("Bomb", 0);
         }
 
         public override void OnNetworkSpawn()

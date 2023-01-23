@@ -1,5 +1,4 @@
-﻿using BayatGames.SaveGameFree;
-using Character;
+﻿using Character;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine;
@@ -68,7 +67,7 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (IsServer)
             {
-                SpawnPlayer(SaveGame.Load("Skin", 0), NetworkManager.Singleton.LocalClientId);
+                SpawnPlayer(PlayerPrefs.GetInt("Skin"), NetworkManager.Singleton.LocalClientId);
             }
         }
     }
@@ -76,7 +75,7 @@ public class PlayerSpawner : NetworkBehaviour
     public override void OnNetworkSpawn()
     {
         if (IsServer) return;
-        SpawnPlayerServerRpc(SaveGame.Load("Skin", 0));
+        SpawnPlayerServerRpc(PlayerPrefs.GetInt("Skin"));
     }
 
     private void SpawnPlayer(int skinIndex, ulong ID)

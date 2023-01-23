@@ -14,6 +14,12 @@ namespace Lobby
             startGame.gameObject.SetActive(IsServer);
             readyup.gameObject.SetActive(!IsServer);
         }
+        
+        [ServerRpc(RequireOwnership = false)]
+        public void UpdateNicknameServerRpc(int index, string s)
+        {
+            characters[index].UpdateNicknameServerRpc(s);
+        }
 
         [ServerRpc(RequireOwnership = false)]
         public void UpdateReadyStateServerRpc(int index, bool state)

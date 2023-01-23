@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Text;
-using BayatGames.SaveGameFree;
 using TMPro;
 using Unity.Netcode;
 using Unity.Netcode.Transports.UTP;
@@ -15,8 +14,8 @@ public class ConnectMenu : NetworkBehaviour
 
     private void Awake()
     {
-        ipInput.text = SaveGame.Load("LastIP", String.Empty);
-        nickInput.text = SaveGame.Load("Nickname", nickInput.text);
+        ipInput.text = PlayerPrefs.GetString("LastIP", String.Empty);
+        nickInput.text = PlayerPrefs.GetString("Nickname", nickInput.text);
     }
 
     private void Start()
@@ -44,12 +43,17 @@ public class ConnectMenu : NetworkBehaviour
         NetworkManager.Singleton.SceneManager.LoadScene("Lobby", LoadSceneMode.Single);
     }
 
-    public void SaveNick() => SaveGame.Save("Nickname", nickInput.text);
+    public void SaveNick()
+    {
+        PlayerPrefs.SetString("Nickname", nickInput.text);
+        PlayerPrefs.Save();
+    }
 
     public void SetIp()
     {
         NetworkManager.Singleton.GetComponent<UnityTransport>().ConnectionData.Address = ipInput.text;
-        SaveGame.Save("LastIP", ipInput.text);
+        PlayerPrefs.SetString("LastIP", ipInput.text);
+        PlayerPrefs.Save();
     }
 
     private void ApprovalCheck(NetworkManager.ConnectionApprovalRequest request,

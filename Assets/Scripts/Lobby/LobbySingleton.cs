@@ -7,11 +7,11 @@ namespace Lobby
     {
         public static LobbySingleton Instance { get; private set; }
 
-        [SerializeField] private List<LobbyPlayerState> _lobbyPlayers;
+        [SerializeField] private List<PlayerState> _lobbyPlayers;
 
         private void Awake()
         {
-            _lobbyPlayers = new List<LobbyPlayerState>();
+            _lobbyPlayers = new List<PlayerState>();
             if (Instance != null)
             {
                 throw new System.Exception("Multiple LobbySingleton defined!");
@@ -21,8 +21,8 @@ namespace Lobby
             Instance = this;
         }
 
-        public void ResetPlayerList() => _lobbyPlayers = new List<LobbyPlayerState>();
+        public void ResetPlayerList() => _lobbyPlayers = new List<PlayerState>();
 
-        public List<LobbyPlayerState> GetPlayersList() => _lobbyPlayers;
+        public List<PlayerState> GetPlayersList() => _lobbyPlayers;
     }
 }

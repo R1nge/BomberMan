@@ -1,5 +1,4 @@
-﻿using BayatGames.SaveGameFree;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerBombs : MonoBehaviour
 {
@@ -13,5 +12,9 @@ public class PlayerBombs : MonoBehaviour
 
     public AudioClip GetSound(int index) => bombs[index].sound;
 
-    public void SetBomb(int index) => SaveGame.Save("Bomb", index);
+    public void SetBomb(int index)
+    {
+        PlayerPrefs.SetInt("Bomb", index);
+        PlayerPrefs.Save();
+    }
 }

@@ -39,8 +39,7 @@ namespace Lobby
                 newSkin.GetComponent<NetworkObject>().DontDestroyWithOwner = false;
                 newSkin.transform.parent = transform;
             }
-
-            if (transform.childCount == 3)
+            else if (transform.childCount == 3)
             {
                 transform.GetChild(1).GetComponent<NetworkObject>().Despawn();
             }

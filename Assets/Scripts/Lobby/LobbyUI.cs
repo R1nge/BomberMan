@@ -27,8 +27,8 @@ namespace Lobby
             characters[index].UpdateReadyStateServerRpc(state);
         }
 
-        [ServerRpc(RequireOwnership = false)]
-        public void UpdateSkinServerRpc(int index, int skinIndex)
+
+        public void UpdateSkin(int index, int skinIndex)
         {
             characters[index].UpdateSkinServerRpc(skinIndex);
         }

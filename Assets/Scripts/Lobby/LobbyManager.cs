@@ -58,29 +58,54 @@ public class LobbyManager : NetworkBehaviour
 
     private void OnClientConnected(ulong ID)
     {
-        if (!IsServer) return;
-        if (ID == 0)
+        if (IsServer)
         {
-            LobbySingleton.Instance.GetPlayersList().Add(new PlayerState
+            if (ID == 0)
             {
-                ClientId = ID,
-                SkinIndex = PlayerPrefs.GetInt("Skin"),
-                IsReady = true,
-                Nickname = PlayerPrefs.GetString("Nickname")
-            });
+                LobbySingleton.Instance.GetPlayersList().Add(new PlayerState
+                {
+                    ClientId = ID,
+                    SkinIndex = PlayerPrefs.GetInt("Skin"),
+                    IsReady = true,
+                    Nickname = PlayerPrefs.GetString("Nickname")
+                });
+            }
+
+
+            for (int i = 0; i < 4; i++)
+            {
+                if (LobbySingleton.Instance.GetPlayersList().Count > i)
+                {
+                    _lobbyUI.UpdateReadyStateServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].IsReady);
+                    _lobbyUI.UpdateNicknameServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].Nickname);
+                    _lobbyUI.UpdateSkin(i, LobbySingleton.Instance.GetPlayersList()[i].SkinIndex);
+                    OnLobbyPlayersStateChanged();
+                }
+            }
+
+
+            PrintData();
         }
         else
         {
-            print(LobbySingleton.Instance);
-            print(LobbySingleton.Instance.GetPlayersList());
-            LobbySingleton.Instance.GetPlayersList().Add(new PlayerState
-            {
-                ClientId = ID,
-                SkinIndex = PlayerPrefs.GetInt("Skin"),
-                IsReady = false,
-                Nickname = PlayerPrefs.GetString("Nickname")
-            });
+            var skinIndex = PlayerPrefs.GetInt("Skin");
+            var nickname = PlayerPrefs.GetString("Nickname");
+            OnClientConnectedServerRpc(skinIndex, nickname);
         }
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void OnClientConnectedServerRpc(int skinIndex, NetworkString nickname, ServerRpcParams rpcParams = default)
+    {
+        print(LobbySingleton.Instance);
+        print(LobbySingleton.Instance.GetPlayersList());
+        LobbySingleton.Instance.GetPlayersList().Add(new PlayerState
+        {
+            ClientId = rpcParams.Receive.SenderClientId,
+            SkinIndex = skinIndex,
+            IsReady = false,
+            Nickname = nickname
+        });
 
         for (int i = 0; i < 4; i++)
         {
@@ -88,13 +113,10 @@ public class LobbyManager : NetworkBehaviour
             {
                 _lobbyUI.UpdateReadyStateServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].IsReady);
                 _lobbyUI.UpdateNicknameServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].Nickname);
-                _lobbyUI.UpdateSkinServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].SkinIndex);
+                _lobbyUI.UpdateSkin(i, LobbySingleton.Instance.GetPlayersList()[i].SkinIndex);
                 OnLobbyPlayersStateChanged();
             }
         }
-
-
-        PrintData();
     }
 
     private void OnClientDisconnected(ulong ID)
@@ -113,7 +135,7 @@ public class LobbyManager : NetworkBehaviour
             if (LobbySingleton.Instance.GetPlayersList().Count > i)
             {
                 _lobbyUI.UpdateReadyStateServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].IsReady);
-                _lobbyUI.UpdateSkinServerRpc(i, LobbySingleton.Instance.GetPlayersList()[i].SkinIndex);
+                _lobbyUI.UpdateSkin(i, LobbySingleton.Instance.GetPlayersList()[i].SkinIndex);
                 OnLobbyPlayersStateChanged();
             }
             else

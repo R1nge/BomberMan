@@ -62,34 +62,62 @@ public class MapGenerator : NetworkBehaviour
             for (int z = 0; z < _height; z++)
             {
                 _spawnObstacle = Mathf.FloorToInt(Random.Range(0, 2)) == 0;
+
                 if (!_spawnObstacle) continue;
 
-                if (x % 2 == 1 && z % 2 == 1) continue;
+                if (IsOdd(x, z)) continue;
 
-                if (x == 0 && z == 0) continue;
-                if (x == 1 && z == 0) continue;
-                if (x == 0 && z == 1) continue;
+                if (IsLeftBottomCorner(x, z)) continue;
 
-                if (x == _width - 1 && z == 0) continue;
-                if (x == _width - 2 && z == 0) continue;
-                if (x == _width - 1 && z == 1) continue;
+                if (IsRightBottomCorner(x, z)) continue;
 
-                if (x == 0 && z == _height - 1) continue;
-                if (x == 1 && z == _height - 1) continue;
-                if (x == 0 && z == _height - 2) continue;
+                if (IsLeftTopCorner(x, z)) continue;
 
-                if (x == _width - 1 && z == _height - 1) continue;
-                if (x == _width - 2 && z == _height - 1) continue;
-                if (x == _width - 1 && z == _height - 2) continue;
+                if (IsRightTopCorner(x, z)) continue;
 
-                if (x == _width / 2 && z == _height / 2) continue;
-
+                if (IsCenter(x, z)) continue;
 
                 Spawn(map.destructable, x, z, map.obstacleOffset,
                     map.obstacleSize, map.obstacleRotation);
             }
         }
     }
+
+    private bool IsOdd(int x, int z) => x % 2 == 1 && z % 2 == 1;
+
+    private bool IsLeftTopCorner(int x, int z)
+    {
+        if (x == 0 && z == _height - 1) return true;
+        if (x == 1 && z == _height - 1) return true;
+        if (x == 0 && z == _height - 2) return true;
+        return false;
+    }
+
+    private bool IsLeftBottomCorner(int x, int z)
+    {
+        if (x == 0 && z == 0) return true;
+        if (x == 1 && z == 0) return true;
+        if (x == 0 && z == 1) return true;
+        return false;
+    }
+
+    private bool IsRightTopCorner(int x, int z)
+    {
+        if (x == _width - 1 && z == _height - 1) return true;
+        if (x == _width - 2 && z == _height - 1) return true;
+        if (x == _width - 1 && z == _height - 2) return true;
+        return false;
+    }
+
+    private bool IsRightBottomCorner(int x, int z)
+    {
+        if (x == _width - 1 && z == 0) return true;
+        if (x == _width - 2 && z == 0) return true;
+        if (x == _width - 1 && z == 1) return true;
+        return false;
+    }
+
+    private bool IsCenter(int x, int z) => x == _width / 2 && z == _height / 2;
 
     private void SpawnBorders()
     {
@@ -98,27 +126,47 @@ public class MapGenerator : NetworkBehaviour
         {
             for (int z = -1; z < _height + 1; z++)
             {
-                if (x < _width + 1 && z == _height)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.topRotation);
-                }
-                else if (x < _width + 1 && z == -1)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, -map.topRotation);
-                }
-                else if (x == -1 && z < _height + 1)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, map.leftRotation);
-                }
-                else if (x == _width && z < _height + 1)
-                {
-                    Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
-                        map.borderSize, -map.leftRotation);
-                }
+                SpawnTopBorder(map, x, z);
+                SpawnBottomBorder(map, x, z);
+                SpawnRightBorder(map, x, z);
+                SpawnLeftBorder(map, x, z);
             }
+        }
+    }
+
+    private void SpawnLeftBorder(MapConfig map, int x, int z)
+    {
+        if (x == _width && z < _height + 1)
+        {
+            Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                map.borderSize, -map.leftRotation);
+        }
+    }
+
+    private void SpawnRightBorder(MapConfig map, int x, int z)
+    {
+        if (x == -1 && z < _height + 1)
+        {
+            Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                map.borderSize, map.leftRotation);
+        }
+    }
+
+    private void SpawnTopBorder(MapConfig map, int x, int z)
+    {
+        if (x < _width + 1 && z == _height)
+        {
+            Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                map.borderSize, map.topRotation);
+        }
+    }
+
+    private void SpawnBottomBorder(MapConfig map, int x, int z)
+    {
+        if (x < _width + 1 && z == -1)
+        {
+            Spawn(map.border, x, z, maps[_mapIndex].borderOffset,
+                map.borderSize, -map.topRotation);
         }
     }
 
@@ -127,13 +175,13 @@ public class MapGenerator : NetworkBehaviour
         var map = maps[_mapIndex];
         for (int x = 0; x < _width; x++)
         {
-            for (int y = 0; y < _height; y++)
+            for (int z = 0; z < _height; z++)
             {
-                if (x % 2 == 1 && y % 2 == 1)
+                if (x % 2 == 1 && z % 2 == 1)
                 {
-                    if (x == _width / 2 && y == _height / 2) continue;
+                    if (IsCenter(x, z)) continue;
 
-                    Spawn(map.wall, x, y, map.wallOffset, map.wallSize, map.wallRotation);
+                    Spawn(map.wall, x, z, map.wallOffset, map.wallSize, map.wallRotation);
                 }
             }
         }

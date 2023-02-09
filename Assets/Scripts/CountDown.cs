@@ -1,30 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
 public class CountDown : NetworkBehaviour
 {
     [SerializeField] private int timer;
-    private CountDownUI _countDownUI;
     private NetworkVariable<int> _timer;
     private GameState _gameState;
 
+    public event Action<int> OnTimeChanged;
+
     private void Awake()
     {
-        _countDownUI = FindObjectOfType<CountDownUI>();
         _gameState = FindObjectOfType<GameState>();
         _timer = new NetworkVariable<int>(timer);
-        _timer.OnValueChanged += (value, newValue) => { _countDownUI.UpdateUI(newValue); };
-        _countDownUI.UpdateUI(_timer.Value);
-        NetworkManager.Singleton.OnClientConnectedCallback += OnClientConnected;
-    }
-
-    private void OnClientConnected(ulong obj)
-    {
-        if (_timer.Value <= 0)
-        {
-            _countDownUI.Hide();
-        }
+        _timer.OnValueChanged += (_, newValue) => { OnTimeChanged?.Invoke(newValue); };
+        OnTimeChanged?.Invoke(_timer.Value);
     }
 
     private void Start()

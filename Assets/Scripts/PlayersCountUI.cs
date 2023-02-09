@@ -12,8 +12,8 @@ public class PlayersCountUI : MonoBehaviour
         _playerSpawner.PlayersAmount.OnValueChanged += OnPlayersAmount;
     }
 
-    private void OnPlayersAmount(int previousvalue, int newvalue)
+    private void OnPlayersAmount(int _, int newValue)
     {
-        countText.text = "Players alive: " + newvalue;
+        countText.text = "Players alive: " + newValue;
     }
 }

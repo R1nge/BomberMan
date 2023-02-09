@@ -8,19 +8,19 @@ namespace Character
     {
         [SerializeField] private NetworkVariable<int> health;
         private PlayerSpawner _playerSpawner;
-        private PlayerUI _playerUI;
         private CharacterShield _characterShield;
-        public event Action OnTakenDamage;
+        public event Action<int> OnTakenDamage;
 
         private void Awake()
         {
             _playerSpawner = FindObjectOfType<PlayerSpawner>();
-            _playerUI = GetComponent<PlayerUI>();
             _characterShield = GetComponent<CharacterShield>();
-            health.OnValueChanged += _playerUI.UpdateHealth;
+            health.OnValueChanged += (oldValue, newValue) =>
+            {
+                if (newValue > oldValue) return;
+                OnTakenDamage?.Invoke(newValue);
+            };
         }
-
-        public override void OnNetworkSpawn() => _playerUI.UpdateHealth(health.Value, health.Value);
 
         public void TakeDamage(int amount)
         {
@@ -34,7 +34,6 @@ namespace Character
 
         public void TakeDamagePlayer(int amount, ulong who, ulong whom)
         {
-            OnTakenDamage?.Invoke();
             if (_characterShield.IsActive.Value)
             {
                 _characterShield.UseShieldServerRpc();

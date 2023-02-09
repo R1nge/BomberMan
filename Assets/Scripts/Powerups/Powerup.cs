@@ -27,9 +27,7 @@ namespace Powerups
             DestroyServerRpc();
         }
 
-        protected virtual void Apply(NetworkObjectReference reference)
-        {
-        }
+        protected abstract void Apply(NetworkObjectReference reference);
 
         [ServerRpc(RequireOwnership = false)]
         private void DestroyServerRpc() => GetComponent<NetworkObject>().Despawn();

@@ -15,7 +15,7 @@ namespace Character
             _health.OnTakenDamage += OnTakenDamage;
         }
 
-        private void OnTakenDamage() => OnTakenDamageServerRpc();
+        private void OnTakenDamage(int _) => OnTakenDamageServerRpc();
 
         [ServerRpc(RequireOwnership = false)]
         private void OnTakenDamageServerRpc()

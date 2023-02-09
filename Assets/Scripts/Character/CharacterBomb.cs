@@ -1,4 +1,5 @@
-﻿using Unity.Netcode;
+﻿using System;
+using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,31 +9,29 @@ namespace Character
     {
         [SerializeField] private NetworkVariable<int> bombAmount, maxBombAmount;
         private GameState _gameState;
-        private PlayerUI _playerUI;
         private PlayerBombs _bombs;
         private int _currentBomb;
+
+        public event Action<int, int> OnBombPlaced;
 
         private void Awake()
         {
             _gameState = FindObjectOfType<GameState>();
             _bombs = FindObjectOfType<PlayerBombs>();
-            _playerUI = GetComponent<PlayerUI>();
             _currentBomb = PlayerPrefs.GetInt("Bomb", 0);
         }
 
         public override void OnNetworkSpawn()
         {
-            bombAmount.OnValueChanged += (_, _) =>
+            bombAmount.OnValueChanged += (_, newValue) =>
             {
-                if (_playerUI == null) return;
-                _playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+                OnBombPlaced?.Invoke(newValue, maxBombAmount.Value);
             };
         }
 
         private void Start()
         {
-            if (_playerUI == null) return;
-            _playerUI.UpdateBombs(bombAmount.Value, maxBombAmount.Value);
+            OnBombPlaced?.Invoke(bombAmount.Value, maxBombAmount.Value);
         }
 
         [ServerRpc(RequireOwnership = false)]
@@ -57,6 +56,8 @@ namespace Character
                 {
                     SpawnServerRpc(_currentBomb);
                 }
+                
+                OnBombPlaced?.Invoke(bombAmount.Value, maxBombAmount.Value);
             }
         }
 
